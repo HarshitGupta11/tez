@@ -372,7 +372,7 @@ public class VertexManager {
     // TODO add later after TEZ-1714 @Override
     public synchronized void vertexManagerDone() {
       checkAndThrowIfDone();
-      LOG.info("Vertex Manager reported done for : " + managedVertex.getLogIdentifier());
+      LOG.error("Temp", new RuntimeException());
       this.isComplete.set(true);
       unregisterForVertexStateUpdates();
     }
@@ -455,13 +455,13 @@ public class VertexManager {
   private boolean pluginInvocationAllowed(String msg) {
     if (pluginFailed.get()) {
       if (LOG.isDebugEnabled()) {
-        LOG.debug(msg + " . Manager failed. Vertex=" + managedVertex.getLogIdentifier());
+        LOG.error("Temp", new RuntimeException());
       }
       return false;
     }
     if (pluginContext.isComplete()) {
       if (LOG.isDebugEnabled()) {
-        LOG.debug(msg+ " . Manager complete. Not scheduling event. Vertex=" + managedVertex.getLogIdentifier());
+        LOG.error("Temp", new RuntimeException());
       }
       return false;
     }

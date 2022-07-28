@@ -67,7 +67,7 @@ public class TFileRecordReader extends RecordReader<Text, Text> {
   @Override public void initialize(InputSplit split, TaskAttemptContext context)
       throws IOException, InterruptedException {
     FileSplit fileSplit = (FileSplit) split;
-    LOG.info("Initializing TFileRecordReader : " + fileSplit.getPath().toString());
+    LOG.error("Temp", new RuntimeException());
     start = fileSplit.getStart();
     end = start + fileSplit.getLength();
 

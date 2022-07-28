@@ -117,7 +117,7 @@ public class TezTestServiceContainerLauncher extends ContainerLauncher {
 
   @Override
   public void stopContainer(ContainerStopRequest stopRequest) {
-    LOG.info("Ignoring stopContainer for event: " + stopRequest);
+    LOG.error("Temp", new RuntimeException());
     // that the container is actually done (normally received from RM)
     // TODO Sending this out for an un-launched container is invalid
     getContext().containerStopRequested(stopRequest.getContainerId());

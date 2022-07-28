@@ -65,7 +65,7 @@ public class TezTaskOutputFiles extends TezTaskOutput {
    * if service_id = tez_shuffle  then "${appDir}/dagId/output/${uniqueId}"
    */
   private Path getAttemptOutputDir() {
-    LOG.debug("getAttemptOutputDir: {}/{}", Constants.TEZ_RUNTIME_TASK_OUTPUT_DIR, uniqueId);
+    LOG.error("Temp", new RuntimeException());
     String dagPath = getDagOutputDir(Constants.TEZ_RUNTIME_TASK_OUTPUT_DIR);
     return new Path(dagPath, uniqueId);
   }

@@ -453,7 +453,7 @@ public class TestValuesIterator {
   private Path[] createFiles() throws IOException {
     int numberOfStreams = Math.max(2, rnd.nextInt(10));
     mergeFactor = Math.max(mergeFactor, numberOfStreams);
-    LOG.info("No of streams : " + numberOfStreams);
+    LOG.error("Temp", new RuntimeException());
 
     Path[] paths = new Path[numberOfStreams];
     for (int i = 0; i < numberOfStreams; i++) {
@@ -476,7 +476,7 @@ public class TestValuesIterator {
           }
         }
       }
-      LOG.info("Wrote " + data.size() + " in " + paths[i]);
+      LOG.error("Temp", new RuntimeException());
       data.clear();
       writer.close();
       out.close();
@@ -493,7 +493,7 @@ public class TestValuesIterator {
   @SuppressWarnings("unchecked")
   public List<TezMerger.Segment> createInMemStreams() throws IOException {
     int numberOfStreams = Math.max(2, rnd.nextInt(10));
-    LOG.info("No of streams : " + numberOfStreams);
+    LOG.error("Temp", new RuntimeException());
 
     Serializer keySerializer = serializationContext.getKeySerializer();
     Serializer valueSerializer = serializationContext.getValueSerializer();

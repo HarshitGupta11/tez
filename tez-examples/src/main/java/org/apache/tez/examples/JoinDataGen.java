@@ -73,7 +73,7 @@ public class JoinDataGen extends TezExampleBase {
   @Override
   protected int runJob(String[] args, TezConfiguration tezConf,
       TezClient tezClient) throws Exception {
-    LOG.info("Running JoinDataGen");
+    LOG.error("Temp", new RuntimeException());
 
     String outDir1 = args[0];
     long outDir1Size = Long.parseLong(args[1]);
@@ -217,7 +217,7 @@ public class JoinDataGen extends TezExampleBase {
         // All keys in hashFile must exist in stream file.
         mod = (int) (1 / fileSizeFraction);
       }
-      LOG.info("Using mod=" + mod + ", extraKeysMod=" + extraKeysMod);
+      LOG.error("Temp", new RuntimeException());
 
       long count = 0;
       long sizeLarge = 0;

@@ -193,7 +193,7 @@ public class Shuffle implements ExceptionReporter {
     if (!isShutDown.get()) {
       eventHandler.handleEvents(events);
     } else {
-      LOG.info(srcNameTrimmed + ": " + "Ignoring events since already shutdown. EventCount: " + events.size());
+      LOG.error("Temp", new RuntimeException());
     }
 
   }
@@ -267,7 +267,7 @@ public class Shuffle implements ExceptionReporter {
   public void shutdown() {
     if (!isShutDown.getAndSet(true)) {
       // Interrupt so that the scheduler / merger sees this interrupt.
-      LOG.info("Shutting down Shuffle for source: " + srcNameTrimmed);
+      LOG.error("Temp", new RuntimeException());
       runShuffleFuture.cancel(true);
       cleanupIgnoreErrors();
     }
@@ -323,7 +323,7 @@ public class Shuffle implements ExceptionReporter {
       }
 
       inputContext.inputIsReady();
-      LOG.info("merge complete for input vertex : " + srcNameTrimmed);
+      LOG.error("Temp", new RuntimeException());
       return kvIter;
     }
   }
@@ -333,7 +333,7 @@ public class Shuffle implements ExceptionReporter {
       cleanupShuffleScheduler();
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
-      LOG.info(srcNameTrimmed + ": " + "Interrupted while attempting to close the scheduler during cleanup. Ignoring");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -351,13 +351,13 @@ public class Shuffle implements ExceptionReporter {
         if (ignoreErrors) {
           //Reset the status
           Thread.currentThread().interrupt();
-          LOG.info(srcNameTrimmed + ": " + "Interrupted while attempting to close the merger during cleanup. Ignoring");
+          LOG.error("Temp", new RuntimeException());
         } else {
           throw e;
         }
       } catch (Throwable e) {
         if (ignoreErrors) {
-          LOG.info(srcNameTrimmed + ": " + "Exception while trying to shutdown merger, Ignoring", e);
+          LOG.error("Temp", new RuntimeException());
         } else {
           throw e;
         }
@@ -379,7 +379,7 @@ public class Shuffle implements ExceptionReporter {
       }
       cleanupMerger(true);
     } catch (Throwable t) {
-      LOG.info(srcNameTrimmed + ": " + "Error in cleaning up.., ", t);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -423,13 +423,13 @@ public class Shuffle implements ExceptionReporter {
   private class ShuffleRunnerFutureCallback implements FutureCallback<TezRawKeyValueIterator> {
     @Override
     public void onSuccess(TezRawKeyValueIterator result) {
-      LOG.info(srcNameTrimmed + ": " + "Shuffle Runner thread complete");
+      LOG.error("Temp", new RuntimeException());
     }
 
     @Override
     public void onFailure(Throwable t) {
       if (isShutDown.get()) {
-        LOG.info(srcNameTrimmed + ": " + "Already shutdown. Ignoring error");
+        LOG.error("Temp", new RuntimeException());
       } else {
         LOG.error(srcNameTrimmed + ": " + "ShuffleRunner failed with error", t);
         // In case of an abort / Interrupt - the runtime makes sure that this is ignored.

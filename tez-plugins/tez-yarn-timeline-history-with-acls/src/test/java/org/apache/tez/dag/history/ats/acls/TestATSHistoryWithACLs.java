@@ -113,7 +113,7 @@ public class TestATSHistoryWithACLs {
         mrrTezCluster.init(conf);
         mrrTezCluster.start();
       } catch (Throwable e) {
-        LOG.info("Failed to start Mini Tez Cluster", e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
     user = UserGroupInformation.getCurrentUser().getShortUserName();
@@ -127,7 +127,7 @@ public class TestATSHistoryWithACLs {
 
   @AfterClass
   public static void tearDown() throws InterruptedException {
-    LOG.info("Shutdown invoked");
+    LOG.error("Temp", new RuntimeException());
     Thread.sleep(10000);
     if (mrrTezCluster != null) {
       mrrTezCluster.stop();
@@ -157,7 +157,7 @@ public class TestATSHistoryWithACLs {
   private TimelineDomain getDomain(String domainId) {
     assertNotNull(timelineAddress);
     String url = "http://" + timelineAddress + "/ws/v1/timeline/domain/" + domainId;
-    LOG.info("Getting timeline domain: " + url);
+    LOG.error("Temp", new RuntimeException());
     TimelineDomain domain = getTimelineData(url, TimelineDomain.class);
     assertNotNull(domain);
     assertNotNull(domain.getOwner());
@@ -483,13 +483,13 @@ public class TestATSHistoryWithACLs {
 
     String appUrl = "http://" + timelineAddress + "/ws/v1/timeline/TEZ_APPLICATION/"
         + "tez_" + applicationId.toString();
-    LOG.info("Getting timeline entity for tez application: " + appUrl);
+    LOG.error("Temp", new RuntimeException());
     TimelineEntity appEntity = getTimelineData(appUrl, TimelineEntity.class);
 
     TezDAGID tezDAGID = TezDAGID.getInstance(applicationId, 1);
     String dagUrl = "http://" + timelineAddress + "/ws/v1/timeline/TEZ_DAG_ID/"
         + tezDAGID.toString();
-    LOG.info("Getting timeline entity for tez dag: " + dagUrl);
+    LOG.error("Temp", new RuntimeException());
     TimelineEntity dagEntity = getTimelineData(dagUrl, TimelineEntity.class);
 
     // App and DAG entities should have different domains

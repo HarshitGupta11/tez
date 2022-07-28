@@ -112,7 +112,7 @@ public class TestContainerReuse {
   @Test(timeout = 15000l)
   public void testDelayedReuseContainerBecomesAvailable()
       throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testDelayedReuseContainerBecomesAvailable");
+    LOG.error("Temp", new RuntimeException());
     Configuration conf = new Configuration();
     conf.setBoolean(
       TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, true);
@@ -247,7 +247,7 @@ public class TestContainerReuse {
   @Test(timeout = 15000l)
   public void testDelayedReuseContainerNotAvailable()
       throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testDelayedReuseContainerNotAvailable");
+    LOG.error("Temp", new RuntimeException());
     Configuration conf = new Configuration();
     conf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, true);
     conf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_RACK_FALLBACK_ENABLED, false);
@@ -349,7 +349,7 @@ public class TestContainerReuse {
 
   @Test(timeout = 10000l)
   public void testSimpleReuse() throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testSimpleReuse");
+    LOG.error("Temp", new RuntimeException());
     Configuration tezConf = new Configuration();
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, true);
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_RACK_FALLBACK_ENABLED, true);
@@ -490,7 +490,7 @@ public class TestContainerReuse {
 
   @Test(timeout = 10000l)
   public void testReuseWithTaskSpecificLaunchCmdOption() throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testReuseWithTaskSpecificLaunchCmdOption");
+    LOG.error("Temp", new RuntimeException());
     Configuration tezConf = new Configuration();
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, true);
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_RACK_FALLBACK_ENABLED, true);
@@ -680,7 +680,7 @@ public class TestContainerReuse {
   @Test(timeout = 30000l)
   public void testReuseNonLocalRequest()
       throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testReuseNonLocalRequest");
+    LOG.error("Temp", new RuntimeException());
     Configuration tezConf = new Configuration();
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, true);
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_RACK_FALLBACK_ENABLED, true);
@@ -801,7 +801,7 @@ public class TestContainerReuse {
   @Test(timeout = 30000l)
   public void testReuseAcrossVertices()
       throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testReuseAcrossVertices");
+    LOG.error("Temp", new RuntimeException());
     Configuration tezConf = new Configuration();
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, true);
     tezConf.setLong(
@@ -921,7 +921,7 @@ public class TestContainerReuse {
   
   @Test(timeout = 30000l)
   public void testReuseLocalResourcesChanged() throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testReuseLocalResourcesChanged");
+    LOG.error("Temp", new RuntimeException());
     Configuration tezConf = new Configuration();
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, true);
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_RACK_FALLBACK_ENABLED, true);
@@ -1078,7 +1078,7 @@ public class TestContainerReuse {
 
   @Test(timeout = 30000l)
   public void testReuseConflictLocalResources() throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testReuseLocalResourcesChanged");
+    LOG.error("Temp", new RuntimeException());
     Configuration tezConf = new Configuration();
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, true);
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_RACK_FALLBACK_ENABLED, true);
@@ -1315,7 +1315,7 @@ public class TestContainerReuse {
   @Test(timeout = 10000l)
   public void testAssignmentOnShutdown()
       throws IOException, InterruptedException, ExecutionException {
-    LOG.info("Test testAssignmentOnShutdown");
+    LOG.error("Temp", new RuntimeException());
     Configuration tezConf = new Configuration();
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_ENABLED, false);
     tezConf.setBoolean(TezConfiguration.TEZ_AM_CONTAINER_REUSE_RACK_FALLBACK_ENABLED, true);

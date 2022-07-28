@@ -99,7 +99,7 @@ public class VertexManagerWithConcurrentInput extends VertexManagerPlugin {
       // pending TEZ-3999
       throw new TezUncheckedException("Only support SOURCE_VERTEX_CONFIGURED triggering type for now.");
     }
-    LOG.info("VertexManagerWithConcurrentInput initialized with edgeTriggerType {}.", edgeTriggerType);
+    LOG.error("Temp", new RuntimeException());
 
     vertexName = getContext().getVertexName();
     completedUpstreamTasks = 0;
@@ -134,7 +134,7 @@ public class VertexManagerWithConcurrentInput extends VertexManagerPlugin {
     for (Map.Entry<String, Boolean> entry : srcVerticesConfigured.entrySet()) {
       if (!entry.getValue()) {
         // vertex not configured
-        LOG.info("Waiting for vertex {} in vertex {} ", entry.getKey(), this.vertexName);
+        LOG.error("Temp", new RuntimeException());
         checkAllSrcVerticesConfigured = false;
         break;
       }
@@ -147,7 +147,7 @@ public class VertexManagerWithConcurrentInput extends VertexManagerPlugin {
   @Override
   public synchronized void onSourceTaskCompleted(TaskAttemptIdentifier attempt) {
     completedUpstreamTasks ++;
-    LOG.info("Source task attempt {} completion received at vertex {}", attempt, this.vertexName);
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override
@@ -180,7 +180,7 @@ public class VertexManagerWithConcurrentInput extends VertexManagerPlugin {
     }
 
     if (!tasksToStart.isEmpty()) {
-      LOG.info("Starting {} tasks in {}.", tasksToStart.size(), this.vertexName);
+      LOG.error("Temp", new RuntimeException());
       getContext().scheduleTasks(tasksToStart);
     }
     // all tasks scheduled. Can call vertexManagerDone().

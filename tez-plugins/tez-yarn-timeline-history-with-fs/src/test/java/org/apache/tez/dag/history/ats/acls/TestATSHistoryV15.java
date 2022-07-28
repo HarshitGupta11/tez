@@ -118,7 +118,7 @@ public class TestATSHistoryV15 {
         mrrTezCluster.init(conf);
         mrrTezCluster.start();
       } catch (Throwable e) {
-        LOG.info("Failed to start Mini Tez Cluster", e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
     timelineAddress = mrrTezCluster.getConfig().get(
@@ -131,7 +131,7 @@ public class TestATSHistoryV15 {
 
   @AfterClass
   public static void tearDown() throws InterruptedException {
-    LOG.info("Shutdown invoked");
+    LOG.error("Temp", new RuntimeException());
     Thread.sleep(10000);
     if (mrrTezCluster != null) {
       mrrTezCluster.stop();
@@ -255,7 +255,7 @@ public class TestATSHistoryV15 {
     RemoteIterator<LocatedFileStatus> iter = remoteFs.listFiles(p, true);
     while (iter.hasNext()) {
       LocatedFileStatus f = iter.next();
-      LOG.info("Found file " + f.toString());
+      LOG.error("Temp", new RuntimeException());
       if (f.isDirectory()) {
         count += verifyATSDataOnHDFS(f.getPath(), applicationId);
       } else {

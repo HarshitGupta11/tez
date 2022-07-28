@@ -211,13 +211,13 @@ public abstract class TezAnalyzerBase extends Configured implements Tool, Analyz
       String dagInfoFileName = outputDir + File.separator + this.getClass().getName() + "_"
           + dagInfo.getDagId() + ".dag";
       FileUtils.writeStringToFile(new File(dagInfoFileName), dagInfo.toExtendedString());
-      LOG.info("Saved dag info in " + dagInfoFileName);
+      LOG.error("Temp", new RuntimeException());
 
       if (result instanceof CSVResult) {
         String fileName = outputDir + File.separator + this.getClass().getName() + "_"
             + dagInfo.getDagId() + ".csv";
         ((CSVResult) result).dumpToFile(fileName);
-        LOG.info("Saved results in " + fileName);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -260,16 +260,16 @@ public abstract class TezAnalyzerBase extends Configured implements Tool, Analyz
       }
 
       String separator = sep.toString();
-      LOG.debug(separator);
-      LOG.debug(String.format(format.toString(), (String[]) headers));
-      LOG.debug(separator);
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
 
       Iterator<String[]> recordsIterator = ((CSVResult) result).getRecordsIterator();
       while (recordsIterator.hasNext()) {
         String line = String.format(format, (String[]) recordsIterator.next());
-        LOG.debug(line);
+        LOG.error("Temp", new RuntimeException());
       }
-      LOG.debug(separator);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 }

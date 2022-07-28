@@ -161,7 +161,7 @@ public class RootInputVertexManager extends VertexManagerPlugin {
       //track vertices with task count > 0
       int numTasks = getContext().getVertexNumTasks(srcVertex);
       if (numTasks > 0) {
-        LOG.info("Task count in " + srcVertex + ": " + numTasks);
+        LOG.error("Temp", new RuntimeException());
         srcVertexInfo.put(srcVertex, createSourceVertexInfo(entry.getValue(),
             getContext().getVertexNumTasks(getContext().getVertexName())));
         getContext().registerForVertexStateUpdates(srcVertex,

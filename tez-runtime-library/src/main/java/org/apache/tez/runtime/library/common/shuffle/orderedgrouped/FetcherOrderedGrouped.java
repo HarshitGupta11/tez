@@ -208,7 +208,7 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
 
   public void shutDown() {
     if (!stopped) {
-      LOG.debug("Fetcher stopped for host {}", mapHost);
+      LOG.error("Temp", new RuntimeException());
       stopped = true;
       // An interrupt will come in while shutting down the thread.
       cleanupCurrentConnection(false);
@@ -228,9 +228,9 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
         }
       } catch (IOException e) {
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Exception while shutting down fetcher " + logIdentifier, e);
+          LOG.error("Temp", new RuntimeException());
         } else {
-          LOG.info("Exception while shutting down fetcher " + logIdentifier + ": " + e.getMessage());
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }
@@ -286,14 +286,14 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
           // Setup connection again if disconnected
           cleanupCurrentConnection(true);
           if (stopped) {
-            LOG.debug("Not re-establishing connection since Fetcher has been stopped");
+            LOG.error("Temp", new RuntimeException());
             return;
           }
           // Connect with retry
           if (!setupConnection(host, remaining.values())) {
             if (stopped) {
               cleanupCurrentConnection(true);
-              LOG.debug("Not reporting connection re-establishment failure since fetcher is stopped");
+              LOG.error("Temp", new RuntimeException());
               return;
             }
             failedTasks = new InputAttemptFetchFailure[] {
@@ -326,7 +326,7 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
               + " since Fetcher has been stopped");
         }
       } else {
-        LOG.warn("copyMapOutput failed for tasks " + Arrays.toString(failedTasks));
+        LOG.error("Temp", new RuntimeException());
         for (InputAttemptFetchFailure left : failedTasks) {
           scheduler.copyFailed(left, host, true, false);
         }
@@ -347,7 +347,7 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
       connectSucceeded = httpConnection.connect();
 
       if (stopped) {
-        LOG.debug("Detected fetcher has been shutdown after connection establishment. Returning");
+        LOG.error("Temp", new RuntimeException());
         return false;
       }
       input = httpConnection.getInputStream();
@@ -358,7 +358,7 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
         Thread.currentThread().interrupt(); //reset status
       }
       if (stopped) {
-        LOG.debug("Not reporting fetch failure, since an Exception was caught after shutdown");
+        LOG.error("Temp", new RuntimeException());
         return false;
       }
       ioErrs.increment(1);
@@ -460,7 +460,7 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
               return new InputAttemptFetchFailure[] {
                   InputAttemptFetchFailure.fromAttempt(getNextRemainingAttempt()) };
             } else {
-              LOG.debug("Already shutdown. Ignoring invalid map id error");
+              LOG.error("Temp", new RuntimeException());
               return EMPTY_ATTEMPT_ID_ARRAY;
             }
           }
@@ -478,7 +478,7 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
         } catch (IllegalArgumentException e) {
           if (!stopped) {
             badIdErrs.increment(1);
-            LOG.warn("Invalid map id ", e);
+            LOG.error("Temp", new RuntimeException());
             // Don't know which one was bad, so consider this one bad and dont read
             // the remaining because we dont know where to start reading from. YARN-1773
             return new InputAttemptFetchFailure[] {
@@ -499,13 +499,13 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
             srcAttemptId = mapOutputStat.srcAttemptId;
             if (srcAttemptId == null) {
               srcAttemptId = getNextRemainingAttempt();
-              LOG.warn("Was expecting " + srcAttemptId + " but got null");
+              LOG.error("Temp", new RuntimeException());
             }
             assert (srcAttemptId != null);
             return new InputAttemptFetchFailure[] {
                 new InputAttemptFetchFailure(getNextRemainingAttempt()) };
           } else {
-            LOG.debug("Already stopped. Ignoring verification failure.");
+            LOG.error("Temp", new RuntimeException());
             return EMPTY_ATTEMPT_ID_ARRAY;
           }
         }
@@ -529,14 +529,14 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
             ioErrs.increment(1);
             scheduler.reportLocalError(e);
           } else {
-            LOG.debug("Already stopped. Ignoring error from merger.reserve");
+            LOG.error("Temp", new RuntimeException());
           }
           return EMPTY_ATTEMPT_ID_ARRAY;
         }
 
         // Check if we can shuffle *now* ...
         if (mapOutput.getType() == Type.WAIT) {
-          LOG.info("fetcher#" + id + " - MergerManager returned Status.WAIT ...");
+          LOG.error("Temp", new RuntimeException());
           //Not an error but wait to process data.
           return EMPTY_ATTEMPT_ID_ARRAY;
         }
@@ -743,7 +743,7 @@ class FetcherOrderedGrouped extends CallableWithNdc<Void> {
               LOG.warn("Failed to read local disk output of " + srcAttemptId + " from " +
                   host.getHostIdentifier(), e);
             } else {
-              LOG.debug("Ignoring fetch error during local disk copy since fetcher has already been stopped");
+              LOG.error("Temp", new RuntimeException());
               return;
             }
 

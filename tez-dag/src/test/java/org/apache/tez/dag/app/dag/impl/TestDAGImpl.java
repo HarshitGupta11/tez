@@ -282,7 +282,7 @@ public class TestDAGImpl {
   }
 
   private DAGPlan createTestMRRDAGPlan() {
-    LOG.info("Setting up MRR dag plan");
+    LOG.error("Temp", new RuntimeException());
     DAGPlan dag = DAGPlan.newBuilder()
         .setName("testverteximpl")
         .addVertex(
@@ -426,7 +426,7 @@ public class TestDAGImpl {
 
   // Create a plan with 3 vertices: A, B, C. Group(A,B)->C
   static DAGPlan createGroupDAGPlan() {
-    LOG.info("Setting up group dag plan");
+    LOG.error("Temp", new RuntimeException());
     int dummyTaskCount = 1;
     Resource dummyTaskResource = Resource.newInstance(1, 1);
     org.apache.tez.dag.api.Vertex v1 = org.apache.tez.dag.api.Vertex.create("vertex1",
@@ -463,7 +463,7 @@ public class TestDAGImpl {
   }
 
   public static DAGPlan createTestDAGPlan() {
-    LOG.info("Setting up dag plan");
+    LOG.error("Temp", new RuntimeException());
     DAGPlan dag = DAGPlan.newBuilder()
         .setName("testverteximpl")
         .setDagConf(ConfigurationProto.newBuilder()
@@ -692,7 +692,7 @@ public class TestDAGImpl {
 
   // v1 -> v2
   private DAGPlan createDAGWithCustomEdge(ExceptionLocation exLocation, boolean useLegacy) {
-    LOG.info("Setting up custome edge dag plan " + exLocation + " " + useLegacy);
+    LOG.error("Temp", new RuntimeException());
     DAGPlan dag = DAGPlan.newBuilder()
         .setName("testverteximpl")
         .addVertex(
@@ -765,7 +765,7 @@ public class TestDAGImpl {
 
   // v1 -> v2
   private DAGPlan createDAGWithNonExistEdgeManager() {
-    LOG.info("Setting up dag plan with non-exist edgemanager");
+    LOG.error("Temp", new RuntimeException());
     DAGPlan dag = DAGPlan.newBuilder()
         .setName("testverteximpl")
         .addVertex(

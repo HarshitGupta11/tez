@@ -93,9 +93,9 @@ public class MultiAttemptDAG {
     public void initialize() {
       for (String input :
           getContext().getInputVertexEdgeProperties().keySet()) {
-        LOG.info("Adding sourceTasks for Vertex " + input);
+        LOG.error("Temp", new RuntimeException());
         numSourceTasks += getContext().getVertexNumTasks(input);
-        LOG.info("Current numSourceTasks=" + numSourceTasks);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -122,7 +122,7 @@ public class MultiAttemptDAG {
         if (successAttemptId > getContext().getDAGAttemptNumber()) {
           Runtime.getRuntime().halt(-1);
         } else {
-          LOG.info("Scheduling tasks for vertex=" + getContext().getVertexName());
+          LOG.error("Temp", new RuntimeException());
           int numTasks = getContext().getVertexNumTasks(getContext().getVertexName());
           List<ScheduleTaskRequest> scheduledTasks = Lists.newArrayListWithCapacity(numTasks);
           for (int i=0; i<numTasks; ++i) {
@@ -185,7 +185,7 @@ public class MultiAttemptDAG {
     @Override
     public void commitOutput() throws Exception {
       if (failOnCommit) {
-        LOG.info("Committer causing AM to shutdown");
+        LOG.error("Temp", new RuntimeException());
         Runtime.getRuntime().halt(-1);
       }
     }
@@ -255,7 +255,7 @@ public class MultiAttemptDAG {
         // Ignore
       }
       if (getContext().getDAGAttemptNumber() == 1) {
-        LOG.info("Shutting down the AM in 1st attempt");
+        LOG.error("Temp", new RuntimeException());
         Runtime.getRuntime().halt(-1);
       }
       return null;

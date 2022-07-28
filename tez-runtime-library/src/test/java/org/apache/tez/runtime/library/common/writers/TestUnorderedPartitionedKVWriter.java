@@ -152,7 +152,7 @@ public class TestUnorderedPartitionedKVWriter {
 
   @Before
   public void setup() throws IOException {
-    LOG.info("Setup. Using test dir: " + TEST_ROOT_DIR);
+    LOG.error("Temp", new RuntimeException());
     localFs = FileSystem.getLocal(new Configuration());
     localFs.delete(TEST_ROOT_DIR, true);
     localFs.mkdirs(TEST_ROOT_DIR);
@@ -160,7 +160,7 @@ public class TestUnorderedPartitionedKVWriter {
 
   @After
   public void cleanup() throws IOException {
-    LOG.info("CleanUp");
+    LOG.error("Temp", new RuntimeException());
     localFs.delete(TEST_ROOT_DIR, true);
   }
 

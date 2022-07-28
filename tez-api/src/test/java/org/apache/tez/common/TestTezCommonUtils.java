@@ -58,7 +58,7 @@ public class TestTezCommonUtils {
   @BeforeClass
   public static void setup() throws Exception {
     conf.set(TezConfiguration.TEZ_AM_STAGING_DIR, STAGE_DIR);
-    LOG.info("Starting mini clusters");
+    LOG.error("Temp", new RuntimeException());
     try {
       conf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, TEST_ROOT_DIR);
       dfsCluster = new MiniDFSCluster.Builder(conf).numDataNodes(3).format(true).racks(null)
@@ -75,7 +75,7 @@ public class TestTezCommonUtils {
   public static void afterClass() throws InterruptedException {
     if (dfsCluster != null) {
       try {
-        LOG.info("Stopping DFSCluster");
+        LOG.error("Temp", new RuntimeException());
         dfsCluster.shutdown();
       } catch (Exception e) {
         e.printStackTrace();

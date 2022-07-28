@@ -101,7 +101,7 @@ public class TestAMRecovery {
 
   @BeforeClass
   public static void beforeClass() throws Exception {
-    LOG.info("Starting mini clusters");
+    LOG.error("Temp", new RuntimeException());
     try {
       conf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, TEST_ROOT_DIR);
       dfsCluster =
@@ -127,7 +127,7 @@ public class TestAMRecovery {
   public static void afterClass() throws InterruptedException {
     if (tezSession != null) {
       try {
-        LOG.info("Stopping Tez Session");
+        LOG.error("Temp", new RuntimeException());
         tezSession.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -135,7 +135,7 @@ public class TestAMRecovery {
     }
     if (miniTezCluster != null) {
       try {
-        LOG.info("Stopping MiniTezCluster");
+        LOG.error("Temp", new RuntimeException());
         miniTezCluster.stop();
         miniTezCluster = null;
       } catch (Exception e) {
@@ -144,7 +144,7 @@ public class TestAMRecovery {
     }
     if (dfsCluster != null) {
       try {
-        LOG.info("Stopping DFSCluster");
+        LOG.error("Temp", new RuntimeException());
         dfsCluster.shutdown();
       } catch (Exception e) {
         e.printStackTrace();
@@ -154,7 +154,7 @@ public class TestAMRecovery {
 
   @Before
   public void setup() throws Exception {
-    LOG.info("Starting session");
+    LOG.error("Temp", new RuntimeException());
     Path remoteStagingDir =
         remoteFs.makeQualified(new Path(TEST_ROOT_DIR, String
             .valueOf(new Random().nextInt(100000))));
@@ -187,7 +187,7 @@ public class TestAMRecovery {
   public void teardown() throws InterruptedException {
     if (tezSession != null) {
       try {
-        LOG.info("Stopping Tez Session");
+        LOG.error("Temp", new RuntimeException());
         tezSession.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -401,7 +401,7 @@ public class TestAMRecovery {
   public void testHighMaxAttempt() throws Exception {
     Random rand = new Random();
     tezConf.set(FAIL_ON_ATTEMPT, rand.nextInt(MAX_AM_ATTEMPT) + "");
-    LOG.info("Set FAIL_ON_ATTEMPT=" + tezConf.get(FAIL_ON_ATTEMPT));
+    LOG.error("Temp", new RuntimeException());
     DAG dag =
         createDAG("HighMaxAttempt", FailOnAttemptVertexManager.class,
             DataMovementType.SCATTER_GATHER, false);
@@ -489,7 +489,7 @@ public class TestAMRecovery {
               "application", "dag")
               + "_1" + TezConstants.DAG_RECOVERY_RECOVER_FILE_SUFFIX);
       if (fs.exists(recoveryFilePath)) {
-        LOG.info("Read recovery file:" + recoveryFilePath);
+        LOG.error("Temp", new RuntimeException());
         historyEvents.addAll(RecoveryParser.parseDAGRecoveryFile(fs.open(recoveryFilePath)));
       }
     }
@@ -497,13 +497,13 @@ public class TestAMRecovery {
   }
 
   private void printHistoryEvents(List<HistoryEvent> historyEvents, int attemptId) {
-    LOG.info("RecoveryLogs from attempt:" + attemptId);
+    LOG.error("Temp", new RuntimeException());
     for(HistoryEvent historyEvent : historyEvents) {
       LOG.info("Parsed event from recovery stream"
           + ", eventType=" + historyEvent.getEventType()
           + ", event=" + historyEvent);
     }
-    LOG.info("");
+    LOG.error("Temp", new RuntimeException());
   }
 
   public static class ControlledInputReadyVertexManager extends
@@ -716,8 +716,8 @@ public class TestAMRecovery {
       int curAttempt = getContext().getDAGAttemptNumber();
       super.onSourceTaskCompleted(attempt);
       int failOnAttempt = conf.getInt(FAIL_ON_ATTEMPT, 1);
-      LOG.info("failOnAttempt:" + failOnAttempt);
-      LOG.info("curAttempt:" + curAttempt);
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
       if (curAttempt < failOnAttempt) {
         System.exit(-1);
       }

@@ -127,9 +127,9 @@ public class TezLocalCacheManager {
           }
 
           if (createSymlink(targetPath, linkPath)) {
-            LOG.info("Localized file: {} as {}", resource, linkPath);
+            LOG.error("Temp", new RuntimeException());
           } else {
-            LOG.warn("Failed to create symlink: {} <- {}", targetPath, linkPath);
+            LOG.error("Temp", new RuntimeException());
           }
         }
       }
@@ -164,19 +164,19 @@ public class TezLocalCacheManager {
    * Create a symlink.
    */
   private boolean createSymlink(Path target, Path link) throws IOException {
-    LOG.info("Creating symlink: {} <- {}", target, link);
+    LOG.error("Temp", new RuntimeException());
     String targetPath = target.toUri().getPath();
     String linkPath = link.toUri().getPath();
 
     if (fileContext.util().exists(link)) {
-      LOG.warn("File already exists at symlink path: {}", link);
+      LOG.error("Temp", new RuntimeException());
       return false;
     } else {
       try {
         Files.createSymbolicLink(Paths.get(linkPath), Paths.get(targetPath));
         return true;
       } catch (UnsupportedOperationException | IOException e) {
-        LOG.warn("Unable to create symlink {} <- {}: {}", target, link, e);
+        LOG.error("Temp", new RuntimeException());
         return false;
       }
     }

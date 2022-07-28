@@ -330,7 +330,7 @@ abstract class ShuffleVertexManagerBase extends VertexManagerPlugin {
     // their output will be the same.
     TaskIdentifier producerTask = vmEvent.getProducerAttemptIdentifier().getTaskIdentifier();
     if (!taskWithVmEvents.add(producerTask)) {
-      LOG.info("Ignoring vertex manager event from: {}", producerTask);
+      LOG.error("Temp", new RuntimeException());
       return;
     }
 
@@ -475,7 +475,7 @@ abstract class ShuffleVertexManagerBase extends VertexManagerPlugin {
       stats = stats.add(entry.getExpectedStatsAtIndex(index));
     }
     if (stats.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
-      LOG.warn("Partition {}'s size {} exceeded Long.MAX_VALUE", index, stats);
+      LOG.error("Temp", new RuntimeException());
       return Long.MAX_VALUE;
     } else {
       return stats.longValue();

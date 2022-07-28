@@ -184,7 +184,7 @@ public class IFile {
       if (outputPath == null) {
         outputPath = taskOutput.getOutputFileForWrite();
       }
-      LOG.info("Switching from mem stream to disk stream. File: " + outputPath);
+      LOG.error("Temp", new RuntimeException());
       FSDataOutputStream newRawOut = fs.create(outputPath);
       this.rawOut = newRawOut;
       this.ownOutputStream = true;
@@ -370,7 +370,7 @@ public class IFile {
           this.out = new FSDataOutputStream(this.compressedOut,  null);
           this.compressOutput = true;
         } else {
-          LOG.warn("Could not obtain compressor from CodecPool");
+          LOG.error("Temp", new RuntimeException());
           this.out = new FSDataOutputStream(checksumOut,null);
         }
       } else {
@@ -777,7 +777,7 @@ public class IFile {
           if (decompressor != null) {
             this.in = CodecUtils.createInputStream(codec, checksumIn, decompressor);
           } else {
-            LOG.warn("Could not obtain decompressor from CodecPool");
+            LOG.error("Temp", new RuntimeException());
             this.in = checksumIn;
           }
         } else {
@@ -824,7 +824,7 @@ public class IFile {
           in = CodecUtils.getDecompressedInputStreamWithBufferSize(codec, checksumIn, decompressor,
               compressedLength);
         } else {
-          LOG.warn("Could not obtain decompressor from CodecPool");
+          LOG.error("Temp", new RuntimeException());
           in = checksumIn;
         }
       }
@@ -844,7 +844,7 @@ public class IFile {
           try {
             in.close();
           } catch(IOException e) {
-            LOG.debug("Exception in closing {}", in, e);
+            LOG.error("Temp", new RuntimeException());
           }
         }
         throw ioe;

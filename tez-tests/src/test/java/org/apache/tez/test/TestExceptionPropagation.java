@@ -112,7 +112,7 @@ public class TestExceptionPropagation {
   private static TezClient tezClient = null;
 
   private void startMiniTezCluster() {
-    LOG.info("Starting mini clusters");
+    LOG.error("Temp", new RuntimeException());
     try {
       conf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, TEST_ROOT_DIR);
       dfsCluster =
@@ -135,7 +135,7 @@ public class TestExceptionPropagation {
   private void stopTezMiniCluster() {
     if (miniTezCluster != null) {
       try {
-        LOG.info("Stopping MiniTezCluster");
+        LOG.error("Temp", new RuntimeException());
         miniTezCluster.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -143,7 +143,7 @@ public class TestExceptionPropagation {
     }
     if (dfsCluster != null) {
       try {
-        LOG.info("Stopping DFSCluster");
+        LOG.error("Temp", new RuntimeException());
         dfsCluster.shutdown();
       } catch (Exception e) {
         e.printStackTrace();
@@ -152,7 +152,7 @@ public class TestExceptionPropagation {
   }
 
   private void startSessionClient() throws Exception {
-    LOG.info("Starting session");
+    LOG.error("Temp", new RuntimeException());
     tezConf = new TezConfiguration();
     tezConf.setInt(TezConfiguration.DAG_RECOVERY_MAX_UNFLUSHED_EVENTS, 0);
     tezConf
@@ -175,7 +175,7 @@ public class TestExceptionPropagation {
   private void stopSessionClient() {
     if (tezSession != null) {
       try {
-        LOG.info("Stopping Tez Session");
+        LOG.error("Temp", new RuntimeException());
         tezSession.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -185,7 +185,7 @@ public class TestExceptionPropagation {
   }
 
   private void startNonSessionClient() throws Exception {
-    LOG.info("Starting Client");
+    LOG.error("Temp", new RuntimeException());
     tezConf = new TezConfiguration(miniTezCluster.getConfig());
     tezConf.setInt(TezConfiguration.DAG_RECOVERY_MAX_UNFLUSHED_EVENTS, 0);
     tezConf
@@ -201,7 +201,7 @@ public class TestExceptionPropagation {
   private void stopNonSessionClient() {
     if (tezClient != null) {
       try {
-        LOG.info("Stopping Tez Client");
+        LOG.error("Temp", new RuntimeException());
         tezClient.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -222,12 +222,12 @@ public class TestExceptionPropagation {
     try {
       startSessionClient();
       for (ExceptionLocation exLocation : ExceptionLocation.values()) {
-        LOG.info("Session mode, Test for Exception from:" + exLocation.name());
+        LOG.error("Temp", new RuntimeException());
         DAG dag = createDAG(exLocation);
         DAGClient dagClient = tezSession.submitDAG(dag);
         DAGStatus dagStatus = dagClient.waitForCompletion();
         String diagnostics = StringUtils.join(dagStatus.getDiagnostics(), ",");
-        LOG.info("Diagnostics:" + diagnostics);
+        LOG.error("Temp", new RuntimeException());
         if (exLocation == ExceptionLocation.PROCESSOR_COUNTER_EXCEEDED) {
           assertTrue(diagnostics.contains("Too many counters"));
         } else {
@@ -253,12 +253,12 @@ public class TestExceptionPropagation {
       startNonSessionClient();
 
       ExceptionLocation exLocation = ExceptionLocation.EM_GetNumSourceTaskPhysicalOutputs;
-      LOG.info("NonSession mode, Test for Exception from:" + exLocation.name());
+      LOG.error("Temp", new RuntimeException());
       DAG dag = createDAG(exLocation);
       DAGClient dagClient = tezClient.submitDAG(dag);
       DAGStatus dagStatus = dagClient.waitForCompletion();
       String diagnostics = StringUtils.join(dagStatus.getDiagnostics(), ",");
-      LOG.info("Diagnostics:" + diagnostics);
+      LOG.error("Temp", new RuntimeException());
       assertTrue(diagnostics.contains(exLocation.name()));
 
       // wait for app complete (unregisterApplicationMaster is done)
@@ -273,8 +273,8 @@ public class TestExceptionPropagation {
       while (true) {
         appReport = yarnClient.getApplicationReport(appId);
         Thread.sleep(1000);
-        LOG.info("FinalAppStatus:" + appReport.getFinalApplicationStatus());
-        LOG.info("Diagnostics from appReport:" + appReport.getDiagnostics());
+        LOG.error("Temp", new RuntimeException());
+        LOG.error("Temp", new RuntimeException());
         if (FINAL_APPLICATION_STATES.contains(appReport
             .getYarnApplicationState())) {
           break;
@@ -286,8 +286,8 @@ public class TestExceptionPropagation {
       Thread.sleep(1000);
       appReport = yarnClient.getApplicationReport(appId);
 
-      LOG.info("FinalAppStatus:" + appReport.getFinalApplicationStatus());
-      LOG.info("Diagnostics from appReport:" + appReport.getDiagnostics());
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
       assertTrue(appReport.getDiagnostics().contains(exLocation.name()));
       // use "\n" as separator, because we also use it in Tez internally when
       // assembling the application diagnostics.
@@ -827,7 +827,7 @@ public class TestExceptionPropagation {
       if (exLocation == ExceptionLocation.EM_GetNumSourceTaskPhysicalOutputs) {
         throw new RuntimeException(exLocation.name());
       }
-      LOG.info("ExLocation:" + exLocation);
+      LOG.error("Temp", new RuntimeException());
       return super.getNumSourceTaskPhysicalOutputs(sourceTaskIndex);
     }
 

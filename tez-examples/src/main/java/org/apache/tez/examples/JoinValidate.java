@@ -78,7 +78,7 @@ public class JoinValidate extends TezExampleBase {
   protected int runJob(String[] args, TezConfiguration tezConf,
       TezClient tezClient) throws Exception {
 
-    LOG.info("Running JoinValidate");
+    LOG.error("Temp", new RuntimeException());
 
     String lhsDir = args[0];
     String rhsDir = args[1];
@@ -105,21 +105,21 @@ public class JoinValidate extends TezExampleBase {
     }
     DAGStatus dagStatus = dagClient.waitForCompletionWithStatusUpdates(getOpts);
     if (dagStatus.getState() != DAGStatus.State.SUCCEEDED) {
-      LOG.info("DAG diagnostics: " + dagStatus.getDiagnostics());
+      LOG.error("Temp", new RuntimeException());
       return -1;
     } else {
       dagStatus = dagClient.getDAGStatus(Sets.newHashSet(StatusGetOpts.GET_COUNTERS));
       TezCounter counter = dagStatus.getDAGCounters().findCounter(COUNTER_GROUP_NAME,
           MISSING_KEY_COUNTER_NAME);
       if (counter == null) {
-        LOG.info("Unable to determing equality");
+        LOG.error("Temp", new RuntimeException());
         return -2;
       } else {
         if (counter.getValue() != 0) {
-          LOG.info("Validate failed. The two sides are not equivalent");
+          LOG.error("Temp", new RuntimeException());
           return -3;
         } else {
-          LOG.info("Validation successful. The two sides are equivalent");
+          LOG.error("Temp", new RuntimeException());
           return 0;
         }
       }
@@ -243,19 +243,19 @@ public class JoinValidate extends TezExampleBase {
       while (lhsReader.next()) {
         if (rhsReader.next()) {
           if (!lhsReader.getCurrentKey().equals(rhsReader.getCurrentKey())) {
-            LOG.info("MismatchedKeys: " + "lhs=" + lhsReader.getCurrentKey() + ", rhs=" + rhsReader.getCurrentKey());
+            LOG.error("Temp", new RuntimeException());
             lhsMissingKeyCounter.increment(1);
           }
         } else {
           lhsMissingKeyCounter.increment(1);
-          LOG.info("ExtraKey in lhs: " + lhsReader.getClass());
+          LOG.error("Temp", new RuntimeException());
           rhsReaderEnd = true;
           break;
         }
       }
       if (!rhsReaderEnd && rhsReader.next()) {
         lhsMissingKeyCounter.increment(1);
-        LOG.info("ExtraKey in rhs: " + rhsReader.getClass());
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

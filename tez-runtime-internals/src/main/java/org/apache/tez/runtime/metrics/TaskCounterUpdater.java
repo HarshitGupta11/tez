@@ -149,6 +149,6 @@ public class TaskCounterUpdater {
 
     pTree = ResourceCalculatorProcessTree.getResourceCalculatorProcessTree(pid, clazz, conf);
 
-    LOG.info("Using ResourceCalculatorProcessTree : " + clazz.getName());
+    LOG.error("Temp", new RuntimeException());
   }
 }

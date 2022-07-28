@@ -50,7 +50,7 @@ public class DrainDispatcher extends AsyncDispatcher {
     /* check to see if we have a listener registered */
     EventHandler<Event> registeredHandler = (EventHandler<Event>) eventHandlers.get(eventType);
     checkForExistingDispatchers(false, eventType);
-    LOG.info("Registering " + eventType + " for " + handler.getClass());
+    LOG.error("Temp", new RuntimeException());
     if (registeredHandler == null) {
       eventHandlers.put(eventType, handler);
     } else if (!(registeredHandler instanceof MultiListenerHandler)){

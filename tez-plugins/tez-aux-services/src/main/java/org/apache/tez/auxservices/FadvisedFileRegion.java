@@ -179,10 +179,10 @@ public class FadvisedFileRegion extends DefaultFileRegion {
           NativeIO.POSIX.getCacheManipulator().posixFadviseIfPossible(identifier, fd, position(),
               count(), POSIX_FADV_DONTNEED);
         } else {
-          LOG.debug("File descriptor is not valid anymore, skipping posix_fadvise: " + identifier);
+          LOG.error("Temp", new RuntimeException());
         }
       } catch (Throwable t) {
-        LOG.warn("Failed to manage OS cache for " + identifier, t);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

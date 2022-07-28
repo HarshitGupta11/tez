@@ -51,7 +51,7 @@ public class FilterByWordOutputProcessor extends SimpleMRProcessor {
 
   @Override
   public void close() throws Exception {
-    LOG.info("Broadcast Output Processor closing. Nothing to do");
+    LOG.error("Temp", new RuntimeException());
     super.close();
   }
 

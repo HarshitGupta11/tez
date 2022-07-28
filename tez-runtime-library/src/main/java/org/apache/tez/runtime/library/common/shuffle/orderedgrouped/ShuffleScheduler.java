@@ -667,7 +667,7 @@ class ShuffleScheduler {
 
       if (remainingMaps.get() == 0) {
         notifyAll(); // Notify the getHost() method.
-        LOG.info("All inputs fetched for input vertex : " + inputContext.getSourceVertexName());
+        LOG.error("Temp", new RuntimeException());
       }
 
       // update the status
@@ -1052,7 +1052,7 @@ class ShuffleScheduler {
           + ", reducerStalled=" + reducerStalled);
       LOG.error(errorMsg);
       if (LOG.isDebugEnabled()) {
-        LOG.debug("Host failures=" + hostFailures.keySet());
+        LOG.error("Temp", new RuntimeException());
       }
       // Shuffle knows how to deal with failures post shutdown via the onFailure hook
       exceptionReporter.reportException(new IOException(errorMsg));
@@ -1094,7 +1094,7 @@ class ShuffleScheduler {
   
   public void obsoleteInput(InputAttemptIdentifier srcAttempt) {
     // The incoming srcAttempt does not contain a path component.
-    LOG.info(srcNameTrimmed + ": " + "Adding obsolete input: " + srcAttempt);
+    LOG.error("Temp", new RuntimeException());
     ShuffleEventInfo eventInfo = pipelinedShuffleInfoEventsMap.get(srcAttempt.getInputIdentifier());
 
     //Pipelined shuffle case (where pipelinedShuffleInfoEventsMap gets populated).
@@ -1104,7 +1104,7 @@ class ShuffleScheduler {
       if (eventInfo.eventsProcessed.isEmpty() && !eventInfo.scheduledForDownload) {
         // obsoleted anyways; no point tracking if nothing is started
         pipelinedShuffleInfoEventsMap.remove(srcAttempt.getInputIdentifier());
-        LOG.debug("Removing {} from tracking", eventInfo);
+        LOG.error("Temp", new RuntimeException());
         return;
       }
       IOException exception = new IOException(srcAttempt + " is marked as obsoleteInput, but it "
@@ -1126,7 +1126,7 @@ class ShuffleScheduler {
 
   public synchronized MapHost getHost() throws InterruptedException {
     while (pendingHosts.isEmpty() && remainingMaps.get() > 0) {
-      LOG.debug("PendingHosts={}", pendingHosts);
+      LOG.error("Temp", new RuntimeException());
       waitAndNotifyProgress();
     }
 
@@ -1229,7 +1229,7 @@ class ShuffleScheduler {
           dedupedList.put(inputNumber, id);
         }
       } else {
-        LOG.info("Ignoring finished or obsolete source: " + id);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -1391,7 +1391,7 @@ class ShuffleScheduler {
         }
 
         if (LOG.isDebugEnabled()) {
-          LOG.debug(srcNameTrimmed + ": " + "NumCompletedInputs: {}" + (numInputs - remainingMaps.get()));
+          LOG.error("Temp", new RuntimeException());
         }
 
         // Ensure there's memory available before scheduling the next Fetcher.
@@ -1432,7 +1432,7 @@ class ShuffleScheduler {
               if (mapHost == null) {
                 break; // Check for the exit condition.
               }
-              LOG.debug("{}: Processing pending host: {}", srcNameTrimmed, mapHost);
+              LOG.error("Temp", new RuntimeException());
               if (!isShutdown.get()) {
                 count++;
                 if (LOG.isDebugEnabled()) {
@@ -1448,7 +1448,7 @@ class ShuffleScheduler {
           }
         }
       }
-      LOG.info("Shutting down FetchScheduler for input: {}, wasInterrupted={}", srcNameTrimmed, Thread.currentThread().isInterrupted());
+      LOG.error("Temp", new RuntimeException());
       if (!fetcherExecutor.isShutdown()) {
         fetcherExecutor.shutdownNow();
       }
@@ -1493,7 +1493,7 @@ class ShuffleScheduler {
     public void onSuccess(Void result) {
       fetcherOrderedGrouped.shutDown();
       if (isShutdown.get()) {
-        LOG.info(srcNameTrimmed + ": " + "Already shutdown. Ignoring fetch complete");
+        LOG.error("Temp", new RuntimeException());
       } else {
         doBookKeepingForFetcherComplete();
       }
@@ -1503,7 +1503,7 @@ class ShuffleScheduler {
     public void onFailure(Throwable t) {
       fetcherOrderedGrouped.shutDown();
       if (isShutdown.get()) {
-        LOG.info(srcNameTrimmed + ": " + "Already shutdown. Ignoring fetch complete");
+        LOG.error("Temp", new RuntimeException());
       } else {
         LOG.error(srcNameTrimmed + ": " + "Fetcher failed with error", t);
         exceptionReporter.reportException(t);

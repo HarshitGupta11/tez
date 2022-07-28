@@ -77,7 +77,7 @@ public class TestFaultTolerance {
 
   @BeforeClass
   public static void setup() throws Exception {
-    LOG.info("Starting mini clusters");
+    LOG.error("Temp", new RuntimeException());
     FileSystem remoteFs = null;
     try {
       conf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, TEST_ROOT_DIR);
@@ -115,7 +115,7 @@ public class TestFaultTolerance {
 
   @AfterClass
   public static void tearDown() throws Exception {
-    LOG.info("Stopping mini clusters");
+    LOG.error("Temp", new RuntimeException());
     if (tezSession != null) {
       tezSession.stop();
     }

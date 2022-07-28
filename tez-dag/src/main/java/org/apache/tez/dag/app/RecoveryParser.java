@@ -241,7 +241,7 @@ public class RecoveryParser {
       RecoveryProtos.SummaryEventProto proto =
           RecoveryProtos.SummaryEventProto.parseDelimitedFrom(inputStream);
       if (proto == null) {
-        LOG.info("Reached end of summary stream");
+        LOG.error("Temp", new RuntimeException());
         break;
       }
       LOG.info("[SUMMARY]"
@@ -359,10 +359,10 @@ public class RecoveryParser {
     while (true) {
       HistoryEvent historyEvent = getNextEvent(codedInputStream);
       if (historyEvent == null) {
-        LOG.info("Reached end of stream");
+        LOG.error("Temp", new RuntimeException());
         break;
       }
-      LOG.debug("Read HistoryEvent, eventType={}, event={}", historyEvent.getEventType(), historyEvent);
+      LOG.error("Temp", new RuntimeException());
       historyEvents.add(historyEvent);
     }
     return historyEvents;
@@ -384,7 +384,7 @@ public class RecoveryParser {
               "application", "dag")
               + "_1" + TezConstants.DAG_RECOVERY_RECOVER_FILE_SUFFIX);
       if (fs.exists(recoveryFilePath)) {
-        LOG.info("Read recovery file:" + recoveryFilePath);
+        LOG.error("Temp", new RuntimeException());
         FSDataInputStream in = null;
         try {
           in = fs.open(recoveryFilePath);
@@ -412,10 +412,10 @@ public class RecoveryParser {
       }
     }
     FileSystem fs = FileSystem.get(conf);
-    LOG.info("Parsing Summary file " + summaryPath);
+    LOG.error("Temp", new RuntimeException());
     parseSummaryFile(fs.open(new Path(summaryPath)));
     for (String dagPath : dagPaths) {
-      LOG.info("Parsing DAG recovery file " + dagPath);
+      LOG.error("Temp", new RuntimeException());
       List<HistoryEvent> historyEvents = parseDAGRecoveryFile(fs.open(new Path(dagPath)));
       for (HistoryEvent historyEvent : historyEvents) {
         LOG.info("Parsed event from recovery stream"
@@ -657,7 +657,7 @@ public class RecoveryParser {
     Map<TezDAGID, DAGSummaryData> dagSummaryDataMap =
         new HashMap<TezDAGID, DAGSummaryData>();
     List<Path> summaryFiles = getSummaryFiles();
-    LOG.debug("SummaryFile size:" + summaryFiles.size());
+    LOG.error("Temp", new RuntimeException());
     for (Path summaryFile : summaryFiles) {
       FileStatus summaryFileStatus = recoveryFS.getFileStatus(summaryFile);
       LOG.info("Parsing summary file"
@@ -671,11 +671,11 @@ public class RecoveryParser {
         try {
           proto = RecoveryProtos.SummaryEventProto.parseDelimitedFrom(summaryStream);
           if (proto == null) {
-            LOG.info("Reached end of summary stream");
+            LOG.error("Temp", new RuntimeException());
             break;
           }
         } catch (EOFException eof) {
-          LOG.info("Reached end of summary stream");
+          LOG.error("Temp", new RuntimeException());
           break;
         }
         HistoryEventType eventType =
@@ -717,12 +717,12 @@ public class RecoveryParser {
     DAGSummaryData lastInProgressDAGData =
         getLastCompletedOrInProgressDAG(dagSummaryDataMap);
     if (lastInProgressDAGData == null) {
-      LOG.info("Nothing to recover as no uncompleted/completed DAGs found");
+      LOG.error("Temp", new RuntimeException());
       return null;
     }
     TezDAGID lastInProgressDAG = lastInProgressDAGData.dagId;
     if (lastInProgressDAG == null) {
-      LOG.info("Nothing to recover as no uncompleted/completed DAGs found");
+      LOG.error("Temp", new RuntimeException());
       return null;
     }
 
@@ -755,14 +755,14 @@ public class RecoveryParser {
         try {
           event = getNextEvent(codedInputStream);
           if (event == null) {
-            LOG.info("Reached end of dag recovery stream");
+            LOG.error("Temp", new RuntimeException());
             break;
           }
         } catch (EOFException eof) {
-          LOG.info("Reached end of dag recovery stream");
+          LOG.error("Temp", new RuntimeException());
           break;
         } catch (IOException ioe) {
-          LOG.warn("Corrupt data found when trying to read next event", ioe);
+          LOG.error("Temp", new RuntimeException());
           break;
         }
         if (skipAllOtherEvents) {

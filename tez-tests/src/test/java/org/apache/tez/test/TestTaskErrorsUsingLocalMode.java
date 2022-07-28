@@ -199,18 +199,18 @@ public class TestTaskErrorsUsingLocalMode {
     @Override
     public void run(Map<String, LogicalInput> inputs, Map<String, LogicalOutput> outputs) throws
         Exception {
-      LOG.info("Running Failing processor");
+      LOG.error("Temp", new RuntimeException());
       if (shouldFail) {
         if (fatalError) {
-          LOG.info("Reporting fatal error");
+          LOG.error("Temp", new RuntimeException());
           getContext().reportFailure(TaskFailureType.FATAL, null, FAIL_STRING_FATAL);
         } else {
-          LOG.info("Reporting non-fatal error");
+          LOG.error("Temp", new RuntimeException());
           getContext().reportFailure(TaskFailureType.NON_FATAL, null, FAIL_STRING_NON_FATAL);
         }
       } else if (shouldKill) {
         if (getContext().getTaskAttemptNumber() != killModeAttemptNumberToSucceed) {
-          LOG.info("Reporting self-kill for attempt=" + getContext().getTaskAttemptNumber());
+          LOG.error("Temp", new RuntimeException());
           getContext().killSelf(null, KILL_STRING);
         }
       }

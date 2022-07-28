@@ -99,11 +99,11 @@ public class Utils {
       if (dag != null && dag.getID().getId() == dagInfo.getIndex()) {
         TezDAGID dagId = dag.getID();
         // Send a kill message only if it is the same dag.
-        LOG.warn(message + ", Failing dag: [" + dagInfo.getName() + ", " + dagId + "]");
+        LOG.error("Temp", new RuntimeException());
         sendEvent(appContext, new DAGEventTerminateDag(dagId, DAGTerminationCause.SERVICE_PLUGIN_ERROR, message));
       }
     } else {
-      LOG.warn("No current dag name provided. Not acting on " + message);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 

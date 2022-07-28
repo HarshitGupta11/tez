@@ -44,9 +44,9 @@ public class TestUmbilical implements TezUmbilical {
   public void addEvents(Collection<TezEvent> events) {
     if (events != null && events.size() > 0) {
       this.events.addAll(events);
-      LOG.info("#Events Received: " + events.size());
+      LOG.error("Temp", new RuntimeException());
       for (TezEvent event : events) {
-        LOG.info("Event: " + event);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }
@@ -72,7 +72,7 @@ public class TestUmbilical implements TezUmbilical {
 
   @Override
   public boolean canCommit(TezTaskAttemptID taskAttemptID) throws IOException {
-    LOG.info("Got canCommit from task: " + taskAttemptID);
+    LOG.error("Temp", new RuntimeException());
     return true;
   }
 

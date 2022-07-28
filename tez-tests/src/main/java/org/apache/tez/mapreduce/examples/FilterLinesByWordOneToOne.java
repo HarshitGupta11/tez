@@ -198,9 +198,9 @@ public class FilterLinesByWordOneToOne extends Configured implements Tool {
         Edge.create(stage1Vertex, stage2Vertex, edgeConf.createDefaultOneToOneEdgeProperty());
     dag.addVertex(stage1Vertex).addVertex(stage2Vertex).addEdge(edge);
 
-    LOG.info("Submitting DAG to Tez Session");
+    LOG.error("Temp", new RuntimeException());
     DAGClient dagClient = tezSession.submitDAG(dag);
-    LOG.info("Submitted DAG to Tez Session");
+    LOG.error("Temp", new RuntimeException());
 
     DAGStatus dagStatus = null;
     String[] vNames = { "stage1", "stage2" };
@@ -241,7 +241,7 @@ public class FilterLinesByWordOneToOne extends Configured implements Tool {
     }
 
     ExampleDriver.printDAGStatus(dagClient, vNames);
-    LOG.info("Application completed. " + "FinalState=" + dagStatus.getState());
+    LOG.error("Temp", new RuntimeException());
     return dagStatus.getState() == DAGStatus.State.SUCCEEDED ? 0 : 1;
   }
 }

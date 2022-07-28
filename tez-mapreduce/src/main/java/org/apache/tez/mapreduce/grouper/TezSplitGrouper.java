@@ -165,14 +165,14 @@ public abstract class TezSplitGrouper {
                                                       SplitSizeEstimatorWrapper estimator,
                                                       SplitLocationProviderWrapper locationProvider) throws
       IOException, InterruptedException {
-    LOG.info("Grouping splits in Tez");
+    LOG.error("Temp", new RuntimeException());
     Preconditions.checkArgument(originalSplits != null, "Splits must be specified");
 
     int configNumSplits = conf.getInt(TEZ_GROUPING_SPLIT_COUNT, 0);
     if (configNumSplits > 0) {
       // always use config override if specified
       desiredNumSplits = configNumSplits;
-      LOG.info("Desired numSplits overridden by config to: " + desiredNumSplits);
+      LOG.error("Temp", new RuntimeException());
     }
 
     if (estimator == null) {

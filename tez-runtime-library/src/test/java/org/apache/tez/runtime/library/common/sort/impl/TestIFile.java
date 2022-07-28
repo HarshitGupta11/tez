@@ -97,7 +97,7 @@ public class TestIFile {
       workDir = new Path(
           new Path(System.getProperty("test.build.data", "/tmp")), TestIFile.class.getName())
           .makeQualified(localFs.getUri(), localFs.getWorkingDirectory());
-      LOG.info("Using workDir: " + workDir);
+      LOG.error("Temp", new RuntimeException());
       defaultConf.set(TezRuntimeFrameworkConfigs.LOCAL_DIRS, workDir.toString());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -892,7 +892,7 @@ public class TestIFile {
    */
   private void readFileUsingInMemoryReader(long rawLength, long compressedLength,
       List<KVPair> originalData) throws IOException {
-    LOG.info("Read using in memory reader");
+    LOG.error("Temp", new RuntimeException());
     FSDataInputStream inStream = localFs.open(outputPath);
     byte[] bytes = new byte[(int) rawLength];
 
@@ -919,7 +919,7 @@ public class TestIFile {
    */
   private void readUsingIFileReader(List<KVPair> originalData,
       CompressionCodec codec) throws IOException {
-    LOG.info("Read using IFile reader");
+    LOG.error("Temp", new RuntimeException());
     IFile.Reader reader = new IFile.Reader(localFs, outputPath,
         codec, null, null, false, 0, -1);
     verifyData(reader, originalData);
@@ -935,7 +935,7 @@ public class TestIFile {
    */
   private void verifyData(Reader reader, List<KVPair> data)
       throws IOException {
-    LOG.info("Data verification");
+    LOG.error("Temp", new RuntimeException());
     Text readKey = new Text();
     IntWritable readValue = new IntWritable();
     DataInputBuffer keyIn = new DataInputBuffer();
@@ -966,7 +966,7 @@ public class TestIFile {
     }
     assertEquals("Expected: " + data.size() + " records, but found: "
         + numRecordsRead, data.size(), numRecordsRead);
-    LOG.info("Found: " + numRecordsRead + " records");
+    LOG.error("Temp", new RuntimeException());
   }
 
   private Writer writeTestFile(boolean rle, boolean repeatKeys,
@@ -996,8 +996,8 @@ public class TestIFile {
 
     writer.close();
 
-    LOG.info("Uncompressed: " + writer.getRawLength());
-    LOG.info("CompressedSize: " + writer.getCompressedLength());
+    LOG.error("Temp", new RuntimeException());
+    LOG.error("Temp", new RuntimeException());
 
     return writer;
   }
@@ -1030,8 +1030,8 @@ public class TestIFile {
 
     writer.close();
 
-    LOG.info("Uncompressed: " + writer.getRawLength());
-    LOG.info("CompressedSize: " + writer.getCompressedLength());
+    LOG.error("Temp", new RuntimeException());
+    LOG.error("Temp", new RuntimeException());
 
     return writer;
   }

@@ -200,7 +200,7 @@ public class TezTaskRunner2 {
           if (isRunningState()) {
             trySettingEndReason(EndReason.TASK_ERROR);
             registerFirstException(TaskFailureType.NON_FATAL, e, null);
-            LOG.warn("Exception from RunnerCallable", e);
+            LOG.error("Temp", new RuntimeException());
           }
         }
       }
@@ -272,7 +272,7 @@ public class TezTaskRunner2 {
           try {
             oobSignalCondition.await();
           } catch (InterruptedException e) {
-            LOG.warn("Interrupted while waiting for OOB fatal error to complete");
+            LOG.error("Temp", new RuntimeException());
             Thread.currentThread().interrupt();
           }
         }
@@ -281,7 +281,7 @@ public class TezTaskRunner2 {
       }
       taskReporter.unregisterTask(task.getTaskAttemptID());
       if (taskKillStartTime != 0) {
-        LOG.info("Time taken to interrupt task={}", (System.currentTimeMillis() - taskKillStartTime));
+        LOG.error("Temp", new RuntimeException());
       }
       if (localExecutor != null) {
         localExecutor.shutdown();
@@ -400,7 +400,7 @@ public class TezTaskRunner2 {
         // which may throw it back or handle it appropriately.
       } else {
         // Don't throw an error since the task is already in the process of shutting down.
-        LOG.info("returning canCommit=false since task is not in a running state");
+        LOG.error("Temp", new RuntimeException());
         return false;
       }
     }
@@ -412,7 +412,7 @@ public class TezTaskRunner2 {
       boolean isFirstError = false;
       synchronized (TezTaskRunner2.this) {
         if (isRunningState()) {
-          LOG.info("TaskReporter reporter error which will cause the task to fail", t);
+          LOG.error("Temp", new RuntimeException());
           if (trySettingEndReason(EndReason.COMMUNICATION_FAILURE)) {
             registerFirstException(TaskFailureType.NON_FATAL, t, null);
             isFirstError = true;
@@ -557,7 +557,7 @@ public class TezTaskRunner2 {
                                                   boolean stopContainerRequested) {
     TaskRunner2Result result =
         new TaskRunner2Result(endReason, taskFailureType, firstError, stopContainerRequested);
-    LOG.info("TaskRunnerResult for {} : {}  ", task.getTaskAttemptID(), result);
+    LOG.error("Temp", new RuntimeException());
     return result;
   }
 

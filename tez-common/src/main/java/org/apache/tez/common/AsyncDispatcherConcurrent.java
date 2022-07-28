@@ -113,7 +113,7 @@ public class AsyncDispatcherConcurrent extends CompositeService implements Dispa
           event = queue.take();
         } catch(InterruptedException ie) {
           if (!stopped) {
-            LOG.warn("AsyncDispatcher thread interrupted", ie);
+            LOG.error("Temp", new RuntimeException());
           }
           return;
         }
@@ -152,10 +152,10 @@ public class AsyncDispatcherConcurrent extends CompositeService implements Dispa
     if (execService != null) {
       if (drainEventsOnStop) {
         blockNewEvents = true;
-        LOG.info("AsyncDispatcher is draining to stop, ignoring any new events.");
+        LOG.error("Temp", new RuntimeException());
         synchronized (waitForDrained) {
           while (!drained && !execService.isShutdown()) {
-            LOG.info("Waiting for AsyncDispatcher to drain.");
+            LOG.error("Temp", new RuntimeException());
             waitForDrained.wait(1000);
           }
         }
@@ -232,7 +232,7 @@ public class AsyncDispatcherConcurrent extends CompositeService implements Dispa
     /* check to see if we have a listener registered */
     EventHandler<Event> registeredHandler = (EventHandler<Event>) eventHandlers.get(eventType);
     checkForExistingDispatchers(false, eventType);
-    LOG.info("Registering " + eventType + " for " + handler.getClass());
+    LOG.error("Temp", new RuntimeException());
     if (registeredHandler == null) {
       eventHandlers.put(eventType, handler);
     } else if (!(registeredHandler instanceof MultiListenerHandler)){
@@ -315,7 +315,7 @@ public class AsyncDispatcherConcurrent extends CompositeService implements Dispa
       /* all this method does is enqueue all the events onto the queue */
       int qSize = queue.size();
       if (qSize !=0 && qSize %1000 == 0) {
-        LOG.info("Size of event-queue is " + qSize);
+        LOG.error("Temp", new RuntimeException());
       }
       int remCapacity = queue.remainingCapacity();
       if (remCapacity < 1000) {
@@ -326,7 +326,7 @@ public class AsyncDispatcherConcurrent extends CompositeService implements Dispa
         queue.put(event);
       } catch (InterruptedException e) {
         if (!stopped) {
-          LOG.warn("AsyncDispatcher thread interrupted", e);
+          LOG.error("Temp", new RuntimeException());
         }
         throw new YarnRuntimeException(e);
       }
@@ -362,7 +362,7 @@ public class AsyncDispatcherConcurrent extends CompositeService implements Dispa
     return new Runnable() {
       @Override
       public void run() {
-        LOG.info("Exiting, bbye..");
+        LOG.error("Temp", new RuntimeException());
         System.exit(-1);
       }
     };

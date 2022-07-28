@@ -107,7 +107,7 @@ public class TestAnalyzer {
   
   @AfterClass
   public static void tearDownClass() throws Exception {
-    LOG.info("Stopping mini clusters");
+    LOG.error("Temp", new RuntimeException());
     if (miniTezCluster != null) {
       miniTezCluster.stop();
       miniTezCluster = null;
@@ -232,7 +232,7 @@ public class TestAnalyzer {
   
   private void runDAG(DAG dag, DAGStatus.State finalState) throws Exception {
     tezSession.waitTillReady();
-    LOG.info("ABC Running DAG name: " + dag.getName());
+    LOG.error("Temp", new RuntimeException());
     DAGClient dagClient = tezSession.submitDAG(dag);
     DAGStatus dagStatus = dagClient.getDAGStatus(null);
     while (!dagStatus.isCompleted()) {
@@ -301,14 +301,14 @@ public class TestAnalyzer {
     List<CriticalPathStep> criticalPath = cp.getCriticalPath();
 
     for (CriticalPathStep step : criticalPath) {
-      LOG.info("ABC Step: " + step.getType());
+      LOG.error("Temp", new RuntimeException());
       if (step.getType() == EntityType.ATTEMPT) {
         LOG.info("ABC Attempt: " + step.getAttempt().getShortName() 
             + " " + step.getAttempt().getDetailedStatus());
       }
-      LOG.info("ABC Reason: " + step.getReason());
+      LOG.error("Temp", new RuntimeException());
       String notes = Joiner.on(";").join(step.getNotes());
-      LOG.info("ABC Notes: " + notes);
+      LOG.error("Temp", new RuntimeException());
     }
 
     boolean foundMatchingLength = false;

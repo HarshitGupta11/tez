@@ -141,7 +141,7 @@ public class TokenCache {
                                                      credentials);
     if (tokens != null) {
       for (Token<?> token : tokens) {
-        LOG.info("Got dt for " + fs.getUri() + "; "+token);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

@@ -164,7 +164,7 @@ public class ContainerRunnerImpl extends AbstractService implements ContainerRun
    */
   @Override
   public void queueContainer(RunContainerRequestProto request) throws TezException {
-    LOG.info("Queuing container for execution: " + request);
+    LOG.error("Temp", new RuntimeException());
 
     Map<String, String> env = new HashMap<String, String>();
     env.putAll(localEnv);
@@ -182,7 +182,7 @@ public class ContainerRunnerImpl extends AbstractService implements ContainerRun
         throw new TezException(e);
       }
     }
-    LOG.info("Dirs for {} are {}", request.getContainerIdString(), Arrays.toString(localDirs));
+    LOG.error("Temp", new RuntimeException());
 
 
     // Setup workingDir. This is otherwise setup as Environment.PWD
@@ -202,7 +202,7 @@ public class ContainerRunnerImpl extends AbstractService implements ContainerRun
     Token<JobTokenIdentifier> jobToken = TokenCache.getSessionToken(credentials);
 
     // TODO Unregistering does not happen at the moment, since there's no signals on when an app completes.
-    LOG.info("Registering request with the ShuffleHandler for containerId {}", request.getContainerIdString());
+    LOG.error("Temp", new RuntimeException());
     ShuffleHandler.get().registerApplication(request.getApplicationIdString(), jobToken, request.getUser());
 
 
@@ -223,7 +223,7 @@ public class ContainerRunnerImpl extends AbstractService implements ContainerRun
    */
   @Override
   public void submitWork(SubmitWorkRequestProto request) throws TezException {
-    LOG.info("Queuing work for execution: " + request);
+    LOG.error("Temp", new RuntimeException());
 
     checkAndThrowExceptionForTests(request);
 
@@ -244,7 +244,7 @@ public class ContainerRunnerImpl extends AbstractService implements ContainerRun
       }
     }
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Dirs are: " + Arrays.toString(localDirs));
+      LOG.error("Temp", new RuntimeException());
     }
 
     // Setup workingDir. This is otherwise setup as Environment.PWD
@@ -264,7 +264,7 @@ public class ContainerRunnerImpl extends AbstractService implements ContainerRun
     Token<JobTokenIdentifier> jobToken = TokenCache.getSessionToken(credentials);
 
     // TODO Unregistering does not happen at the moment, since there's no signals on when an app completes.
-    LOG.info("Registering request with the ShuffleHandler for containerId {}", request.getContainerIdString());
+    LOG.error("Temp", new RuntimeException());
     ShuffleHandler.get().registerApplication(request.getApplicationIdString(), jobToken, request.getUser());
     TezCommonUtils.logCredentials(LOG, credentials, "taskCallable");
     TaskRunnerCallable callable = new TaskRunnerCallable(request, new Configuration(getConfig()),
@@ -469,10 +469,10 @@ public class ContainerRunnerImpl extends AbstractService implements ContainerRun
       boolean shouldDie;
       try {
         TaskRunner2Result result = taskRunner.run();
-        LOG.info("TaskRunner2Result: {}", result);
+        LOG.error("Temp", new RuntimeException());
         shouldDie = result.isContainerShutdownRequested();
         if (shouldDie) {
-          LOG.info("Got a shouldDie notification via heartbeats. Shutting down");
+          LOG.error("Temp", new RuntimeException());
           return new ContainerExecutionResult(ContainerExecutionResult.ExitStatus.SUCCESS, null,
               "Asked to die by the AM");
         }
@@ -558,12 +558,12 @@ public class ContainerRunnerImpl extends AbstractService implements ContainerRun
     TaskSpec taskSpec = ProtoConverters.getTaskSpecfromProto(request.getTaskSpec());
     if (taskSpec.getTaskAttemptID().getTaskID().getId() == 0 &&
         taskSpec.getTaskAttemptID().getId() == 0) {
-      LOG.info("Simulating Rejected work");
+      LOG.error("Temp", new RuntimeException());
       throw new RejectedExecutionException(
           "Simulating Rejected work for taskAttemptId=" + taskSpec.getTaskAttemptID());
     } else if (taskSpec.getTaskAttemptID().getTaskID().getId() == 1 &&
         taskSpec.getTaskAttemptID().getId() == 0) {
-      LOG.info("Simulating Task Setup Failure during launch");
+      LOG.error("Temp", new RuntimeException());
       throw new TezException("Simulating Task Setup Failure during launch for taskAttemptId=" +
           taskSpec.getTaskAttemptID());
     }

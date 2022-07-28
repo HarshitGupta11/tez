@@ -56,7 +56,7 @@ public class SplitMetaInfoReaderTez {
     FSDataInputStream in = null;
     // TODO NEWTEZ Figure out how this can be improved. i.e. access from context instead of setting in conf ?
     String basePath = conf.get(MRFrameworkConfigs.TASK_LOCAL_RESOURCE_DIR, ".");
-    LOG.info("Attempting to find splits in dir: " + basePath);
+    LOG.error("Temp", new RuntimeException());
 
     Path metaSplitFile = new Path(
         basePath,

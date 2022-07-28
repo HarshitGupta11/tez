@@ -142,7 +142,7 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
     }
     
     if (lastAttempt == null) {
-      LOG.info("Cannot find last attempt to finish in DAG " + dagInfo.getDagId());
+      LOG.error("Temp", new RuntimeException());
       return;
     }
     
@@ -166,7 +166,7 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
       outputDir = getConf().get(OUTPUT_DIR);
     }
     String outputFileName = outputDir + File.separator + dagInfo.getDagId() + ".svg";
-    LOG.info("Writing output to: " + outputFileName);
+    LOG.error("Temp", new RuntimeException());
     svg.saveCriticalPathAsSVG(dagInfo, outputFileName, criticalPath);
   }
   
@@ -263,7 +263,7 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
         for (TaskAttemptInfo a : t.getTaskAttempts()) {
           if (a.getTerminationCause().equals(
               TaskAttemptTerminationCause.INTERNAL_PREEMPTION.name())) {
-            LOG.debug("Found preempted attempt " + a.getTaskAttemptId());
+            LOG.error("Temp", new RuntimeException());
             preemptedAttempts.add(a);
           }
         }
@@ -454,7 +454,7 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
       while (true) {
         Preconditions.checkState(currentAttempt != null);
         Preconditions.checkState(currentAttemptStopCriticalPathTime > 0);
-        LOG.debug("Step: " + tempCP.size() + " Attempt: " + currentAttempt.getTaskAttemptId());
+        LOG.error("Temp", new RuntimeException());
         
         currentStep = new CriticalPathStep(currentAttempt, EntityType.ATTEMPT);
         currentStep.stopCriticalPathTime = currentAttemptStopCriticalPathTime;
@@ -503,13 +503,13 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
           // last data event was produced after the attempt was scheduled. use
           // data dependency
           // typically the case when scheduling ahead of time
-          LOG.debug("Has data dependency");
+          LOG.error("Temp", new RuntimeException());
           if (!Strings.isNullOrEmpty(currentStepLastDataTA)) {
             // there is a valid data causal TA. Use it.
             nextAttemptId = currentStepLastDataTA;
             reason = CriticalPathDependency.DATA_DEPENDENCY;
             startCriticalPathTime = currentStepLastDataEventTime;
-            LOG.debug("Using data dependency " + nextAttemptId);
+            LOG.error("Temp", new RuntimeException());
           } else {
             // there is no valid data causal TA. This means data event came from the same vertex
             VertexInfo vertex = currentAttempt.getTaskInfo().getVertexInfo();
@@ -518,12 +518,12 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
                     + "TA is null for " + currentAttempt.getTaskAttemptId());
             nextAttemptId = null;
             reason = CriticalPathDependency.INIT_DEPENDENCY;
-            LOG.debug("Using init dependency");
+            LOG.error("Temp", new RuntimeException());
           }
         } else {
           // attempt was scheduled after last data event. use scheduling dependency
           // typically happens for retries
-          LOG.debug("Has scheduling dependency");
+          LOG.error("Temp", new RuntimeException());
           if (!Strings.isNullOrEmpty(currentAttempt.getCreationCausalTA())) {
             // there is a scheduling causal TA. Use it.
             nextAttemptId = currentAttempt.getCreationCausalTA();
@@ -555,7 +555,7 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
                   currentAttempt.getTaskInfo().getTaskId()));
               startCriticalPathTime = nextAttempt.getFinishTime();
             }
-            LOG.debug("Using scheduling dependency " + nextAttemptId);
+            LOG.error("Temp", new RuntimeException());
           } else {
             // there is no scheduling causal TA.
             if (!Strings.isNullOrEmpty(currentStepLastDataTA)) {
@@ -567,7 +567,7 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
               long overhead = currentAttempt.getCreationTime() - currentStepLastDataEventTime;
               currentStep.notes
                   .add("Initializer/VertexManager scheduling overhead " + SVGUtils.getTimeStr(overhead));
-              LOG.debug("Using data dependency " + nextAttemptId);
+              LOG.error("Temp", new RuntimeException());
             } else {
               // there is no scheduling causal TA and no data event casual TA.
               // the vertex has external input that sent the last data events
@@ -575,7 +575,7 @@ public class CriticalPathAnalyzer extends TezAnalyzerBase implements Analyzer {
               // or the vertex has no external inputs or edges
               nextAttemptId = null;
               reason = CriticalPathDependency.INIT_DEPENDENCY;
-              LOG.debug("Using init dependency");
+              LOG.error("Temp", new RuntimeException());
             }
           }
         }

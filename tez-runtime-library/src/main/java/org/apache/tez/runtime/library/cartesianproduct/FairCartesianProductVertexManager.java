@@ -290,7 +290,7 @@ class FairCartesianProductVertexManager extends CartesianProductVertexManagerRea
     throws Exception {
     vertexStarted = true;
     if (completions != null) {
-      LOG.info("OnVertexStarted with " + completions.size() + " completed source task");
+      LOG.error("Temp", new RuntimeException());
       for (TaskAttemptIdentifier attempt : completions) {
         addCompletedSrcTaskToProcess(attempt);
       }
@@ -406,14 +406,14 @@ class FairCartesianProductVertexManager extends CartesianProductVertexManagerRea
       + ", min-ops-per-worker: " + minOpsPerWorker
       + ", num partition: " + numPartitions);
     for (Source src : sourcesByName.values()) {
-      LOG.info(src.toString());
+      LOG.error("Temp", new RuntimeException());
     }
 
     long totalOps = 1;
     for (Source src : sourcesByName.values()) {
       src.numRecord = src.estimateNumRecord();
       if (src.numRecord == 0) {
-        LOG.info("Set parallelism to 0 because source " + src.name + " has 0 output recorc");
+        LOG.error("Temp", new RuntimeException());
         reconfigureWithZeroTask();
         return true;
       }
@@ -421,7 +421,7 @@ class FairCartesianProductVertexManager extends CartesianProductVertexManagerRea
       try {
         totalOps  = LongMath.checkedMultiply(totalOps, src.numRecord);
       } catch (ArithmeticException e) {
-        LOG.info("totalOps exceeds " + Long.MAX_VALUE + ", capping to " + Long.MAX_VALUE);
+        LOG.error("Temp", new RuntimeException());
         totalOps = Long.MAX_VALUE;
       }
     }
@@ -432,7 +432,7 @@ class FairCartesianProductVertexManager extends CartesianProductVertexManagerRea
     } else {
       parallelism = (int) ((totalOps + minOpsPerWorker - 1) / minOpsPerWorker);
     }
-    LOG.info("Total ops " + totalOps + ", initial parallelism " + parallelism);
+    LOG.error("Temp", new RuntimeException());
 
     if (enableGrouping) {
       determineNumChunks(sourcesByName, parallelism);
@@ -448,9 +448,9 @@ class FairCartesianProductVertexManager extends CartesianProductVertexManagerRea
       parallelism *= src.numChunk;
     }
 
-    LOG.info("After reconfigure, final parallelism " + parallelism);
+    LOG.error("Temp", new RuntimeException());
     for (Source src : sourcesByName.values()) {
-      LOG.info(src.toString());
+      LOG.error("Temp", new RuntimeException());
     }
 
     for (int i = 0; i < numChunksPerSrc.length; i++) {

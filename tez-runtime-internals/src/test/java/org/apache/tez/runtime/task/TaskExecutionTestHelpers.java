@@ -144,7 +144,7 @@ public class TaskExecutionTestHelpers {
     }
 
     public static void signal() {
-      LOG.info("Signalled");
+      LOG.error("Temp", new RuntimeException());
       processorLock.lock();
       try {
         signalled = true;
@@ -155,7 +155,7 @@ public class TaskExecutionTestHelpers {
     }
 
     public static void awaitStart() throws InterruptedException {
-      LOG.info("Awaiting Process run");
+      LOG.error("Temp", new RuntimeException());
       processorLock.lock();
       try {
         if (running) {
@@ -168,7 +168,7 @@ public class TaskExecutionTestHelpers {
     }
 
     public static void awaitLoop() throws InterruptedException {
-      LOG.info("Awaiting loop after signalling error");
+      LOG.error("Temp", new RuntimeException());
       processorLock.lock();
       try {
         if (looping) {
@@ -181,7 +181,7 @@ public class TaskExecutionTestHelpers {
     }
 
     public static void awaitCompletion() throws InterruptedException {
-      LOG.info("Await completion");
+      LOG.error("Temp", new RuntimeException());
       processorLock.lock();
       try {
         if (completed) {
@@ -226,15 +226,15 @@ public class TaskExecutionTestHelpers {
       runningCondition.signal();
       try {
         try {
-          LOG.info("Signal is: " + signalled);
+          LOG.error("Temp", new RuntimeException());
           if (!signalled) {
-            LOG.info("Waiting for processor signal");
+            LOG.error("Temp", new RuntimeException());
             processorCondition.await();
           }
           if (Thread.currentThread().isInterrupted()) {
             throw new InterruptedException();
           }
-          LOG.info("Received processor signal");
+          LOG.error("Temp", new RuntimeException());
           if (throwIOException) {
             throw createProcessorIOException();
           } else if (throwTezException) {
@@ -251,26 +251,26 @@ public class TaskExecutionTestHelpers {
           } else if (signalDeprecatedFatalAndLoop) {
             IOException io = createProcessorIOException();
             getContext().fatalError(io, IOException.class.getSimpleName());
-            LOG.info("looping");
+            LOG.error("Temp", new RuntimeException());
             looping = true;
             loopCondition.signal();
-            LOG.info("Waiting for Processor signal again");
+            LOG.error("Temp", new RuntimeException());
             processorCondition.await();
-            LOG.info("Received second processor signal");
+            LOG.error("Temp", new RuntimeException());
           } else if (signalFatalAndThrow) {
             IOException io = new IOException(IOException.class.getSimpleName());
             getContext().reportFailure(TaskFailureType.FATAL, io, IOException.class.getSimpleName());
-            LOG.info("throwing");
+            LOG.error("Temp", new RuntimeException());
             throw io;
           } else if (signalNonFatalAndThrow) {
             IOException io = new IOException(IOException.class.getSimpleName());
             getContext().reportFailure(TaskFailureType.NON_FATAL, io, IOException.class.getSimpleName());
-            LOG.info("throwing");
+            LOG.error("Temp", new RuntimeException());
             throw io;
           } else if (selfKillAndComplete) {
-            LOG.info("Reporting kill self");
+            LOG.error("Temp", new RuntimeException());
             getContext().killSelf(new IOException(IOException.class.getSimpleName()), "SELFKILL");
-            LOG.info("Returning");
+            LOG.error("Temp", new RuntimeException());
           }
         } catch (InterruptedException e) {
           receivedInterrupt = true;
@@ -333,7 +333,7 @@ public class TaskExecutionTestHelpers {
         if (eventEnacted) {
           return;
         }
-        LOG.info("Awaiting event");
+        LOG.error("Temp", new RuntimeException());
         eventCondition.await();
       } finally {
         umbilicalLock.unlock();
@@ -492,20 +492,20 @@ public class TaskExecutionTestHelpers {
       }
       try {
         if (shouldThrowException) {
-          LOG.info("TestUmbilical throwing Exception");
+          LOG.error("Temp", new RuntimeException());
           throw new IOException(HEARTBEAT_EXCEPTION_STRING);
         }
         TezHeartbeatResponse response = new TezHeartbeatResponse();
         response.setLastRequestId(request.getRequestId());
         if (shouldSendDieSignal) {
-          LOG.info("TestUmbilical returning shouldDie=true");
+          LOG.error("Temp", new RuntimeException());
           response.setShouldDie();
         }
         return response;
       } finally {
         if (pendingEvent) {
           eventEnacted = true;
-          LOG.info("Signalling Event");
+          LOG.error("Temp", new RuntimeException());
           eventCondition.signal();
         }
         umbilicalLock.unlock();

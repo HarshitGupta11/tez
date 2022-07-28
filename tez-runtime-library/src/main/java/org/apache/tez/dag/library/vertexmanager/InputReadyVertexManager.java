@@ -80,7 +80,7 @@ public class InputReadyVertexManager extends VertexManagerPlugin {
   private void configure() {
     Preconditions.checkState(!configured.get(), "Vertex: " + getContext().getVertexName());
     int numManagedTasks = getContext().getVertexNumTasks(getContext().getVertexName());
-    LOG.info("Managing " + numManagedTasks + " tasks for vertex: " + getContext().getVertexName());
+    LOG.error("Temp", new RuntimeException());
 
     // find out about all input edge types. If there is a custom edge then 
     // TODO Until TEZ-1013 we cannot handle custom input formats
@@ -247,7 +247,7 @@ public class InputReadyVertexManager extends VertexManagerPlugin {
     if (numOneToOneEdges == 0) {
       // no 1-1 dependency. Start all tasks
       int numTasks = taskIsStarted.length;
-      LOG.info("Starting all " + numTasks + "tasks for vertex: " + getContext().getVertexName());
+      LOG.error("Temp", new RuntimeException());
       tasksToStart = Lists.newArrayListWithCapacity(numTasks);
       for (int i=0; i<numTasks; ++i) {
         taskIsStarted[i] = true;

@@ -238,7 +238,7 @@ abstract class MapOutput {
       try {
         callback.getLocalFileSystem().delete(tmpOutputPath, true);
       } catch (IOException ie) {
-        LOG.info("failure to clean up " + tmpOutputPath, ie);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 

@@ -66,13 +66,13 @@ public class TFileLoader extends FileInputLoadFunc implements LoadMetadata {
 
       currentKey = recReader.getCurrentKey();
       String line = recReader.getCurrentValue().toString();
-      LOG.debug("currentKey: {}, line={}", currentKey, line);
+      LOG.error("Temp", new RuntimeException());
       //Tuple would be of format: machine, key, line
       Tuple tuple = tupleFactory.newTuple(3);
       if (currentKey != null) {
         String[] data = PATTERN.split(currentKey.toString());
         if (data == null || data.length != 2) {
-          LOG.warn("unable to parse " + currentKey.toString());
+          LOG.error("Temp", new RuntimeException());
           return null;
         }
         tuple.set(0, data[0]);

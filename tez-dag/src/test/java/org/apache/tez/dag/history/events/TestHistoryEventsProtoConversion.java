@@ -128,8 +128,8 @@ public class TestHistoryEventsProtoConversion {
 
   private void logEvents(HistoryEvent event,
       HistoryEvent deserializedEvent) {
-    LOG.info("Initial Event toString: " + event.toString());
-    LOG.info("Deserialized Event toString: " + deserializedEvent.toString());
+    LOG.error("Temp", new RuntimeException());
+    LOG.error("Temp", new RuntimeException());
   }
 
   private void testAppLaunchedEvent() throws Exception {
@@ -142,7 +142,7 @@ public class TestHistoryEventsProtoConversion {
       // Expected
     }
 
-    LOG.info("Initial Event toString: " + event.toString());
+    LOG.error("Temp", new RuntimeException());
 
   }
 

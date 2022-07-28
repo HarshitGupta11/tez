@@ -363,10 +363,10 @@ public abstract class ExternalSorter {
       return;
     }
     try {
-      LOG.info("Deleting " + path);
+      LOG.error("Temp", new RuntimeException());
       rfs.delete(path, true);
     } catch(IOException ioe) {
-      LOG.warn("Error in deleting "  + path);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 

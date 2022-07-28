@@ -131,7 +131,7 @@ public class ATSV15HistoryACLPolicyManager implements HistoryACLPolicyManager {
         timelineClient.putDomain(appAttemptId, timelineDomain);
       }
     } catch (Exception e) {
-      LOG.warn("Could not post timeline domain", e);
+      LOG.error("Temp", new RuntimeException());
       throw new
         HistoryACLPolicyException("Fail to create ACL-related domain in Timeline", e);
     }
@@ -157,7 +157,7 @@ public class ATSV15HistoryACLPolicyManager implements HistoryACLPolicyManager {
 
     if (domainId != null) {
       // do nothing
-      LOG.info("Using specified domainId with Timeline, domainId=" + domainId);
+      LOG.error("Temp", new RuntimeException());
     } else {
       if (!autoCreateDomain) {
         // Error - Cannot fallback to default as that leaves ACLs open
@@ -166,7 +166,7 @@ public class ATSV15HistoryACLPolicyManager implements HistoryACLPolicyManager {
       }
       domainId = DOMAIN_ID_PREFIX + applicationId.toString();
       createTimelineDomain(applicationId, domainId, tezConf, dagAccessControls);
-      LOG.info("Created Timeline Domain for History ACLs, domainId=" + domainId);
+      LOG.error("Temp", new RuntimeException());
     }
     return Collections.singletonMap(TezConfiguration.YARN_ATS_ACL_SESSION_DOMAIN_ID, domainId);
   }
@@ -190,7 +190,7 @@ public class ATSV15HistoryACLPolicyManager implements HistoryACLPolicyManager {
 
     if (domainId != null) {
       // do nothing
-      LOG.info("Using specified domainId with Timeline, domainId=" + domainId);
+      LOG.error("Temp", new RuntimeException());
     } else {
       if (!autoCreateDomain) {
         // Error - Cannot fallback to default as that leaves ACLs open
@@ -204,7 +204,7 @@ public class ATSV15HistoryACLPolicyManager implements HistoryACLPolicyManager {
       }
       domainId = DOMAIN_ID_PREFIX + applicationId.toString() + "_" + dagName;
       createTimelineDomain(applicationId, domainId, tezConf, dagAccessControls);
-      LOG.info("Created Timeline Domain for DAG-specific History ACLs, domainId=" + domainId);
+      LOG.error("Temp", new RuntimeException());
     }
     return Collections.singletonMap(TezConfiguration.YARN_ATS_ACL_DAG_DOMAIN_ID, domainId);
   }

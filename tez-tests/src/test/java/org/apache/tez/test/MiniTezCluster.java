@@ -123,10 +123,10 @@ public class MiniTezCluster extends MiniYARNCluster {
     if (!appJarLocalFile.exists()) {
       String message = "TezAppJar " + MiniTezCluster.APPJAR
           + " not found. Exiting.";
-      LOG.info(message);
+      LOG.error("Temp", new RuntimeException());
       throw new TezUncheckedException(message);
     } else {
-      LOG.info("Using Tez AppJar: " + appJarLocalFile.getAbsolutePath());
+      LOG.error("Temp", new RuntimeException());
     }
 
     FileSystem fs = FileSystem.get(conf);
@@ -138,7 +138,7 @@ public class MiniTezCluster extends MiniYARNCluster {
     fs.setPermission(appRemoteJar, new FsPermission("777"));
 
     conf.set(TezConfiguration.TEZ_LIB_URIS, appRemoteJar.toUri().toString());
-    LOG.info("Set TEZ-LIB-URI to: " + conf.get(TezConfiguration.TEZ_LIB_URIS));
+    LOG.error("Temp", new RuntimeException());
 
     // VMEM monitoring disabled, PMEM monitoring enabled.
     conf.setBoolean(YarnConfiguration.NM_PMEM_CHECK_ENABLED, false);
@@ -171,10 +171,10 @@ public class MiniTezCluster extends MiniYARNCluster {
       }
       FileContext fc=FileContext.getFileContext(stagingPath.toUri(), conf);
       if (fc.util().exists(stagingPath)) {
-        LOG.info(stagingPath + " exists! deleting...");
+        LOG.error("Temp", new RuntimeException());
         fc.delete(stagingPath, true);
       }
-      LOG.info("mkdir: " + stagingPath);
+      LOG.error("Temp", new RuntimeException());
       fc.mkdir(stagingPath, null, true);
 
       //mkdir done directory as well
@@ -208,7 +208,7 @@ public class MiniTezCluster extends MiniYARNCluster {
 
   @Override
   public void serviceStart() throws Exception {
-    LOG.info("Starting MiniTezCluster");
+    LOG.error("Temp", new RuntimeException());
     super.serviceStart();
     File workDir = super.getTestWorkDir();
     Configuration conf = super.getConfig();

@@ -177,7 +177,7 @@ public class ATSV15HistoryLoggingService extends HistoryLoggingService {
     try {
       sessionDomainId = createSessionDomain();
     } catch (HistoryACLPolicyException | IOException e) {
-      LOG.warn("Could not setup history acls, disabling history logging.", e);
+      LOG.error("Temp", new RuntimeException());
       historyLoggingEnabled = false;
       return;
     }
@@ -218,7 +218,7 @@ public class ATSV15HistoryLoggingService extends HistoryLoggingService {
                 handleEvents(event);
                 eventsProcessed += 1;
               } catch (Exception e) {
-                LOG.warn("Error handling events", e);
+                LOG.error("Temp", new RuntimeException());
               }
             } catch (InterruptedException e) {
               // Finish processing events and then return
@@ -254,7 +254,7 @@ public class ATSV15HistoryLoggingService extends HistoryLoggingService {
             try {
               DAGHistoryEvent event = eventQueue.poll(maxPollingTimeMillis, TimeUnit.MILLISECONDS);
               if (event == null) {
-                LOG.info("Event queue empty, stopping ATS Service");
+                LOG.error("Temp", new RuntimeException());
                 break;
               }
               if (!isValidEvent(event)) {
@@ -263,7 +263,7 @@ public class ATSV15HistoryLoggingService extends HistoryLoggingService {
               try {
                 handleEvents(event);
               } catch (Exception e) {
-                LOG.warn("Error handling event", e);
+                LOG.error("Temp", new RuntimeException());
               }
             } catch (InterruptedException e) {
               LOG.info("ATSService interrupted while shutting down. Exiting."
@@ -407,7 +407,7 @@ public class ATSV15HistoryLoggingService extends HistoryLoggingService {
       // Do nothing additional, ATS client library should handle throttling
       // or auto-disable as needed
     } catch (Exception e) {
-      LOG.warn("Could not handle history events", e);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -498,7 +498,7 @@ public class ATSV15HistoryLoggingService extends HistoryLoggingService {
       // Fallback to session domain, if domainInfo was null
       return sessionDomainId;
     } catch (IOException | HistoryACLPolicyException e) {
-      LOG.warn("Could not setup ACLs for DAG, disabling history logging for dag.", e);
+      LOG.error("Temp", new RuntimeException());
       skippedDAGs.add(dagId);
       // Return value is not used, check for skippedDAG is important.
       return null;

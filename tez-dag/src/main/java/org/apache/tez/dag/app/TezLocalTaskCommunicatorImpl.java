@@ -39,6 +39,6 @@ public class TezLocalTaskCommunicatorImpl extends TezTaskCommunicatorImpl {
     } catch (UnknownHostException e) {
       throw new TezUncheckedException(e);
     }
-    LOG.debug("Not starting TaskAttemptListener RPC in LocalMode");
+    LOG.error("Temp", new RuntimeException());
   }
 }

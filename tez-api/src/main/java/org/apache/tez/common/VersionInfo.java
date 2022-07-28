@@ -60,7 +60,7 @@ public class VersionInfo {
       }
       info.load(is);
     } catch (IOException ex) {
-      LOG.warn("Could not read '" + versionInfoFile + "', " + ex.toString(), ex);
+      LOG.error("Temp", new RuntimeException());
     } finally {
       IOUtils.closeStream(is);
     }

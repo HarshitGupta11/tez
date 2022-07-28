@@ -94,7 +94,7 @@ public class DAGClientServer extends AbstractService {
       this.bindAddress = NetUtils.createSocketAddrForHost(
           serverBindAddress.getAddress().getCanonicalHostName(),
           serverBindAddress.getPort());
-      LOG.info("Instantiated DAGClientRPCServer at " + bindAddress);
+      LOG.error("Temp", new RuntimeException());
     } catch (Exception e) {
       LOG.error("Failed to start DAGClientServer: ", e);
       throw new TezUncheckedException(e);

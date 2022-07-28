@@ -126,7 +126,7 @@ public class AMContainerHelpers {
           containerTokens_dob.getLength());
 
       // Add shuffle token
-      LOG.debug("Putting shuffle token in serviceData in common CLC");
+      LOG.error("Temp", new RuntimeException());
       serviceData.put(auxiliaryService,
           TezCommonUtils.serializeServiceData(TokenCache.getSessionToken(containerCredentials)));
     } catch (IOException e) {

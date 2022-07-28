@@ -281,7 +281,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
   @Override
   public void initiateStop() {
     super.initiateStop();
-    LOG.debug("Initiating stop of task scheduler");
+    LOG.error("Temp", new RuntimeException());
     stopRequested = true;
     List<ContainerId> releasedLaunchedContainers;
     synchronized (this) {
@@ -330,7 +330,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
   public void onContainersAllocated(List<Container> containers) {
     AMState appState = getContext().getAMState();
     if (stopRequested || appState == AMState.COMPLETED) {
-      LOG.info("Ignoring {} allocations since app is terminating", containers.size());
+      LOG.error("Temp", new RuntimeException());
       for (Container c : containers) {
         client.releaseAssignedContainer(c.getId());
       }
@@ -432,7 +432,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
         assignedRequest = tryAssignReuseContainerAppRunning(hc);
         if (assignedRequest == null) {
           if (hc.atMaxMatchLevel()) {
-            LOG.info("Releasing idle container {} due to pending requests", hc.getId());
+            LOG.error("Temp", new RuntimeException());
             releaseContainer(hc);
           } else {
             hc.scheduleForReuse(localitySchedulingDelay);
@@ -441,7 +441,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
       }
       break;
     case COMPLETED:
-      LOG.info("Releasing container {} because app has completed", hc.getId());
+      LOG.error("Temp", new RuntimeException());
       releaseContainer(hc);
       break;
     default:
@@ -458,13 +458,13 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     }
 
     if (sessionContainers.contains(hc)) {
-      LOG.info("Retaining container {} since it is a session container");
+      LOG.error("Temp", new RuntimeException());
       hc.resetMatchingLevel();
     } else {
       long now = now();
       long expiration = hc.getIdleExpirationTimestamp(now);
       if (now >= expiration) {
-        LOG.info("Releasing expired idle container {}", hc.getId());
+        LOG.error("Temp", new RuntimeException());
         releaseContainer(hc);
       } else {
         hc.scheduleForReuse(expiration - now);
@@ -476,7 +476,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
   @Nullable
   private TaskRequest tryAssignReuseContainerAppRunning(HeldContainer hc) {
     if (!hc.isAssignable()) {
-      LOG.debug("Skipping scheduling of container {} because it state is {}", hc.getId(), hc.getState());
+      LOG.error("Temp", new RuntimeException());
       return null;
     }
 
@@ -543,7 +543,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
       for (TaskRequest request : requests) {
         final int vertexIndex = request.getVertexIndex();
         if (!allowedVertices.get(vertexIndex)) {
-          LOG.debug("Not assigning task {} since it is a descendant of a pending vertex", request.getTask());
+          LOG.error("Temp", new RuntimeException());
           continue;
         }
 
@@ -695,7 +695,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     synchronized (this) {
       for (ContainerStatus status : statuses) {
         ContainerId cid = status.getContainerId();
-        LOG.info("Container {} completed with status {}", cid, status);
+        LOG.error("Temp", new RuntimeException());
         Object task = releasedContainers.remove(cid);
         if (task == null) {
           HeldContainer hc = heldContainers.get(cid);
@@ -742,7 +742,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
 
       ++numHeartbeats;
       if (LOG.isDebugEnabled() || numHeartbeats % 50 == 1) {
-        LOG.debug(constructPeriodicLog(freeResources));
+        LOG.error("Temp", new RuntimeException());
       }
 
       preemptedContainers = maybePreempt(freeResources);
@@ -754,7 +754,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     // perform app callback outside of locks
     if (preemptedContainers != null && !preemptedContainers.isEmpty()) {
       for (ContainerId cid : preemptedContainers) {
-        LOG.info("Preempting container {} currently allocated to a task", cid);
+        LOG.error("Temp", new RuntimeException());
         getContext().preemptContainer(cid);
       }
     }
@@ -795,7 +795,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
 
   @Override
   public synchronized void blacklistNode(NodeId nodeId) {
-    LOG.info("Blacklisting node: {}", nodeId);
+    LOG.error("Temp", new RuntimeException());
     blacklistedNodes.add(nodeId);
     client.updateBlacklist(Collections.singletonList(nodeId.getHost()), null);
   }
@@ -803,7 +803,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
   @Override
   public synchronized void unblacklistNode(NodeId nodeId) {
     if (blacklistedNodes.remove(nodeId)) {
-      LOG.info("Removing blacklist for node: {}", nodeId);
+      LOG.error("Temp", new RuntimeException());
       client.updateBlacklist(null, Collections.singletonList(nodeId.getHost()));
     }
   }
@@ -832,7 +832,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
           containerId = null;
         }
       } else {
-        LOG.info("Ignoring match request to unknown container {}", containerId);
+        LOG.error("Temp", new RuntimeException());
         containerId = null;
       }
     }
@@ -853,7 +853,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     synchronized (this) {
       TaskRequest request = removeTaskRequest(task);
       if (request != null) {
-        LOG.debug("Deallocating task {} before it was allocated", task);
+        LOG.error("Temp", new RuntimeException());
         return false;
       }
 
@@ -894,13 +894,13 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
       if (hc != null) {
         task = hc.getAssignedTask();
         if (task != null) {
-          LOG.info("Deallocated container {} from task {}", containerId, task);
+          LOG.error("Temp", new RuntimeException());
         }
         if (releaseContainer(hc)) {
           releasedLaunchedContainer = hc.getId();
         }
       } else {
-        LOG.info("Ignoring deallocation of unknown container {}", containerId);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -1117,7 +1117,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
               bestMatch = hc;
             }
           } else {
-            LOG.debug("Unable to assign task {} to container {} due to signature mismatch", request.getTask(), hc.getId());
+            LOG.error("Temp", new RuntimeException());
           }
         }
       }
@@ -1166,7 +1166,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     }
     if (!requestTracker.isPreemptionDeadlineExpired() && requestTracker.fitsHighestPriorityRequest(freeResources)) {
       if (numHeartbeats % 50 == 1) {
-        LOG.info("Highest priority request fits in free resources {}", freeResources);
+        LOG.error("Temp", new RuntimeException());
       }
       return null;
     }
@@ -1174,7 +1174,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     int numIdleContainers = idleTracker.getNumContainers();
     if (numIdleContainers > 0) {
       if (numHeartbeats % 50 == 1) {
-        LOG.info("Avoiding preemption since there are {} idle containers", numIdleContainers);
+        LOG.error("Temp", new RuntimeException());
       }
       return null;
     }
@@ -1182,7 +1182,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     BitSet blocked = requestTracker.createVertexBlockedSet();
     if (!blocked.intersects(assignedVertices)) {
       if (numHeartbeats % 50 == 1) {
-        LOG.info("Avoiding preemption since there are no descendants of the highest priority requests running");
+        LOG.error("Temp", new RuntimeException());
       }
       return null;
     }
@@ -1190,7 +1190,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     Resource preemptLeft = requestTracker.getAmountToPreempt(preemptionPercentage);
     if (!resourceCalculator.anyAvailable(preemptLeft)) {
       if (numHeartbeats % 50 == 1) {
-        LOG.info("Avoiding preemption since amount to preempt is {}", preemptLeft);
+        LOG.error("Temp", new RuntimeException());
       }
       return null;
     }
@@ -1209,7 +1209,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
     ArrayList<ContainerId> preemptedContainers = new ArrayList<>();
     HeldContainer hc;
     while ((hc = candidates.poll()) != null) {
-      LOG.info("Preempting container {} currently allocated to task {}", hc.getId(), hc.getAssignedTask());
+      LOG.error("Temp", new RuntimeException());
       preemptedContainers.add(hc.getId());
       resourceCalculator.deductFrom(preemptLeft, hc.getCapability());
       if (!resourceCalculator.anyAvailable(preemptLeft)) {
@@ -2073,10 +2073,10 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
         try {
           ((Future<?>) r).get();
         } catch (ExecutionException ee) {
-          LOG.warn("Execution exception when running task in {}",  Thread.currentThread().getName());
+          LOG.error("Temp", new RuntimeException());
           t = ee.getCause();
         } catch (InterruptedException ie) {
-          LOG.warn("Thread ({}) interrupted: ", Thread.currentThread(), ie);
+          LOG.error("Temp", new RuntimeException());
           Thread.currentThread().interrupt();
         } catch (Throwable throwable) {
           t = throwable;
@@ -2084,7 +2084,7 @@ public class DagAwareYarnTaskScheduler extends TaskScheduler
       }
 
       if (t != null) {
-        LOG.warn("Caught exception in thread {}", Thread.currentThread().getName(), t);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

@@ -565,7 +565,7 @@ public class ShuffleHandler extends AuxiliaryService {
     port = ((InetSocketAddress)ch.localAddress()).getPort();
     conf.set(SHUFFLE_PORT_CONFIG_KEY, Integer.toString(port));
     SHUFFLE.setPort(port);
-    LOG.info(getName() + " listening on port " + port);
+    LOG.error("Temp", new RuntimeException());
 
     super.serviceStart();
 
@@ -585,7 +585,7 @@ public class ShuffleHandler extends AuxiliaryService {
   private void initPipeline(ServerBootstrap bootstrap, Configuration conf) throws Exception {
     SHUFFLE = getShuffle(conf);
     if (conf.getBoolean(SHUFFLE_SSL_ENABLED_KEY, SHUFFLE_SSL_ENABLED_DEFAULT)) {
-      LOG.info("Encrypted shuffle is enabled.");
+      LOG.error("Temp", new RuntimeException());
       sslFactory = new SSLFactory(SSLFactory.Mode.SERVER, conf);
       sslFactory.init();
     }
@@ -683,13 +683,13 @@ public class ShuffleHandler extends AuxiliaryService {
     options.createIfMissing(false);
     options.logger(new LevelDBLogger());
     Path dbPath = new Path(recoveryRoot, STATE_DB_NAME);
-    LOG.info("Using state database at " + dbPath + " for recovery");
+    LOG.error("Temp", new RuntimeException());
     File dbfile = new File(dbPath.toString());
     try {
       stateDb = JniDBFactory.factory.open(dbfile, options);
     } catch (NativeDB.DBException e) {
       if (e.isNotFound() || e.getMessage().contains(" does not exist ")) {
-        LOG.info("Creating state database at " + dbfile);
+        LOG.error("Temp", new RuntimeException());
         options.createIfMissing(true);
         try {
           stateDb = JniDBFactory.factory.open(dbfile, options);
@@ -753,12 +753,12 @@ public class ShuffleHandler extends AuxiliaryService {
    */
   private void checkVersion() throws IOException {
     Version loadedVersion = loadVersion();
-    LOG.info("Loaded state DB schema version info " + loadedVersion);
+    LOG.error("Temp", new RuntimeException());
     if (loadedVersion.equals(getCurrentVersion())) {
       return;
     }
     if (loadedVersion.isCompatibleTo(getCurrentVersion())) {
-      LOG.info("Storing state DB schedma version info " + getCurrentVersion());
+      LOG.error("Temp", new RuntimeException());
       storeVersion();
     } else {
       throw new IOException(
@@ -771,7 +771,7 @@ public class ShuffleHandler extends AuxiliaryService {
       Token<JobTokenIdentifier> jobToken) {
     userRsrc.put(jobId.toString(), user);
     getSecretManager().addTokenForJob(jobId.toString(), jobToken);
-    LOG.info("Added token for " + jobId.toString());
+    LOG.error("Temp", new RuntimeException());
   }
 
   private void recoverJobShuffleInfo(String jobIdStr, byte[] data)
@@ -832,7 +832,7 @@ public class ShuffleHandler extends AuxiliaryService {
 
     @Override
     public void log(String message) {
-      LOG.info(message);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -925,7 +925,7 @@ public class ShuffleHandler extends AuxiliaryService {
           Path mapOutputFileName = lDirAlloc.getLocalPathToRead(
               attemptBase + Path.SEPARATOR + DATA_FILE_NAME, conf);
 
-          LOG.debug("Loaded : {} via loader", key);
+          LOG.error("Temp", new RuntimeException());
           return new AttemptPathInfo(indexFileName, mapOutputFileName);
         }
       });
@@ -1007,7 +1007,7 @@ public class ShuffleHandler extends AuxiliaryService {
       boolean keepAliveParam = false;
       if (keepAliveList != null && keepAliveList.size() == 1) {
         keepAliveParam = Boolean.parseBoolean(keepAliveList.get(0));
-        LOG.debug("KeepAliveParam : {} : {}", keepAliveList, keepAliveParam);
+        LOG.error("Temp", new RuntimeException());
       }
       final List<String> mapIds = splitMaps(q.get("map"));
       final Range reduceRange = splitReduces(q.get("reduce"));
@@ -1064,7 +1064,7 @@ public class ShuffleHandler extends AuxiliaryService {
         verifyRequest(jobId, ctx, request, response,
             new URL("http", "", this.port, reqUri));
       } catch (IOException e) {
-        LOG.warn("Shuffle failure ", e);
+        LOG.error("Temp", new RuntimeException());
         sendError(ctx, e.getMessage(), UNAUTHORIZED);
         return;
       }
@@ -1127,7 +1127,7 @@ public class ShuffleHandler extends AuxiliaryService {
             lfc.delete(dagPath, true);
           }
         } catch (IOException e) {
-          LOG.warn("Encountered exception during dag delete "+ e);
+          LOG.error("Temp", new RuntimeException());
         }
         channel.writeAndFlush(new DefaultHttpResponse(HTTP_1_1, OK))
             .addListener(ChannelFutureListener.CLOSE);
@@ -1298,9 +1298,9 @@ public class ShuffleHandler extends AuxiliaryService {
         response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, String.valueOf(contentLength));
         response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
         response.headers().set(HttpHeaders.Values.KEEP_ALIVE, "timeout=" + connectionKeepAliveTimeOut);
-        LOG.debug("Content Length in shuffle : {}", contentLength);
+        LOG.error("Temp", new RuntimeException());
       } else {
-        LOG.debug("Setting connection close header...");
+        LOG.error("Temp", new RuntimeException());
         response.headers().set(HttpHeaders.Names.CONNECTION, CONNECTION_CLOSE);
       }
     }
@@ -1345,7 +1345,7 @@ public class ShuffleHandler extends AuxiliaryService {
         throws IOException {
       SecretKey tokenSecret = getSecretManager().retrieveTokenSecret(appid);
       if (null == tokenSecret) {
-        LOG.info("Request for unknown token " + appid);
+        LOG.error("Temp", new RuntimeException());
         throw new IOException("could not find jobid");
       }
       // string to encrypt
@@ -1354,7 +1354,7 @@ public class ShuffleHandler extends AuxiliaryService {
       String urlHashStr =
         request.headers().get(SecureShuffleUtils.HTTP_HEADER_URL_HASH);
       if (urlHashStr == null) {
-        LOG.info("Missing header hash for " + appid);
+        LOG.error("Temp", new RuntimeException());
         throw new IOException("fetcher cannot be authenticated");
       }
       if (LOG.isDebugEnabled()) {
@@ -1416,7 +1416,7 @@ public class ShuffleHandler extends AuxiliaryService {
       try {
         spill = SecureIOUtils.openForRandomRead(spillFile, "r", user, null);
       } catch (FileNotFoundException e) {
-        LOG.info(spillFile + " not found");
+        LOG.error("Temp", new RuntimeException());
         return null;
       }
       ChannelFuture writeFuture;
@@ -1489,12 +1489,12 @@ public class ShuffleHandler extends AuxiliaryService {
         return;
       } else if (cause instanceof IOException) {
         if (cause instanceof ClosedChannelException) {
-          LOG.debug("Ignoring closed channel error", cause);
+          LOG.error("Temp", new RuntimeException());
           return;
         }
         String message = String.valueOf(cause.getMessage());
         if (IGNORABLE_ERROR_MESSAGE.matcher(message).matches()) {
-          LOG.debug("Ignoring client socket close", cause);
+          LOG.error("Temp", new RuntimeException());
           return;
         }
       }

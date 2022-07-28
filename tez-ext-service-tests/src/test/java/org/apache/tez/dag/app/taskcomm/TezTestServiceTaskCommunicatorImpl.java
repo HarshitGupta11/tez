@@ -138,7 +138,7 @@ public class TezTestServiceTaskCommunicatorImpl extends TezTaskCommunicatorImpl 
         new TezTestServiceCommunicator.ExecuteRequestCallback<SubmitWorkResponseProto>() {
           @Override
           public void setResponse(SubmitWorkResponseProto response) {
-            LOG.info("Successfully launched task: " + taskSpec.getTaskAttemptID());
+            LOG.error("Temp", new RuntimeException());
           }
 
           @Override

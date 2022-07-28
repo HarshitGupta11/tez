@@ -76,7 +76,7 @@ public class AsyncHttpConnection extends BaseHttpConnection {
     if (httpAsyncClient == null) {
       synchronized (AsyncHttpConnection.class) {
         if (httpAsyncClient == null) {
-          LOG.info("Initializing AsyncClient (TezBodyDeferringAsyncHandler)");
+          LOG.error("Temp", new RuntimeException());
           DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
           if (httpConnParams.isSslShuffle()) {
             //Configure SSL
@@ -113,7 +113,7 @@ public class AsyncHttpConnection extends BaseHttpConnection {
     this.httpConnParams = connParams;
     this.url = url;
     this.stopWatch = new StopWatch();
-    LOG.debug("MapOutput URL :{}", url);
+    LOG.error("Temp", new RuntimeException());
 
     initClient(httpConnParams);
     pos = new PipedOutputStream();
@@ -145,7 +145,7 @@ public class AsyncHttpConnection extends BaseHttpConnection {
     Request request = rb.setUrl(url.toString()).build();
 
     //for debugging
-    LOG.debug("Request url={}, encHash={}, id={}", url, encHash);
+    LOG.error("Temp", new RuntimeException());
 
     try {
       //Blocks calling thread until it receives headers, but have the option to defer response body
@@ -165,7 +165,7 @@ public class AsyncHttpConnection extends BaseHttpConnection {
     //verify the response
     int rc = response.getStatusCode();
     if (rc != HttpURLConnection.HTTP_OK) {
-      LOG.debug("Request url={}, id={}", response.getUri());
+      LOG.error("Temp", new RuntimeException());
       throw new IOException("Got invalid response code " + rc + " from "
           + url + ": " + response.getStatusText());
     }
@@ -187,12 +187,12 @@ public class AsyncHttpConnection extends BaseHttpConnection {
     if (replyHash == null) {
       throw new IOException("security validation of TT Map output failed");
     }
-    LOG.debug("url={};encHash={};replyHash={}", msgToEncode, encHash, replyHash);
+    LOG.error("Temp", new RuntimeException());
 
     // verify that replyHash is HMac of encHash
     SecureShuffleUtils.verifyReply(replyHash, encHash, jobTokenSecretMgr);
     //Following log statement will be used by tez-tool perf-analyzer for mapping attempt to NM host
-    LOG.info("for url={} sent hash and receievd reply {} ms", url, stopWatch.now(TimeUnit.MILLISECONDS));
+    LOG.error("Temp", new RuntimeException());
   }
 
   /**

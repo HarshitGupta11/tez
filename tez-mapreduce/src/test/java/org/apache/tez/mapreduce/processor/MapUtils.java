@@ -124,7 +124,7 @@ public class MapUtils {
       throws IOException {
     FileInputFormat.setInputPaths(job, workDir);
 
-    LOG.info("Generating data at path: " + file);
+    LOG.error("Temp", new RuntimeException());
     // create a file with length entries
     @SuppressWarnings("deprecation")
     SequenceFile.Writer writer = 
@@ -138,7 +138,7 @@ public class MapUtils {
         key.set(r.nextInt(1000));
         value.set(Integer.toString(i));
         writer.append(key, value);
-        LOG.info("<k, v> : <" + key.get() + ", " + value + ">");
+        LOG.error("Temp", new RuntimeException());
       }
     } finally {
       writer.close();
@@ -164,7 +164,7 @@ public class MapUtils {
       InputSplit split) throws IOException {
     Path jobSplitFile = new Path(conf.get(MRFrameworkConfigs.TASK_LOCAL_RESOURCE_DIR,
         MRFrameworkConfigs.TASK_LOCAL_RESOURCE_DIR_DEFAULT), MRJobConfig.JOB_SPLIT);
-    LOG.info("Writing split to: " + jobSplitFile);
+    LOG.error("Temp", new RuntimeException());
     FSDataOutputStream out = FileSystem.create(fs, jobSplitFile,
         new FsPermission(JOB_FILE_PERMISSION));
 

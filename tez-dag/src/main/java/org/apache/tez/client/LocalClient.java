@@ -261,11 +261,11 @@ public class LocalClient extends FrameworkClient {
         while (amFailException == null) {
           if (dagAppMaster != null) {
             DAGAppMasterState dagAMState = dagAppMaster.getState();
-            LOG.info("DAGAppMaster state: " + dagAMState);
+            LOG.error("Temp", new RuntimeException());
             if (dagAMState.equals(DAGAppMasterState.NEW)) {
-              LOG.info("DAGAppMaster is not started wait for 100ms...");
+              LOG.error("Temp", new RuntimeException());
             } else if (dagAMState.equals(DAGAppMasterState.INITED)) {
-              LOG.info("DAGAppMaster is not startetd wait for 100ms...");
+              LOG.error("Temp", new RuntimeException());
             } else if (dagAMState.equals(DAGAppMasterState.ERROR)) {
               throw new TezException("DAGAppMaster got an error during initialization");
             } else if (dagAMState.equals(DAGAppMasterState.KILLED)) {
@@ -276,7 +276,7 @@ public class LocalClient extends FrameworkClient {
           }
 
           if (waitingTime < TIME_OUT) {
-            LOG.info("DAGAppMaster is not created wait for 100ms...");
+            LOG.error("Temp", new RuntimeException());
             Thread.sleep(100);
             waitingTime += 100;
           } else {
@@ -323,7 +323,7 @@ public class LocalClient extends FrameworkClient {
 
           FileSystem localFs = FileSystem.getLocal(conf);
           Path userDir = localFs.makeQualified(new Path(staging.toUri().getPath() + "_wd"));
-          LOG.info("Using working directory: " + userDir.toUri().getPath());
+          LOG.error("Temp", new RuntimeException());
 
           // copy data from staging directory to working directory to simulate the resource localizing
           FileUtil.copy(stagingFs, staging, localFs, userDir, false, conf);
@@ -372,7 +372,7 @@ public class LocalClient extends FrameworkClient {
     });
 
     thread.setName("DAGAppMaster Thread");
-    LOG.info("DAGAppMaster thread has been created");
+    LOG.error("Temp", new RuntimeException());
 
     return thread;
   }

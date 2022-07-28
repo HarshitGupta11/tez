@@ -279,7 +279,7 @@ public class MemoryDistributor {
           sb.append(", ");
         }
       }
-      LOG.info("InitialRequests=" + sb.toString());
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -301,7 +301,7 @@ public class MemoryDistributor {
           sb.append(", ");
         }
       }
-      LOG.info("Allocations=" + sb.toString());
+      LOG.error("Temp", new RuntimeException());
     }
   }
 

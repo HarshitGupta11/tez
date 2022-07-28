@@ -690,7 +690,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
   public boolean canCommit(TezTaskAttemptID taskAttemptID) {
     writeLock.lock();
     try {
-      LOG.debug("Commit go/no-go request from {}", taskAttemptID);
+      LOG.error("Temp", new RuntimeException());
       TaskState state = getState();
       if (state == TaskState.SCHEDULED) {
         // the actual running task ran and is done and asking for commit. we are still stuck 
@@ -704,7 +704,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
       // at this point the attempt is no longer in scheduled state or else we would still 
       // have been in scheduled state in task impl.
       if (state != TaskState.RUNNING) {
-        LOG.info("Task not running. Issuing kill to bad commit attempt " + taskAttemptID);
+        LOG.error("Temp", new RuntimeException());
         eventHandler.handle(new TaskAttemptEventKillRequest(taskAttemptID
             , "Task not running. Bad attempt.", TaskAttemptTerminationCause.TERMINATED_ORPHANED));
         return false;
@@ -719,7 +719,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
         TaskAttemptState taState = ta.getStateNoLock();
         if (taState == TaskAttemptState.RUNNING) {
           commitAttempt = taskAttemptID;
-          LOG.info(taskAttemptID + " given a go for committing the task output.");
+          LOG.error("Temp", new RuntimeException());
           return true;
         } else {
           LOG.info(taskAttemptID + " with state: " + taState +
@@ -728,7 +728,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
         }
       } else {
         if (commitAttempt.equals(taskAttemptID)) {
-          LOG.debug("{} already given a go for committing the task output.", taskAttemptID);
+          LOG.error("Temp", new RuntimeException());
           return true;
         }
         // Don't think this can be a pluggable decision, so simply raise an
@@ -736,7 +736,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
         // Wait for commit attempt to succeed. Dont kill this. If commit
         // attempt fails then choose a different committer. When commit attempt
         // succeeds then this and others will be killed
-        LOG.debug("{} is current committer. Commit waiting for: {}", commitAttempt, taskAttemptID);
+        LOG.error("Temp", new RuntimeException());
         return false;
       }
 
@@ -775,7 +775,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
   private boolean addAndScheduleAttempt(TezTaskAttemptID schedulingCausalTA) {
     TaskAttempt attempt = createAttempt(attempts.size(), schedulingCausalTA);
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Created attempt " + attempt.getID());
+      LOG.error("Temp", new RuntimeException());
     }
     switch (attempts.size()) {
       case 0:
@@ -1030,7 +1030,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
 
     @Override
     public void transition(TaskImpl task, TaskEvent event) {
-      LOG.info("Scheduling a redundant attempt for task " + task.taskId);
+      LOG.error("Temp", new RuntimeException());
       task.counters.findCounter(TaskCounter.NUM_SPECULATIONS).increment(1);
       TaskAttempt earliestUnfinishedAttempt = null;
       for (TaskAttempt ta : task.attempts.values()) {
@@ -1050,7 +1050,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
       }
       if (earliestUnfinishedAttempt == null) {
         // no running (or SUCCEEDED) task attempt at this moment, no need to schedule speculative attempt either
-        LOG.info("Ignore speculation scheduling since there is no running attempt on task {}.", task.getTaskId());
+        LOG.error("Temp", new RuntimeException());
         return;
       }
       if (task.commitAttempt != null) {
@@ -1144,7 +1144,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
       task.successfulAttempt = successTaId;
       task.eventHandler.handle(new VertexEventTaskCompleted(
           task.taskId, TaskState.SUCCEEDED));
-      LOG.info("Task succeeded with attempt " + task.successfulAttempt);
+      LOG.error("Temp", new RuntimeException());
       task.logJobHistoryTaskFinishedEvent();
       TaskAttempt successfulAttempt = task.attempts.get(successTaId);
 
@@ -1411,7 +1411,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
       task.addDiagnosticInfo(terminateEvent.getDiagnosticInfo());
       if (terminateEvent.isFromRecovery()) {
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Recovered to KILLED, taskId=" + task.getTaskId());
+          LOG.error("Temp", new RuntimeException());
         }
       } else {
         task.logJobHistoryTaskFailedEvent(TaskState.KILLED);
@@ -1455,7 +1455,7 @@ public class TaskImpl implements Task, EventHandler<TaskEvent> {
 
   private void killUnfinishedAttempt(TaskAttempt attempt, String logMsg, TaskAttemptTerminationCause errorCause) {
     if (commitAttempt != null && commitAttempt.equals(attempt.getID())) {
-      LOG.info("Unsetting commit attempt: " + commitAttempt + " since attempt is being killed");
+      LOG.error("Temp", new RuntimeException());
       commitAttempt = null;
     }
     if (attempt != null && !attempt.isFinished()) {

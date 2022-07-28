@@ -176,7 +176,7 @@ public class LocalContainerLauncher extends DagContainerLauncher {
   @Override
   public void shutdown() throws Exception {
     if (!serviceStopped.compareAndSet(false, true)) {
-      LOG.info("Service Already stopped. Ignoring additional stop");
+      LOG.error("Temp", new RuntimeException());
       return;
     }
     if (eventHandlingThread != null) {
@@ -297,7 +297,7 @@ public class LocalContainerLauncher extends DagContainerLauncher {
     ListenableFuture future =
         runningContainers.get(event.getContainerId());
     if (future == null) {
-      LOG.info("Ignoring stop request for containerId: " + event.getContainerId());
+      LOG.error("Temp", new RuntimeException());
     } else {
       LOG.info("Stopping containerId: {}, isDone: {}", event.getContainerId(),
           future.isDone());
@@ -321,16 +321,16 @@ public class LocalContainerLauncher extends DagContainerLauncher {
     @Override
     public void onSuccess(TezChild.ContainerExecutionResult result) {
       runningContainers.remove(containerId);
-      LOG.info("ContainerExecutionResult for: " + containerId + " = " + result);
+      LOG.error("Temp", new RuntimeException());
       if (result.getExitStatus() == TezChild.ContainerExecutionResult.ExitStatus.SUCCESS ||
           result.getExitStatus() ==
               TezChild.ContainerExecutionResult.ExitStatus.ASKED_TO_DIE) {
-        LOG.info("Container: " + containerId + " completed successfully");
+        LOG.error("Temp", new RuntimeException());
         getContext()
             .containerCompleted(containerId, result.getExitStatus().getExitCode(), null,
                 TaskAttemptEndReason.CONTAINER_EXITED);
       } else {
-        LOG.info("Container: " + containerId + " completed but with errors");
+        LOG.error("Temp", new RuntimeException());
         getContext().containerCompleted(
             containerId, result.getExitStatus().getExitCode(),
             result.getErrorMessage() == null ?
@@ -348,13 +348,13 @@ public class LocalContainerLauncher extends DagContainerLauncher {
       // Ignore CancellationException since that is triggered by the LocalContainerLauncher itself
       // TezChild would have exited by this time. There's no need to invoke shutdown again.
       if (!(t instanceof CancellationException)) {
-        LOG.info("Container: " + containerId + ": Execution Failed: ", t);
+        LOG.error("Temp", new RuntimeException());
         // Inform of failure with exit code 1.
         getContext().containerCompleted(containerId,
             TezChild.ContainerExecutionResult.ExitStatus.EXECUTION_FAILURE.getExitCode(),
             t.getMessage(), TaskAttemptEndReason.APPLICATION_ERROR);
       } else {
-        LOG.info("Ignoring CancellationException - triggered by LocalContainerLauncher");
+        LOG.error("Temp", new RuntimeException());
         getContext().containerCompleted(containerId,
             TezChild.ContainerExecutionResult.ExitStatus.SUCCESS.getExitCode(),
             "CancellationException", TaskAttemptEndReason.COMMUNICATION_ERROR.CONTAINER_EXITED);
@@ -373,7 +373,7 @@ public class LocalContainerLauncher extends DagContainerLauncher {
           manager.cleanup();
         }
       } catch (IOException e) {
-        LOG.info("Unable to clean up local cache files: ", e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

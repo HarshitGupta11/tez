@@ -57,7 +57,7 @@ abstract class MergeThread<T> extends Thread {
         cleanup(inputs, Thread.currentThread().isInterrupted());
       } catch (IOException e) {
         //ignore
-        LOG.warn("Error cleaning up", e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

@@ -1940,7 +1940,7 @@ public class TezConfiguration extends Configuration {
   public static void validateProperty(String property, Scope usedScope) {
     Scope validScope = PropertyScope.get(property);
     if (validScope == null) {
-      LOG.debug("{} is not standard configuration property of tez, can not been validated", property);
+      LOG.error("Temp", new RuntimeException());
     } else {
       if (usedScope.ordinal() > validScope.ordinal()) {
         throw new IllegalStateException(property + " is set at the scope of " + usedScope

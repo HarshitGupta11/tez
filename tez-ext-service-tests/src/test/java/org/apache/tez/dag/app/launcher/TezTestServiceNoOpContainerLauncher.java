@@ -39,7 +39,7 @@ public class TezTestServiceNoOpContainerLauncher extends ContainerLauncher {
 
   @Override
   public void stopContainer(ContainerStopRequest stopRequest) {
-    LOG.info("Ignoring stopRequest {}", stopRequest);
+    LOG.error("Temp", new RuntimeException());
     getContext().containerStopRequested(stopRequest.getContainerId());
   }
 }

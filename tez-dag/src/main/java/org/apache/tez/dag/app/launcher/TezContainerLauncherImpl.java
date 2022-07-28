@@ -138,7 +138,7 @@ public class TezContainerLauncherImpl extends DagContainerLauncher {
 
     @SuppressWarnings("unchecked")
     public synchronized void launch(ContainerLaunchRequest event) {
-      LOG.info("Launching " + event.getContainerId());
+      LOG.error("Temp", new RuntimeException());
       if(this.state == ContainerState.KILLED_BEFORE_LAUNCH) {
         state = ContainerState.DONE;
         sendContainerLaunchFailedMsg(event.getContainerId(),
@@ -187,10 +187,10 @@ public class TezContainerLauncherImpl extends DagContainerLauncher {
             in.reset(portInfo);
             shufflePort = in.readInt();
           } else {
-            LOG.warn("Shuffle port for {} is not present is the services metadata response", auxiliaryService);
+            LOG.error("Temp", new RuntimeException());
           }
         } else {
-          LOG.warn("Shuffle port cannot be found since services metadata response is missing");
+          LOG.error("Temp", new RuntimeException());
         }
         if (deletionTracker != null) {
           deletionTracker.addNodeShufflePort(event.getNodeId(), shufflePort);
@@ -216,7 +216,7 @@ public class TezContainerLauncherImpl extends DagContainerLauncher {
       if(this.state == ContainerState.PREP) {
         this.state = ContainerState.KILLED_BEFORE_LAUNCH;
       } else {
-        LOG.info("Stopping " + containerID);
+        LOG.error("Temp", new RuntimeException());
 
         ContainerManagementProtocolProxyData proxy = null;
         try {
@@ -240,7 +240,7 @@ public class TezContainerLauncherImpl extends DagContainerLauncher {
             + this.containerID + " : "
             + ExceptionUtils.getStackTrace(t);
           getContext().containerStopFailed(containerID, message);
-          LOG.warn(message);
+          LOG.error("Temp", new RuntimeException());
           this.state = ContainerState.DONE;
           return;
         } finally {
@@ -267,7 +267,7 @@ public class TezContainerLauncherImpl extends DagContainerLauncher {
     this.limitOnPoolSize = conf.getInt(
         TezConfiguration.TEZ_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT,
         TezConfiguration.TEZ_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT_DEFAULT);
-    LOG.info("Upper limit on the thread pool size is " + this.limitOnPoolSize);
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override
@@ -346,7 +346,7 @@ public class TezContainerLauncherImpl extends DagContainerLauncher {
   @Override
   public void shutdown() {
     if(!serviceStopped.compareAndSet(false, true)) {
-      LOG.info("Ignoring multiple stops");
+      LOG.error("Temp", new RuntimeException());
       return;
     }
     if (eventHandlingThread != null) {
@@ -385,7 +385,7 @@ public class TezContainerLauncherImpl extends DagContainerLauncher {
       // Load ContainerManager tokens before creating a connection.
       // TODO: Do it only once per NodeManager.
       ContainerId containerID = event.getBaseOperation().getContainerId();
-      LOG.debug("Processing ContainerOperation {}", event);
+      LOG.error("Temp", new RuntimeException());
 
       Container c = getContainer(event);
       switch(event.getOpType()) {
@@ -409,7 +409,7 @@ public class TezContainerLauncherImpl extends DagContainerLauncher {
   private static class CustomizedRejectedExecutionHandler implements RejectedExecutionHandler {
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-      LOG.warn("Can't submit task to ThreadPoolExecutor:" + executor);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 

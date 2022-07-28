@@ -87,7 +87,7 @@ public class TestTezMerger {
       workDir = new Path(
           new Path(System.getProperty("test.build.data", "/tmp")), TestTezMerger.class.getName())
           .makeQualified(localFs.getUri(), localFs.getWorkingDirectory());
-      LOG.info("Using workDir: " + workDir);
+      LOG.error("Temp", new RuntimeException());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -174,10 +174,10 @@ public class TestTezMerger {
 
       if (records.isSameKey()) {
         assertTrue("Expected " + correctResult, correctResult.equalsIgnoreCase(SAME_KEY));
-        LOG.info("\tSame Key : key=" + k + ", val=" + v);
+        LOG.error("Temp", new RuntimeException());
       } else {
         assertTrue("Expected " + correctResult, correctResult.equalsIgnoreCase(DIFF_KEY));
-        LOG.info("key=" + k + ", val=" + v);
+        LOG.error("Temp", new RuntimeException());
       }
 
       i++;
@@ -191,7 +191,7 @@ public class TestTezMerger {
     //Merge datasets with custom comparator
     RawComparator rc = new CustomComparator();
 
-    LOG.info("Test with custom comparator with empty strings in middle");
+    LOG.error("Temp", new RuntimeException());
 
     //Test with 4 files, where some texts are empty strings
     data.add("0");
@@ -241,7 +241,7 @@ public class TestTezMerger {
     //Merge datasets with custom comparator
     RawComparator rc = new CustomComparator();
 
-    LOG.info("Test with custom comparator with no RLE");
+    LOG.error("Temp", new RuntimeException());
 
     //Test with 3 files,
     data.add("1");
@@ -288,7 +288,7 @@ public class TestTezMerger {
     List<Path> pathList = new LinkedList<Path>();
     List<String> data = Lists.newLinkedList();
 
-    LOG.info("Test with custom comparator with RLE spanning across segment boundaries");
+    LOG.error("Temp", new RuntimeException());
 
     //Test with 2 files, where the RLE keys can span across files
     //First file
@@ -328,7 +328,7 @@ public class TestTezMerger {
     List<Path> pathList = new LinkedList<Path>();
     List<String> data = Lists.newLinkedList();
 
-    LOG.info("Test with custom comparator with mixed set of segments (empty, non-empty etc)");
+    LOG.error("Temp", new RuntimeException());
 
     //Test with 2 files, where the RLE keys can span across files
     //First file
@@ -503,7 +503,7 @@ public class TestTezMerger {
     List<Path> pathList = new LinkedList<Path>();
     List<String> data = Lists.newLinkedList();
 
-    LOG.info("Test with custom comparator");
+    LOG.error("Temp", new RuntimeException());
 
     //Test with 3 files, same keys in middle of file
     //First file
@@ -538,7 +538,7 @@ public class TestTezMerger {
     List<Path> pathList = new LinkedList<Path>();
     List<String> data = Lists.newLinkedList();
 
-    LOG.info("Test with custom comparator where all files are empty");
+    LOG.error("Temp", new RuntimeException());
 
     //First file
     pathList.add(createIFileWithTextData(data));
@@ -630,13 +630,13 @@ public class TestTezMerger {
       v.readFields(value);
 
       if (records.isSameKey()) {
-        LOG.info("\tSame Key : key=" + k.get() + ", val=" + v.get());
+        LOG.error("Temp", new RuntimeException());
         //More than one key should be present in the source data
         assertTrue(verificationDataSet.get(k.get()).size() > 1);
         //Ensure this is same as the previous key we saw
         assertTrue("previousKey=" + pk + ", current=" + k.get(), pk == k.get());
       } else {
-        LOG.info("key=" + k.get() + ", val=" + v.get());
+        LOG.error("Temp", new RuntimeException());
       }
       pk = k.get();
 
@@ -662,7 +662,7 @@ public class TestTezMerger {
           .getValue());
     }
 
-    LOG.info("******************");
+    LOG.error("Temp", new RuntimeException());
   }
 
   private List<Path> createIFiles(int fileCount, int keysPerFile)
@@ -770,7 +770,7 @@ public class TestTezMerger {
   static Path writeIFile(int keysPerFile, int repeatCount) throws
       IOException {
     TreeMultimap<Integer, Long> dataSet = createDataForIFile(keysPerFile, repeatCount);
-    LOG.info("DataSet size : " + dataSet.size());
+    LOG.error("Temp", new RuntimeException());
     Path path = new Path(workDir + "/src", "data_" + System.nanoTime() + ".out");
     FSDataOutputStream out = localFs.create(path);
     //create IFile with RLE
@@ -807,7 +807,7 @@ public class TestTezMerger {
           dataSet.put(key.get(), value.get());
         }
         i += repeatCount;
-        LOG.info("Repeated key count=" + (repeatCount));
+        LOG.error("Temp", new RuntimeException());
       } else {
         IntWritable key = new IntWritable(rnd.nextInt(keyCount));
         LongWritable value = new LongWritable(System.nanoTime());
@@ -816,10 +816,10 @@ public class TestTezMerger {
     }
     for (Integer key : dataSet.keySet()) {
       for (Long value : dataSet.get(key)) {
-        LOG.info("Key=" + key + ", val=" + value);
+        LOG.error("Temp", new RuntimeException());
       }
     }
-    LOG.info("=============");
+    LOG.error("Temp", new RuntimeException());
     return dataSet;
   }
 

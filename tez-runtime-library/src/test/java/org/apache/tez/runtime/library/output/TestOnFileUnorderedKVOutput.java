@@ -105,7 +105,7 @@ public class TestOnFileUnorderedKVOutput {
       workDir = new Path(
           new Path(System.getProperty("test.build.data", "/tmp")), TestOnFileUnorderedKVOutput.class.getName())
           .makeQualified(localFs.getUri(), localFs.getWorkingDirectory());
-      LOG.info("Using workDir: " + workDir);
+      LOG.error("Temp", new RuntimeException());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

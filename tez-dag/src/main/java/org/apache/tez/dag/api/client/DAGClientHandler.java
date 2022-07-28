@@ -100,7 +100,7 @@ public class DAGClientHandler {
     final String currentDAGIdStr = currentDAG.getID().toString();
     if (!currentDAGIdStr.equals(dagIdStr)) {
       if (getAllDagIDs().contains(dagIdStr)) {
-        LOG.debug("Looking for finished dagId {} current dag is {}", dagIdStr, currentDAGIdStr);
+        LOG.error("Temp", new RuntimeException());
         throw new DAGNotRunningException("DAG " + dagIdStr + " Not running, current dag is " +
             currentDAGIdStr);
       } else {
@@ -118,7 +118,7 @@ public class DAGClientHandler {
     try {
       callerUGI = UserGroupInformation.getCurrentUser();
     } catch (IOException ie) {
-      LOG.info("Error getting UGI ", ie);
+      LOG.error("Temp", new RuntimeException());
       throw new TezException(ie);
     }
     String message = callerUGI.toString();
@@ -132,7 +132,7 @@ public class DAGClientHandler {
     DAG dag = getDAG(dagIdStr);
     String message = "Sending client kill from " + getClientInfo() +
         " to dag " + dagIdStr;
-    LOG.info(message);
+    LOG.error("Temp", new RuntimeException());
     dagAppMaster.tryKillDAG(dag, message);
   }
 
@@ -144,7 +144,7 @@ public class DAGClientHandler {
   // Only to be invoked by the DAGClient.
   public synchronized void shutdownAM() throws TezException {
     String message = "Received message to shutdown AM from " + getClientInfo();
-    LOG.info(message);
+    LOG.error("Temp", new RuntimeException());
     if (dagAppMaster != null) {
       dagAppMaster.shutdownTezAM(message);
     }

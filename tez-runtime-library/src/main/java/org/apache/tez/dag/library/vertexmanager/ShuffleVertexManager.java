@@ -128,7 +128,7 @@ public class ShuffleVertexManager extends ShuffleVertexManagerBase {
       super(enableAutoParallelism, desiredTaskInputDataSize,
           slowStartMinFraction, slowStartMaxFraction);
       this.minTaskParallelism = minTaskParallelism;
-      LOG.info("minTaskParallelism {}", this.minTaskParallelism);
+      LOG.error("Temp", new RuntimeException());
     }
     int getMinTaskParallelism() {
       return minTaskParallelism;
@@ -598,7 +598,7 @@ public class ShuffleVertexManager extends ShuffleVertexManagerBase {
 
       if (LOG.isDebugEnabled()) {
         for (PendingTaskInfo pendingTask : pendingTasks) {
-          LOG.debug("Pending task: {}", pendingTask.toString());
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }

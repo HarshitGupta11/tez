@@ -222,7 +222,7 @@ public class ShuffleHandler {
     port = ((InetSocketAddress)ch.localAddress()).getPort();
     conf.set(SHUFFLE_PORT_CONFIG_KEY, Integer.toString(port));
     SHUFFLE.setPort(port);
-    LOG.info("TezShuffleHandler" + " listening on port " + port);
+    LOG.error("Temp", new RuntimeException());
   }
 
   private void initPipeline(ServerBootstrap bootstrap, Configuration conf) throws Exception {
@@ -298,7 +298,7 @@ public class ShuffleHandler {
     String jobIdString = appIdString.replace("application", "job");
     userRsrc.put(jobIdString, user);
     secretManager.addTokenForJob(jobIdString, jobToken);
-    LOG.info("Added token for " + jobIdString);
+    LOG.error("Temp", new RuntimeException());
   }
 
   private void recordJobShuffleInfo(String appIdString, String user,
@@ -423,7 +423,7 @@ public class ShuffleHandler {
         verifyRequest(jobId, ctx, request, response,
             new URL("http", "", this.port, reqUri));
       } catch (IOException e) {
-        LOG.warn("Shuffle failure ", e);
+        LOG.error("Temp", new RuntimeException());
         sendError(ctx, e.getMessage(), UNAUTHORIZED);
         return;
       }
@@ -509,7 +509,7 @@ public class ShuffleHandler {
       Path mapOutputFileName =
           lDirAlloc.getLocalPathToRead(base + "/file.out", conf);
       if (LOG.isDebugEnabled()) {
-        LOG.debug(base + " : " + mapOutputFileName + " : " + indexFileName);
+        LOG.error("Temp", new RuntimeException());
       }
       MapOutputInfo outputInfo = new MapOutputInfo(mapOutputFileName, info);
       return outputInfo;
@@ -548,7 +548,7 @@ public class ShuffleHandler {
     protected void setResponseHeaders(HttpResponse response,
         boolean keepAliveParam, long contentLength) {
       if (!connectionKeepAliveEnabled && !keepAliveParam) {
-        LOG.info("Setting connection close header...");
+        LOG.error("Temp", new RuntimeException());
         response.headers().set(HttpHeaders.Names.CONNECTION, CONNECTION_CLOSE);
       } else {
         response.headers().set(HttpHeaders.Names.CONTENT_LENGTH,
@@ -556,7 +556,7 @@ public class ShuffleHandler {
         response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
         response.headers().set(HttpHeaders.Values.KEEP_ALIVE, "timeout="
             + connectionKeepAliveTimeOut);
-        LOG.info("Content Length in shuffle : " + contentLength);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -575,7 +575,7 @@ public class ShuffleHandler {
         throws IOException {
       SecretKey tokenSecret = secretManager.retrieveTokenSecret(appid);
       if (null == tokenSecret) {
-        LOG.info("Request for unknown token " + appid);
+        LOG.error("Temp", new RuntimeException());
         throw new IOException("could not find jobid");
       }
       // string to encrypt
@@ -584,7 +584,7 @@ public class ShuffleHandler {
       String urlHashStr =
         request.headers().get(SecureShuffleUtils.HTTP_HEADER_URL_HASH);
       if (urlHashStr == null) {
-        LOG.info("Missing header hash for " + appid);
+        LOG.error("Temp", new RuntimeException());
         throw new IOException("fetcher cannot be authenticated");
       }
       if (LOG.isDebugEnabled()) {
@@ -626,7 +626,7 @@ public class ShuffleHandler {
       try {
         spill = SecureIOUtils.openForRandomRead(spillfile, "r", user, null);
       } catch (FileNotFoundException e) {
-        LOG.info(spillfile + " not found");
+        LOG.error("Temp", new RuntimeException());
         return null;
       }
       ChannelFuture writeFuture;
@@ -664,12 +664,12 @@ public class ShuffleHandler {
         return;
       } else if (cause instanceof IOException) {
         if (cause instanceof ClosedChannelException) {
-          LOG.debug("Ignoring closed channel error", cause);
+          LOG.error("Temp", new RuntimeException());
           return;
         }
         String message = String.valueOf(cause.getMessage());
         if (IGNORABLE_ERROR_MESSAGE.matcher(message).matches()) {
-          LOG.debug("Ignoring client socket close", cause);
+          LOG.error("Temp", new RuntimeException());
           return;
         }
       }

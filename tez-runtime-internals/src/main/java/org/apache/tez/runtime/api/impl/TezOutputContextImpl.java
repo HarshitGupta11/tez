@@ -193,6 +193,6 @@ public class TezOutputContextImpl extends TezTaskContextImpl
   public void close() throws IOException {
     super.close();
     this.userPayload = null;
-    LOG.debug("Cleared TezOutputContextImpl related information");
+    LOG.error("Temp", new RuntimeException());
   }
 }

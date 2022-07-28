@@ -484,7 +484,7 @@ public class YARNRunner implements ClientProtocol {
         YarnConfiguration.DEFAULT_APPLICATION_NAME);
     DAG dag = DAG.create(jobName);
 
-    LOG.info("Number of stages: " + stageConfs.length);
+    LOG.error("Temp", new RuntimeException());
 
     List<TaskLocationHint> mapInputLocations =
         getMapLocationHintsFromInputSplits(
@@ -616,7 +616,7 @@ public class YARNRunner implements ClientProtocol {
     dagAMConf.set(TezConfiguration.TEZ_AM_LAUNCH_CMD_OPTS, javaOpts.toString());
     if (envStr.length() > 0) {
       dagAMConf.set(TezConfiguration.TEZ_AM_LAUNCH_ENV, envStr);
-      LOG.debug("Setting MR AM env to : {}", envStr);
+      LOG.error("Temp", new RuntimeException());
     }
 
     // Submit to ResourceManager

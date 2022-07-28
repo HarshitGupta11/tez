@@ -220,7 +220,7 @@ public class TaskSchedulerManager extends AbstractService implements
 
   public void setSignalled(boolean isSignalled) {
     this.isSignalled = isSignalled;
-    LOG.info("TaskScheduler notified that iSignalled was : " + isSignalled);
+    LOG.error("Temp", new RuntimeException());
   }
 
   public int getNumClusterNodes() {
@@ -265,7 +265,7 @@ public class TaskSchedulerManager extends AbstractService implements
   }
 
   public synchronized void handleEvent(AMSchedulerEvent sEvent) {
-    LOG.debug("Processing the event {}", sEvent);
+    LOG.error("Temp", new RuntimeException());
     switch (sEvent.getType()) {
     case S_TA_LAUNCH_REQUEST:
       handleTaLaunchRequest((AMSchedulerEventTALaunchRequest) sEvent);
@@ -309,7 +309,7 @@ public class TaskSchedulerManager extends AbstractService implements
   public void handle(AMSchedulerEvent event) {
     int qSize = eventQueue.size();
     if (qSize != 0 && qSize % 1000 == 0) {
-      LOG.info("Size of event-queue in RMContainerAllocator is " + qSize);
+      LOG.error("Temp", new RuntimeException());
     }
     int remCapacity = eventQueue.remainingCapacity();
     if (remCapacity < 1000) {
@@ -590,7 +590,7 @@ public class TaskSchedulerManager extends AbstractService implements
   @VisibleForTesting
   TaskScheduler createYarnTaskScheduler(TaskSchedulerContext taskSchedulerContext,
                                         int schedulerId) throws TezException {
-    LOG.info("Creating YARN TaskScheduler: {}", yarnSchedulerClassName);
+    LOG.error("Temp", new RuntimeException());
     return ReflectionUtils.createClazzInstance(yarnSchedulerClassName,
         new Class[] { TaskSchedulerContext.class },
         new Object[] { taskSchedulerContext });
@@ -676,7 +676,7 @@ public class TaskSchedulerManager extends AbstractService implements
             event = TaskSchedulerManager.this.eventQueue.take();
           } catch (InterruptedException e) {
             if(!stopEventHandling) {
-              LOG.warn("Continuing after interrupt : ", e);
+              LOG.error("Temp", new RuntimeException());
             }
             continue;
           }
@@ -727,7 +727,7 @@ public class TaskSchedulerManager extends AbstractService implements
         taskSchedulerServiceWrappers[i].stop();
       }
     }
-    LOG.info("Shutting down AppCallbackExecutor");
+    LOG.error("Temp", new RuntimeException());
     appCallbackExecutor.shutdownNow();
     appCallbackExecutor.awaitTermination(1000l, TimeUnit.MILLISECONDS);
   }
@@ -812,7 +812,7 @@ public class TaskSchedulerManager extends AbstractService implements
   public synchronized void appShutdownRequested(int schedulerId) {
     // This can happen if the RM has been restarted. If it is in that state,
     // this application must clean itself up.
-    LOG.info("App shutdown requested by scheduler {}", schedulerId);
+    LOG.error("Temp", new RuntimeException());
     sendEvent(new DAGAppMasterEvent(DAGAppMasterEventType.AM_REBOOT));
   }
 
@@ -861,7 +861,7 @@ public class TaskSchedulerManager extends AbstractService implements
         }
       }
     }
-    LOG.debug("Setting job diagnostics to {}", sb);
+    LOG.error("Temp", new RuntimeException());
 
     // if history url is set use the same, if historyUrl is set to "" then rm ui disables the
     // history url
@@ -985,7 +985,7 @@ public class TaskSchedulerManager extends AbstractService implements
   }
 
   public void setShouldUnregisterFlag() {
-    LOG.info("TaskScheduler notified that it should unregister from RM");
+    LOG.error("Temp", new RuntimeException());
     this.shouldUnregisterFlag.set(true);
     for (int i = 0 ; i < taskSchedulers.length ; i++) {
       if (this.taskSchedulers[i] != null) {

@@ -92,10 +92,10 @@ public class TestTezIds {
     String tIdStr = tId.toString();
     String taIdStr = taId.toString();
 
-    LOG.info("DAG ID:" + dagIdStr);
-    LOG.info("Vertex ID:" + vIdStr);
-    LOG.info("Task ID:" + tIdStr);
-    LOG.info("Attempt ID:" + taIdStr);
+    LOG.error("Temp", new RuntimeException());
+    LOG.error("Temp", new RuntimeException());
+    LOG.error("Temp", new RuntimeException());
+    LOG.error("Temp", new RuntimeException());
 
     Assert.assertTrue(dagIdStr.startsWith("dag"));
     Assert.assertTrue(vIdStr.startsWith("vertex"));

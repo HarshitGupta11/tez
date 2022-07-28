@@ -166,7 +166,7 @@ public class TaskSpecificLaunchCmdOption {
         BitSet taskSet = parseTasks(matcher.group(2).trim());
         resultSet.put(vertexName, taskSet);
       }
-      LOG.info("Specific tasks with additional launch-cmd options=" + resultSet);
+      LOG.error("Temp", new RuntimeException());
       return resultSet;
     } else {
       return null;
@@ -204,7 +204,7 @@ public class TaskSpecificLaunchCmdOption {
        */
       if (task.endsWith(":") || task.startsWith(":")) {
        //invalid range. e.g :20, 6: are not supported.
-        LOG.warn("Partial range is considered as an invalid option");
+        LOG.error("Temp", new RuntimeException());
         return null;
       }
       Matcher taskMatcher = RANGE_REGEX.matcher(task);

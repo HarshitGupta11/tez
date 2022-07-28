@@ -119,7 +119,7 @@ public class ProtoHistoryParser extends SimpleHistoryParser {
         try {
           reader.close();
         } catch (IOException e) {
-          LOG.warn("error while closing ProtoMessageReader", e);
+          LOG.error("Temp", new RuntimeException());
         }
       }
     };

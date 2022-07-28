@@ -38,7 +38,7 @@ public class JavaOptsChecker {
 
   public void checkOpts(String opts) throws TezException {
     Set<String> gcOpts = new TreeSet<String>();
-    LOG.debug("Checking JVM GC opts: {}", opts);
+    LOG.error("Temp", new RuntimeException());
 
     Matcher matcher = pattern.matcher(opts);
     while (matcher.find()) {
@@ -73,7 +73,7 @@ public class JavaOptsChecker {
         }
       }
 
-      LOG.debug("Found clashing GC opts, conflicting GC Values={}", gcOpts);
+      LOG.error("Temp", new RuntimeException());
 
       throw new TezException("Invalid/conflicting GC options found,"
           + " cmdOpts=\"" + opts + "\"");

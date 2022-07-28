@@ -132,7 +132,7 @@ public class UnorderedKVReader<K, V> extends KeyValueReader {
         }
         nextInputExists = moveToNextInput();
       }
-      LOG.info("Num Records read: " + numRecordsRead);
+      LOG.error("Temp", new RuntimeException());
       completedProcessing = true;
       return false;
     }
@@ -201,7 +201,7 @@ public class UnorderedKVReader<K, V> extends KeyValueReader {
     try {
       currentFetchedInput = shuffleManager.getNextInput();
     } catch (InterruptedException e) {
-      LOG.warn("Interrupted while waiting for next available input", e);
+      LOG.error("Temp", new RuntimeException());
       Thread.currentThread().interrupt();
       throw new IOInterruptedException(e);
     }

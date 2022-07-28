@@ -200,7 +200,7 @@ public class OrderedWordCount extends TezExampleBase {
     DAG dag = createDAG(tezConf, args[0], args[1],
         args.length == 3 ? Integer.parseInt(args[2]) : 1, isDisableSplitGrouping(),
         isGenerateSplitInClient(), "OrderedWordCount");
-    LOG.info("Running OrderedWordCount");
+    LOG.error("Temp", new RuntimeException());
     return runDag(dag, isCountersLog(), LOG);
   }
 

@@ -82,7 +82,7 @@ public class TestMapProcessor {
       workDir =
           new Path(new Path(System.getProperty("test.build.data", "/tmp")),
                    "TestMapProcessor").makeQualified(localFs);
-      LOG.info("Using workDir: " + workDir);
+      LOG.error("Temp", new RuntimeException());
       MapUtils.configureLocalDirs(defaultConf, workDir.toString());
     } catch (IOException e) {
       throw new RuntimeException("init failure", e);
@@ -174,7 +174,7 @@ public class TestMapProcessor {
 //    t.close();
 
     Path mapOutputFile = getMapOutputFile(jobConf, outputContext);
-    LOG.info("mapOutputFile = " + mapOutputFile);
+    LOG.error("Temp", new RuntimeException());
     IFile.Reader reader =
         new IFile.Reader(localFs, mapOutputFile, null, null, null, false, 0, -1);
     LongWritable key = new LongWritable();
@@ -190,7 +190,7 @@ public class TestMapProcessor {
         assert(prev <= key.get());
         prev = key.get();
       }
-      LOG.info("key = " + key.get() + "; value = " + value);
+      LOG.error("Temp", new RuntimeException());
     }
     reader.close();
   }

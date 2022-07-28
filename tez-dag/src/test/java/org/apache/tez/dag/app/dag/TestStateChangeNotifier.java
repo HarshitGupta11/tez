@@ -73,7 +73,7 @@ public class TestStateChangeNotifier {
       while(count.get() <=0) {
         try {
           Thread.sleep(10);
-          LOG.info("sleep to wait for available events");
+          LOG.error("Temp", new RuntimeException());
         } catch (InterruptedException e) {
           e.printStackTrace();
         }

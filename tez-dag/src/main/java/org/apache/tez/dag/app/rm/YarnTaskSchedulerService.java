@@ -401,7 +401,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
           amRmClient.unregisterApplicationMaster(status.exitStatus,
               status.exitMessage,
               status.postCompletionTrackingUrl);
-          LOG.info("Successfully unregistered application from RM");
+          LOG.error("Temp", new RuntimeException());
           hasUnregistered.set(true);
         }
       }
@@ -441,7 +441,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
         Object task = releasedContainers.remove(completedId);
         if(task != null){
           if (delayedContainer != null) {
-            LOG.warn("Held container should be null since releasedContainer is not");
+            LOG.error("Temp", new RuntimeException());
           }
           // TODO later we may want to check if exit code matched expectation
           // e.g. successful container should not come back fail exit code after
@@ -461,7 +461,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
           heldContainers.remove(completedId);
           Resources.subtract(allocatedResources, delayedContainer.getContainer().getResource());
         } else {
-          LOG.warn("Held container expected to be not null for a non-AM-released container");
+          LOG.error("Temp", new RuntimeException());
         }
         if(task != null) {
           // completion of a container we have allocated currently
@@ -474,10 +474,10 @@ public class YarnTaskSchedulerService extends TaskScheduler
 
         // container neither allocated nor released
         if (delayedContainer != null) {
-          LOG.info("Delayed container {} completed", containerStatus.getContainerId());
+          LOG.error("Temp", new RuntimeException());
           maybeRescheduleContainerAtPriority(delayedContainer.getContainer().getPriority());
         } else {
-          LOG.info("Ignoring unknown container: " + containerStatus.getContainerId());
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }
@@ -495,7 +495,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
           containers.size());
       if (LOG.isDebugEnabled()) {
         for (Container container : containers) {
-          LOG.debug("Release container:" + container.getId() + ", because App is shutting down.");
+          LOG.error("Temp", new RuntimeException());
           releaseContainer(container.getId());
         }
       }
@@ -508,7 +508,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
       for (Container container: containers) {
         sb.append(container.getId()).append(", ");
       }
-      LOG.debug("Assigned New Containers: " + sb.toString());
+      LOG.error("Temp", new RuntimeException());
     }
 
     synchronized (this) {
@@ -557,7 +557,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
 
     // Release any unassigned containers given by the RM
     if (containers.iterator().hasNext()) {
-      LOG.info("Releasing newly assigned containers which could not be allocated");
+      LOG.error("Temp", new RuntimeException());
     }
     releaseUnassignedContainers(containers);
 
@@ -936,7 +936,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
 
   @Override
   public synchronized void blacklistNode(NodeId nodeId) {
-    LOG.info("Blacklisting node: " + nodeId);
+    LOG.error("Temp", new RuntimeException());
     amRmClient.addNodeToBlacklist(nodeId);
     blacklistedNodes.add(nodeId);
   }
@@ -944,7 +944,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
   @Override
   public synchronized void unblacklistNode(NodeId nodeId) {
     if (blacklistedNodes.remove(nodeId)) {
-      LOG.info("UnBlacklisting node: " + nodeId);
+      LOG.error("Temp", new RuntimeException());
       amRmClient.removeNodeFromBlacklist(nodeId);
     }
   }
@@ -994,7 +994,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
             " does not fit in container resource: "  + container.getResource());
       }
     } else {
-      LOG.warn("Matching requested to unknown container: " + containerId);
+      LOG.error("Temp", new RuntimeException());
     }
     
     CRCookie cookie = new CRCookie(task, clientCookie, containerSignature);
@@ -1034,7 +1034,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
       CookieContainerRequest request = removeTaskRequest(task);
       if (request != null) {
         // task not allocated yet
-        LOG.info("Deallocating task: " + task + " before allocation");
+        LOG.error("Temp", new RuntimeException());
         return false;
       }
 
@@ -1042,7 +1042,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
       Container container = doBookKeepingForTaskDeallocate(task);
       if (container == null) {
         // task neither requested nor allocated.
-        LOG.info("Ignoring removal of unknown task: " + task);
+        LOG.error("Temp", new RuntimeException());
         return false;
       } else {
         if (LOG.isDebugEnabled()) {
@@ -1093,15 +1093,15 @@ public class YarnTaskSchedulerService extends TaskScheduler
       return task;
     }
 
-    LOG.info("Ignoring dealloction of unknown container: " + containerId);
+    LOG.error("Temp", new RuntimeException());
     return null;
   }
 
   @Override
   public synchronized void initiateStop() {
-    LOG.info("Initiating stop of YarnTaskScheduler");
+    LOG.error("Temp", new RuntimeException());
     // release held containers
-    LOG.info("Releasing held containers");
+    LOG.error("Temp", new RuntimeException());
     isStopStarted.set(true);
     // Create a new list for containerIds to iterate, otherwise it would cause ConcurrentModificationException
     // because method releaseContainer will change heldContainers.
@@ -1114,7 +1114,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
     }
 
     // remove taskRequest from AMRMClient to avoid allocating new containers in the next heartbeat
-    LOG.info("Removing all pending taskRequests");
+    LOG.error("Temp", new RuntimeException());
     // Create a new list for tasks to avoid ConcurrentModificationException
     List<Object> tasks = new ArrayList<Object>(taskRequests.size());
     for (Object task : taskRequests.keySet()) {
@@ -1168,10 +1168,10 @@ public class YarnTaskSchedulerService extends TaskScheduler
     synchronized (this) {
       Resource freeResources = amRmClient.getAvailableResources();
       if (LOG.isDebugEnabled()) {
-        LOG.debug(constructPreemptionPeriodicLog(freeResources));
+        LOG.error("Temp", new RuntimeException());
       } else {
         if (numHeartbeats % 50 == 1) {
-          LOG.info(constructPreemptionPeriodicLog(freeResources));
+          LOG.error("Temp", new RuntimeException());
         }
       }
       assert freeResources.getMemory() >= 0;
@@ -1213,9 +1213,9 @@ public class YarnTaskSchedulerService extends TaskScheduler
 
       if(!preemptionWaitDeadlineCrossed && 
           fitsIn(highestPriRequest.getCapability(), freeResources)) {
-        LOG.debug("{} fits in free resources", highestPriRequest);
+        LOG.error("Temp", new RuntimeException());
         if (numHeartbeats % 50 == 1) {
-          LOG.info(highestPriRequest + " fits in free resources");
+          LOG.error("Temp", new RuntimeException());
         }
         return true;
       }
@@ -1405,7 +1405,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
       for(int i=0; i<numPendingRequestsToService; ++i) {
         ContainerId cId = preemptedContainers[i];
         if (cId != null) {
-          LOG.info("Preempting container: " + cId + " currently allocated to a task.");
+          LOG.error("Temp", new RuntimeException());
           getContext().preemptContainer(cId);
         }
       }
@@ -1418,7 +1418,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
       Object task = entry.getKey();
       CookieContainerRequest request = entry.getValue();
       if (request.getPriority().equals(priority)) {
-        LOG.info("Resending request for task again: " + task);
+        LOG.error("Temp", new RuntimeException());
         deallocateTask(task, true, null, null);
         allocateTask(task, request.getCapability(),
             (request.getNodes() == null ? null :
@@ -1761,7 +1761,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
   private void releaseUnassignedContainers(Iterable<Container> containers) {
     for (Container container : containers) {
       if (LOG.isDebugEnabled()) {
-        LOG.debug("Releasing unused container: " + container.getId());
+        LOG.error("Temp", new RuntimeException());
       }
       releaseContainer(container.getId());
     }
@@ -2001,7 +2001,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
               // Re-loop to see if tryAssignAll is set.
               continue;
             } catch (InterruptedException e) {
-              LOG.info("AllocatedContainerManager Thread interrupted");
+              LOG.error("Temp", new RuntimeException());
             }
           }
         }
@@ -2017,7 +2017,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
         if (delayedContainer == null) {
           continue;
         }
-        LOG.debug("Considering HeldContainer: {} for assignment", delayedContainer);
+        LOG.error("Temp", new RuntimeException());
         long currentTs = System.currentTimeMillis();
         long nextScheduleTs = delayedContainer.getNextScheduleTime();
         if (currentTs >= nextScheduleTs) {
@@ -2055,7 +2055,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
                 this.wait(diff);
               }
             } catch (InterruptedException e) {
-              LOG.info("AllocatedContainerManager Thread interrupted");
+              LOG.error("Temp", new RuntimeException());
             }
           }
         }
@@ -2080,7 +2080,7 @@ public class YarnTaskSchedulerService extends TaskScheduler
         // honor reuse-locality flags (container not timed out yet), Don't queue
         // (already in queue), don't release (release happens when containers
         // time-out)
-        LOG.debug("Trying to assign all delayed containers to newly received tasks");
+        LOG.error("Temp", new RuntimeException());
         Iterator<HeldContainer> iter = delayedContainers.iterator();
         while(iter.hasNext()) {
           HeldContainer delayedContainer = iter.next();

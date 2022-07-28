@@ -256,7 +256,7 @@ public class ATSImportTool extends Configured implements Tool {
         && entities.length() > 0) {
 
       int limit = (entities.length() >= batchSize) ? (entities.length() - 1) : entities.length();
-      LOG.debug("Limit={}, downloaded entities len={}", limit, entities.length());
+      LOG.error("Temp", new RuntimeException());
 
       //write downloaded part to zipfile.  This is done to avoid any memory pressure when
       // downloading and writing 1000s of tasks.

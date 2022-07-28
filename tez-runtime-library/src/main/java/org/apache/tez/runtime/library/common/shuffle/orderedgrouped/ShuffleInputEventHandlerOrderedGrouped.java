@@ -207,7 +207,7 @@ public class ShuffleInputEventHandlerOrderedGrouped implements ShuffleEventHandl
   private void processTaskFailedEvent(InputFailedEvent ifEvent) {
     InputAttemptIdentifier taIdentifier = new InputAttemptIdentifier(ifEvent.getTargetIndex(), ifEvent.getVersion());
     scheduler.obsoleteInput(taIdentifier);
-    LOG.debug("Obsoleting output of src-task: {}", taIdentifier);
+    LOG.error("Temp", new RuntimeException());
   }
 
   /**

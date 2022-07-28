@@ -85,7 +85,7 @@ public class MRInputSplitDistributor extends InputInitializer {
     sendSerializedEvents = conf.getBoolean(
         MRJobConfig.MR_TEZ_INPUT_INITIALIZER_SERIALIZE_EVENT_PAYLOAD,
         MRJobConfig.MR_TEZ_INPUT_INITIALIZER_SERIALIZE_EVENT_PAYLOAD_DEFAULT);
-    LOG.info("Emitting serialized splits: " + sendSerializedEvents);
+    LOG.error("Temp", new RuntimeException());
 
     this.splitsProto = userPayloadProto.getSplits();
     

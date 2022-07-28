@@ -80,11 +80,11 @@ public class ScalingAllocator implements InitialMemoryAllocator {
       long requestedSize = request.getRequestedSize();
       if (requestedSize == 0) {
         allocations.add(0l);
-        LOG.debug("Scaling requested: 0 to allocated: 0");
+        LOG.error("Temp", new RuntimeException());
       } else {
         long allocated = (long) ((requestedSize / (double) totalRequested) * availableForAllocation);
         allocations.add(allocated);
-        LOG.debug("Scaling requested: {} to allocated: {}", requestedSize, allocated);  
+        LOG.error("Temp", new RuntimeException());
       }
     }
     return allocations;

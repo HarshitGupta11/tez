@@ -188,13 +188,13 @@ public class TaskCommunicatorManager extends AbstractService implements
 
   @VisibleForTesting
   TaskCommunicator createDefaultTaskCommunicator(TaskCommunicatorContext taskCommunicatorContext) {
-    LOG.info("Creating Default Task Communicator");
+    LOG.error("Temp", new RuntimeException());
     return new TezTaskCommunicatorImpl(taskCommunicatorContext);
   }
 
   @VisibleForTesting
   TaskCommunicator createUberTaskCommunicator(TaskCommunicatorContext taskCommunicatorContext) {
-    LOG.info("Creating Default Local Task Communicator");
+    LOG.error("Temp", new RuntimeException());
     return new TezLocalTaskCommunicatorImpl(taskCommunicatorContext);
   }
 
@@ -220,7 +220,7 @@ public class TaskCommunicatorManager extends AbstractService implements
       throws IOException, TezException {
     ContainerId containerId = ConverterUtils.toContainerId(request
         .getContainerIdentifier());
-    LOG.debug("Received heartbeat from container, request={}", request);
+    LOG.error("Temp", new RuntimeException());
 
     if (!registeredContainers.containsKey(containerId)) {
       LOG.warn("Received task heartbeat from unknown container with id: " + containerId +
@@ -246,7 +246,7 @@ public class TaskCommunicatorManager extends AbstractService implements
         // TODO TEZ-2003 (post) TEZ-2666. An exception back is likely a better approach than sending a shouldDie = true,
         // so that the plugin can handle the scenario. Alternately augment the response with error codes.
         // Error codes would be better than exceptions.
-        LOG.info("Attempt: " + taskAttemptID + " is not recognized for heartbeats");
+        LOG.error("Temp", new RuntimeException());
         return RESPONSE_SHOULD_DIE;
       }
 
@@ -485,7 +485,7 @@ public class TaskCommunicatorManager extends AbstractService implements
 
   @Override
   public void registerRunningContainer(ContainerId containerId, int taskCommId) {
-    LOG.debug("ContainerId: {} registered with TaskAttemptListener", containerId);
+    LOG.error("Temp", new RuntimeException());
     ContainerInfo oldInfo = registeredContainers.put(containerId, NULL_CONTAINER_INFO);
     if (oldInfo != null) {
       throw new TezUncheckedException(
@@ -510,7 +510,7 @@ public class TaskCommunicatorManager extends AbstractService implements
 
   @Override
   public void unregisterRunningContainer(ContainerId containerId, int taskCommId, ContainerEndReason endReason, String diagnostics) {
-    LOG.debug("Unregistering Container from TaskAttemptListener: {}", containerId);
+    LOG.error("Temp", new RuntimeException());
     ContainerInfo containerInfo = registeredContainers.remove(containerId);
     if (containerInfo.taskAttemptId != null) {
       registeredAttempts.remove(containerInfo.taskAttemptId);
@@ -575,7 +575,7 @@ public class TaskCommunicatorManager extends AbstractService implements
   public void unregisterTaskAttempt(TezTaskAttemptID attemptId, int taskCommId, TaskAttemptEndReason endReason, String diagnostics) {
     ContainerId containerId = registeredAttempts.remove(attemptId);
     if (containerId == null) {
-      LOG.warn("Unregister task attempt: " + attemptId + " from unknown container");
+      LOG.error("Temp", new RuntimeException());
       return;
     }
     ContainerInfo containerInfo = registeredContainers.get(containerId);

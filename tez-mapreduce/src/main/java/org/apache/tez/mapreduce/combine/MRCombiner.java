@@ -110,7 +110,7 @@ public class MRCombiner implements Combiner {
             isMap ? TaskType.MAP : TaskType.REDUCE,
             taskContext.getTaskIndex()), taskContext.getTaskAttemptNumber());
     
-    LOG.info("Using combineKeyClass: " + keyClass + ", combineValueClass: " + valClass + ", combineComparator: " +comparator + ", useNewApi: " + useNewApi);
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override

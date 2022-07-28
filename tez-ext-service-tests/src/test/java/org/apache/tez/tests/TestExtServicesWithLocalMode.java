@@ -87,7 +87,7 @@ public class TestExtServicesWithLocalMode {
         .create(TestExternalTezServices.class.getSimpleName(), 3, ((long) (jvmMax * 0.5d)), 1);
     tezTestServiceCluster.init(clusterConf);
     tezTestServiceCluster.start();
-    LOG.info("MiniTezTestServer started");
+    LOG.error("Temp", new RuntimeException());
 
     confForJobs = new Configuration(clusterConf);
     for (Map.Entry<String, String> entry : tezTestServiceCluster
@@ -107,7 +107,7 @@ public class TestExtServicesWithLocalMode {
 
     Path testRootDirPath = new Path(TEST_ROOT_DIR);
     testRootDirPath = localFs.makeQualified(testRootDirPath);
-    LOG.info("CLeaning up path: " + testRootDirPath);
+    LOG.error("Temp", new RuntimeException());
     localFs.delete(testRootDirPath, true);
   }
 
@@ -162,22 +162,22 @@ public class TestExtServicesWithLocalMode {
       String[] args = new String[]{
           dataPath1.toString(), dataPath2.toString(), "2", outputPath.toString()};
       assertEquals(0, joinExample.run(tezConf, args, tezClient));
-      LOG.info("Completed generating Data - Expected Hash Result and Actual Join Result");
+      LOG.error("Temp", new RuntimeException());
 
       assertEquals(0, tezTestServiceCluster.getNumSubmissions());
 
       // ext can consume from ext.
       runJoinValidate(tezClient, "allInExt", 7, EXECUTION_CONTEXT_EXT_SERVICE_PUSH,
           EXECUTION_CONTEXT_EXT_SERVICE_PUSH, EXECUTION_CONTEXT_EXT_SERVICE_PUSH);
-      LOG.info("Completed allInExt");
+      LOG.error("Temp", new RuntimeException());
 
       // uber can consume from uber.
       runJoinValidate(tezClient, "noneInExt", 0, null, null, null);
-      LOG.info("Completed noneInExt");
+      LOG.error("Temp", new RuntimeException());
 
       // uber can consume from ext
       runJoinValidate(tezClient, "lhsInExt", 2, EXECUTION_CONTEXT_EXT_SERVICE_PUSH, null, null);
-      LOG.info("Completed lhsInExt");
+      LOG.error("Temp", new RuntimeException());
 
       // ext cannot consume from uber in this mode since there's no shuffle handler working,
       // and the local data transfer semantics may not match.

@@ -170,9 +170,9 @@ public class TezChild {
 
 
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Executing with tokens:");
+      LOG.error("Temp", new RuntimeException());
       for (Token<?> token : credentials.getAllTokens()) {
-        LOG.debug("",token);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -232,7 +232,7 @@ public class TezChild {
             cause, "Execution Exception while fetching new work: " + e.getMessage());
       } catch (InterruptedException e) {
         error = true;
-        LOG.info("Interrupted while waiting for new work for container {}", containerIdString);
+        LOG.error("Temp", new RuntimeException());
         return new ContainerExecutionResult(ContainerExecutionResult.ExitStatus.INTERRUPTED, e,
             "Interrupted while waiting for new work");
       } finally {
@@ -242,7 +242,7 @@ public class TezChild {
       }
       TezCommonUtils.logCredentials(LOG, containerTask.getCredentials(), "containerTask");
       if (containerTask.shouldDie()) {
-        LOG.info("ContainerTask returned shouldDie=true for container {}, Exiting", containerIdString);
+        LOG.error("Temp", new RuntimeException());
         shutdown();
         return new ContainerExecutionResult(ContainerExecutionResult.ExitStatus.SUCCESS, null,
             "Asked to die by the AM");
@@ -273,10 +273,10 @@ public class TezChild {
         boolean shouldDie;
         try {
           TaskRunner2Result result = taskRunner.run();
-          LOG.info("TaskRunner2Result: {}", result);
+          LOG.error("Temp", new RuntimeException());
           shouldDie = result.isContainerShutdownRequested();
           if (shouldDie) {
-            LOG.info("Got a shouldDie notification via heartbeats for container {}. Shutting down", containerIdString);
+            LOG.error("Temp", new RuntimeException());
             shutdown();
             return new ContainerExecutionResult(ContainerExecutionResult.ExitStatus.SUCCESS, null,
                 "Asked to die by the AM");
@@ -320,7 +320,7 @@ public class TezChild {
         childUGI = UserGroupInformation.createRemoteUser(user);
         childUGI.addCredentials(containerTask.getCredentials());
       } else {
-        LOG.info("Not loading any credentials, since no credentials provided");
+        LOG.error("Temp", new RuntimeException());
       }
     }
     return childUGI;
@@ -337,10 +337,10 @@ public class TezChild {
       UserGroupInformation ugi) throws IOException, TezException {
 
     final Map<String, TezLocalResource> additionalResources = containerTask.getAdditionalResources();
-    LOG.debug("Additional Resources added to container: {}", additionalResources);
+    LOG.error("Temp", new RuntimeException());
 
     if (additionalResources != null && !additionalResources.isEmpty()) {
-      LOG.info("Localizing additional local resources for Task : " + additionalResources);
+      LOG.error("Temp", new RuntimeException());
 
       try {
         List<URL> downloadedUrls = ugi.doAs(new PrivilegedExceptionAction<List<URL>>() {
@@ -359,7 +359,7 @@ public class TezChild {
       } catch (InterruptedException e) {
         throw new TezException(e);
       }
-      LOG.info("Done localizing additional resources");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -387,13 +387,13 @@ public class TezChild {
   }
 
   public void shutdown() {
-    LOG.info("Shutdown invoked for container {}", containerIdString);
+    LOG.error("Temp", new RuntimeException());
     if (!isShutdown.getAndSet(true)) {
-      LOG.info("Shutting down container {}", containerIdString);
+      LOG.error("Temp", new RuntimeException());
       // It's possible that there's pending tasks on the executor. Those should be cancelled.
       List<Runnable> pendingRunnables = executor.shutdownNow();
       for (Runnable r : pendingRunnables) {
-        LOG.info("Cancelling pending runnables during TezChild shutdown for containerId={}", containerIdString);
+        LOG.error("Temp", new RuntimeException());
         ((FutureTask)r).cancel(false);
       }
       if (taskReporter != null) {
@@ -495,7 +495,7 @@ public class TezChild {
     final int attemptNumber = Integer.parseInt(args[4]);
     final String[] localDirs = TezCommonUtils.getTrimmedStrings(System.getenv(Environment.LOCAL_DIRS
         .name()));
-    LOG.info("TezChild starting with PID=" + pid + ", containerIdentifier=" + containerIdentifier);
+    LOG.error("Temp", new RuntimeException());
     if (LOG.isDebugEnabled()) {
       LOG.debug("Info from cmd line: AM-host: " + host + " AM-port: " + port
           + " containerIdentifier: " + containerIdentifier + " appAttemptNumber: " + attemptNumber
@@ -515,7 +515,7 @@ public class TezChild {
     if (LOG.isInfoEnabled()) {
       String systemPropsToLog = TezCommonUtils.getSystemPropertiesToLog(defaultConf);
       if (systemPropsToLog != null) {
-        LOG.info(systemPropsToLog);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 

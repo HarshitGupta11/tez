@@ -202,7 +202,7 @@ public class WeightedScalingMemoryDistributor implements InitialMemoryAllocator 
         long newTotal = Math.min(allocations.get(i) + additional, request.requestSize);
         // TODO Later - If requestedSize is used, the difference could be allocated to others.
         allocations.set(i, newTotal);
-        LOG.debug("Adding {} to {} total={}", additional, request.componentClassname, newTotal);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }
@@ -225,7 +225,7 @@ public class WeightedScalingMemoryDistributor implements InitialMemoryAllocator 
   private Integer getScaleFactorForType(RequestType requestType) {
     Integer typeScaleFactor = typeScaleMap.get(requestType);
     if (typeScaleFactor == null) {
-      LOG.warn("Bad scale factor for requestType: " + requestType + ", Using factor 0");
+      LOG.error("Temp", new RuntimeException());
       typeScaleFactor = 0;
     }
     return typeScaleFactor;
@@ -244,7 +244,7 @@ public class WeightedScalingMemoryDistributor implements InitialMemoryAllocator 
       requestType = RequestType.PARTITIONED_UNSORTED_OUTPUT;
     } else {
       requestType = RequestType.OTHER;
-      LOG.debug("Falling back to RequestType.OTHER for class: {}", className);
+      LOG.error("Temp", new RuntimeException());
     }
     return requestType;
   }
@@ -254,7 +254,7 @@ public class WeightedScalingMemoryDistributor implements InitialMemoryAllocator 
         DEFAULT_TASK_MEMORY_WEIGHTED_RATIOS);
     int numExpectedValues = RequestType.values().length;
     if (ratios == null) {
-      LOG.info("No ratio specified. Falling back to Linear scaling");
+      LOG.error("Temp", new RuntimeException());
       ratios = new String[numExpectedValues];
       int i = 0;
       for (RequestType requestType : RequestType.values()) {
@@ -285,7 +285,7 @@ public class WeightedScalingMemoryDistributor implements InitialMemoryAllocator 
       typeScaleMap.put(requestType, ratioVal);
       sb.append("[").append(requestType).append(":").append(ratioVal).append("]");
     }
-    LOG.info("ScaleRatiosUsed=" + sb.toString());
+    LOG.error("Temp", new RuntimeException());
   }
 
   private double computeReservedFraction(int numTotalRequests) {

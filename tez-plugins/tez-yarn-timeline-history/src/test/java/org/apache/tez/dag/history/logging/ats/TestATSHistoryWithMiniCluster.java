@@ -90,7 +90,7 @@ public class TestATSHistoryWithMiniCluster {
         mrrTezCluster.init(conf);
         mrrTezCluster.start();
       } catch (Throwable e) {
-        LOG.info("Failed to start Mini Tez Cluster", e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
     timelineAddress = mrrTezCluster.getConfig().get(
@@ -103,7 +103,7 @@ public class TestATSHistoryWithMiniCluster {
 
   @AfterClass
   public static void tearDown() throws InterruptedException {
-    LOG.info("Shutdown invoked");
+    LOG.error("Temp", new RuntimeException());
     Thread.sleep(10000);
     if (mrrTezCluster != null) {
       mrrTezCluster.stop();

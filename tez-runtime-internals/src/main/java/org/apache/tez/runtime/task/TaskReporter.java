@@ -196,7 +196,7 @@ public class TaskReporter implements TaskReporterInterface {
 
         if (response.shouldDie) {
           // AM sent a shouldDie=true
-          LOG.info("Asked to die via task heartbeat");
+          LOG.error("Temp", new RuntimeException());
           return false;
         } else {
           if (response.numEvents < maxEventsToGet) {
@@ -218,7 +218,7 @@ public class TaskReporter implements TaskReporterInterface {
         // This is OK because the pending events will be sent via the succeeded/failed messages.
         // TaskDone is set before taskSucceeded / taskTerminated are sent out - which is what causes the
         // thread to exit.
-        LOG.warn("Exiting TaskReporter thread with pending queue size=" + pendingEventCount);
+        LOG.error("Temp", new RuntimeException());
       }
       return true;
     }
@@ -264,15 +264,15 @@ public class TaskReporter implements TaskReporterInterface {
       int maxEvents = Math.min(maxEventsToGet, task.getMaxEventsToHandle());
       TezHeartbeatRequest request = new TezHeartbeatRequest(requestId, events, fromPreRoutedEventId,
           containerIdStr, task.getTaskAttemptID(), fromEventId, maxEvents);
-      LOG.debug("Sending heartbeat to AM, request={}", request);
+      LOG.error("Temp", new RuntimeException());
 
       maybeLogCounters();
 
       TezHeartbeatResponse response = umbilical.heartbeat(request);
-      LOG.debug("Received heartbeat response from AM, response={}", response);
+      LOG.error("Temp", new RuntimeException());
 
       if (response.shouldDie()) {
-        LOG.info("Received should die response from AM");
+        LOG.error("Temp", new RuntimeException());
         askedToDie.set(true);
         return new ResponseWrapper(true, 1);
       }
@@ -318,7 +318,7 @@ public class TaskReporter implements TaskReporterInterface {
     private void maybeLogCounters() {
       if (LOG.isDebugEnabled()) {
         if (nonOobHeartbeatCounter.get() == nextHeartbeatNumToLog) {
-          LOG.debug("Counters: " + task.getCounters().toShortString());
+          LOG.error("Temp", new RuntimeException());
           nextHeartbeatNumToLog = (int) (nextHeartbeatNumToLog * (LOG_COUNTER_BACKOFF));
         }
       }
@@ -341,7 +341,7 @@ public class TaskReporter implements TaskReporterInterface {
             updateEventMetadata);
         return !heartbeat(Lists.newArrayList(statusUpdateEvent, taskCompletedEvent)).shouldDie;
       } else {
-        LOG.warn("A final task state event has already been sent. Not sending again");
+        LOG.error("Temp", new RuntimeException());
         return askedToDie.get();
       }
     }
@@ -401,11 +401,11 @@ public class TaskReporter implements TaskReporterInterface {
           tezEvents.add(new TezEvent(getStatusUpdateEvent(true), updateEventMetadata));
         } catch (Exception e) {
           // Counter may exceed limitation
-          LOG.warn("Error when get constructing TaskStatusUpdateEvent. Not sending it out");
+          LOG.error("Temp", new RuntimeException());
         }
         return !heartbeat(tezEvents).shouldDie;
       } else {
-        LOG.warn("A final task state event has already been sent. Not sending again");
+        LOG.error("Temp", new RuntimeException());
         return askedToDie.get();
       }
     }

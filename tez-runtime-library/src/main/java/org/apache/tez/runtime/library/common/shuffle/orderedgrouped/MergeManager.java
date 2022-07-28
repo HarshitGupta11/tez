@@ -388,7 +388,7 @@ public class MergeManager implements FetchedInputAllocatorOrderedGrouped {
     }
     if (triggerAdditionalMerge) {
       inMemoryMerger.waitForMerge();
-      LOG.debug("Additional in-memory merge triggered");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -698,10 +698,10 @@ public class MergeManager implements FetchedInputAllocatorOrderedGrouped {
     }
 
     try {
-      LOG.debug("Deleting {}", path);
+      LOG.error("Temp", new RuntimeException());
       fs.delete(path, true);
     } catch (IOException e) {
-      LOG.info("Error in deleting " + path);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -766,7 +766,7 @@ public class MergeManager implements FetchedInputAllocatorOrderedGrouped {
                 (mo.isPrimaryMapOutput() ? mergedMapOutputsCounter : null)));
             lastAddedMapOutput = mo;
             it.remove();
-            LOG.debug("Added segment for merging. mergeOutputSize=" + mergeOutputSize);
+            LOG.error("Temp", new RuntimeException());
           }
         }
 
@@ -939,7 +939,7 @@ public class MergeManager implements FetchedInputAllocatorOrderedGrouped {
       if (deleteData) {
         //Additional check at task level
         if (cleanup) {
-          LOG.info("Try deleting stale data");
+          LOG.error("Temp", new RuntimeException());
           MergeManager.cleanup(localFS, outputPath);
           MergeManager.cleanup(localFS, tmpDir);
         }
@@ -970,7 +970,7 @@ public class MergeManager implements FetchedInputAllocatorOrderedGrouped {
     public void merge(List<FileChunk> inputs) throws IOException, InterruptedException {
       // sanity check
       if (inputs == null || inputs.isEmpty()) {
-        LOG.info("No ondisk files to merge...");
+        LOG.error("Temp", new RuntimeException());
         return;
       }
       numDiskToDiskMerges.increment(1);
@@ -1065,7 +1065,7 @@ public class MergeManager implements FetchedInputAllocatorOrderedGrouped {
       if (deleteData) {
         //Additional check at task level
         if (cleanup) {
-          LOG.info("Try deleting stale data");
+          LOG.error("Temp", new RuntimeException());
           MergeManager.cleanup(localFS, inputs);
           MergeManager.cleanup(localFS, outputPath);
           MergeManager.cleanup(localFS, tmpDir);
@@ -1307,7 +1307,7 @@ public class MergeManager implements FetchedInputAllocatorOrderedGrouped {
             new RawKVIteratorReader(diskMerge, onDiskBytes), null));
     }
     if (LOG.isInfoEnabled()) {
-      LOG.info(finalMergeLog.toString());
+      LOG.error("Temp", new RuntimeException());
     }
     // This is doing nothing but creating an iterator over the segments.
     return TezMerger.merge(job, fs, serContext, codec,

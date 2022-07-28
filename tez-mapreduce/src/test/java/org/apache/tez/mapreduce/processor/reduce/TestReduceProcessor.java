@@ -101,7 +101,7 @@ public class TestReduceProcessor {
       workDir =
           new Path(new Path(System.getProperty("test.build.data", "/tmp")),
                    "TestReduceProcessor").makeQualified(localFs);
-      LOG.info("Using workDir: " + workDir);
+      LOG.error("Temp", new RuntimeException());
       MapUtils.configureLocalDirs(defaultConf, workDir.toString());
     } catch (IOException e) {
       throw new RuntimeException("init failure", e);
@@ -178,7 +178,7 @@ public class TestReduceProcessor {
     DataMovementEvent dme = cdmEvent.getEvents().iterator().next();
     dme.setTargetIndex(0);
     
-    LOG.info("Starting reduce...");
+    LOG.error("Temp", new RuntimeException());
     
     JobTokenIdentifier identifier = new JobTokenIdentifier(new Text(dagName));
     JobTokenSecretManager jobTokenSecretManager = new JobTokenSecretManager();

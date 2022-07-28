@@ -232,9 +232,9 @@ public class TestExternalTezServicesErrors {
         .setIsSession(true).setServicePluginDescriptor(servicePluginsDescriptor).build();
     try {
       tezClient.start();
-      LOG.info("TezSessionStarted for " + methodName);
+      LOG.error("Temp", new RuntimeException());
       tezClient.waitTillReady();
-      LOG.info("TezSession ready for submission for " + methodName);
+      LOG.error("Temp", new RuntimeException());
 
 
       runAndVerifyForNonFatalErrors(tezClient, SUFFIX_LAUNCHER, EXECUTION_CONTEXT_LAUNCHER_REPORT_NON_FATAL);
@@ -283,9 +283,9 @@ public class TestExternalTezServicesErrors {
     ApplicationId appId= null;
     try {
       tezClient.start();
-      LOG.info("TezSessionStarted for " + methodName);
+      LOG.error("Temp", new RuntimeException());
       tezClient.waitTillReady();
-      LOG.info("TezSession ready for submission for " + methodName);
+      LOG.error("Temp", new RuntimeException());
 
       JoinValidateConfigured joinValidate =
           new JoinValidateConfigured(EXECUTION_CONTEXT_DEFAULT, lhsExecutionContext,
@@ -365,7 +365,7 @@ public class TestExternalTezServicesErrors {
                                              Vertex.VertexExecutionContext lhsContext) throws
       TezException,
       InterruptedException, IOException {
-    LOG.info("Running JoinValidate with componentName reportNonFatalException");
+    LOG.error("Temp", new RuntimeException());
     JoinValidateConfigured joinValidate =
         new JoinValidateConfigured(EXECUTION_CONTEXT_DEFAULT, lhsContext,
             EXECUTION_CONTEXT_EXT_SERVICE_PUSH,

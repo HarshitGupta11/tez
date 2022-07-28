@@ -121,7 +121,7 @@ public class ShuffleUtils {
       IFile.Reader.readToMemory(shuffleData, input, compressedLength, codec,
           ifileReadAhead, ifileReadAheadLength);
       // metrics.inputBytes(shuffleData.length);
-      LOG.debug("Read {} bytes from input for {}", shuffleData.length, identifier);
+      LOG.error("Temp", new RuntimeException());
     } catch (InternalError | Exception e) {
       // Close the streams
       LOG.info("Failed to read data to memory for " + identifier + ". len=" + compressedLength +
@@ -197,7 +197,7 @@ public class ShuffleUtils {
       try {
         c.close();
       } catch (IOException e) {
-        LOG.debug("Exception in closing {}", c, e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }
@@ -365,7 +365,7 @@ public class ShuffleUtils {
 
     // Construct the DataMovementEvent
     // Always set empty partition information since no files were generated.
-    LOG.info("Setting all {} partitions as empty for non-started output", numPhysicalOutputs);
+    LOG.error("Temp", new RuntimeException());
     BitSet emptyPartitionDetails = new BitSet(numPhysicalOutputs);
     emptyPartitionDetails.set(0, numPhysicalOutputs, true);
     ByteString emptyPartitionsBytesString =

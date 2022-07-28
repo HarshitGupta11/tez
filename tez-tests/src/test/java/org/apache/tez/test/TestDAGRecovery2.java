@@ -63,7 +63,7 @@ public class TestDAGRecovery2 {
 
   @BeforeClass
   public static void beforeClass() throws Exception {
-    LOG.info("Starting mini clusters");
+    LOG.error("Temp", new RuntimeException());
     try {
       conf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, TEST_ROOT_DIR);
       dfsCluster = new MiniDFSCluster.Builder(conf).numDataNodes(3)
@@ -88,7 +88,7 @@ public class TestDAGRecovery2 {
   public static void afterClass() throws InterruptedException {
     if (tezSession != null) {
       try {
-        LOG.info("Stopping Tez Session");
+        LOG.error("Temp", new RuntimeException());
         tezSession.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -96,7 +96,7 @@ public class TestDAGRecovery2 {
     }
     if (miniTezCluster != null) {
       try {
-        LOG.info("Stopping MiniTezCluster");
+        LOG.error("Temp", new RuntimeException());
         miniTezCluster.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -104,7 +104,7 @@ public class TestDAGRecovery2 {
     }
     if (dfsCluster != null) {
       try {
-        LOG.info("Stopping DFSCluster");
+        LOG.error("Temp", new RuntimeException());
         dfsCluster.shutdown();
       } catch (Exception e) {
         e.printStackTrace();
@@ -142,7 +142,7 @@ public class TestDAGRecovery2 {
   public void teardown() throws InterruptedException {
     if (tezSession != null) {
       try {
-        LOG.info("Stopping Tez Session");
+        LOG.error("Temp", new RuntimeException());
         tezSession.stop();
       } catch (Exception e) {
         e.printStackTrace();

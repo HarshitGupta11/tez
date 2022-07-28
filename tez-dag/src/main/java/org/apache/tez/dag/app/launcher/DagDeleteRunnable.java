@@ -60,14 +60,14 @@ class DagDeleteRunnable implements Runnable {
       httpConnection.connect();
       httpConnection.getInputStream();
     } catch (Exception e) {
-      LOG.warn("Could not setup HTTP Connection to the node " + nodeId.getHost() + " for dag delete. ", e);
+      LOG.error("Temp", new RuntimeException());
     } finally {
       try {
         if (httpConnection != null) {
           httpConnection.cleanup(true);
         }
       } catch (IOException ioe) {
-        LOG.warn("Encountered IOException for " + nodeId.getHost() + " during close. ", ioe);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

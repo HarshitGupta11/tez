@@ -120,7 +120,7 @@ public class FilterByWordInputProcessor extends AbstractLogicalIOProcessor {
     if (updatedConf != null) {
       String fileName = updatedConf.get(MRJobConfig.MAP_INPUT_FILE);
       if (fileName != null) {
-        LOG.info("Processing file: " + fileName);
+        LOG.error("Temp", new RuntimeException());
         srcFile.set(fileName);
       }
     }

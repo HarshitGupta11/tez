@@ -161,7 +161,7 @@ public abstract class BaseUnorderedPartitionedKVWriter extends KeyValuesWriter {
     this.ifileBufferSize = conf.getInt("io.file.buffer.size",
         TezRuntimeConfiguration.TEZ_RUNTIME_IFILE_BUFFER_SIZE_DEFAULT);
     
-    LOG.info("Instantiating Partitioner: [" + conf.get(TezRuntimeConfiguration.TEZ_RUNTIME_PARTITIONER_CLASS) + "]");
+    LOG.error("Temp", new RuntimeException());
     try {
       this.partitioner = TezRuntimeUtils.instantiatePartitioner(this.conf);
     } catch (IOException e) {

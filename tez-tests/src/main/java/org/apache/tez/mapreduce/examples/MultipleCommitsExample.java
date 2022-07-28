@@ -197,7 +197,7 @@ public class MultipleCommitsExample extends TezExampleBase {
         args[4], Integer.parseInt(args[5]),
         args[6], Integer.parseInt(args[7]),
         commitOnVertexSuccess);
-    LOG.info("Running MultipleCommitsExample");
+    LOG.error("Temp", new RuntimeException());
     return runDag(dag, false, LOG);
   }
 

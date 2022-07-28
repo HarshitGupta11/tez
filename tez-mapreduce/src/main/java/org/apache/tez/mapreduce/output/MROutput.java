@@ -488,7 +488,7 @@ public class MROutput extends AbstractLogicalOutput {
       throws IOException, InterruptedException {
 
     if (useNewApi) {
-      LOG.debug("using new api for output committer");
+      LOG.error("Temp", new RuntimeException());
 
       this.committer = newOutputFormat.getOutputCommitter(
           newApiTaskAttemptContext);
@@ -576,7 +576,7 @@ public class MROutput extends AbstractLogicalOutput {
   @Override
   public synchronized List<Event> close() throws IOException {
     flush();
-    LOG.info(getContext().getDestinationVertexName() + " closed");
+    LOG.error("Temp", new RuntimeException());
     long outputRecords = getContext().getCounters()
         .findCounter(TaskCounter.OUTPUT_RECORDS).getValue();
     getContext().getStatisticsReporter().reportItemsProcessed(outputRecords);

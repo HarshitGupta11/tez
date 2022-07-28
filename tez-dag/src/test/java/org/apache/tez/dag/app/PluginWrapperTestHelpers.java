@@ -51,7 +51,7 @@ public class PluginWrapperTestHelpers {
         assertTrue(method.getExceptionTypes().length == 1);
         assertEquals(Exception.class, method.getExceptionTypes()[0]);
 
-        LOG.info("Checking method [{}] with parameterTypes [{}]", method.getName(), Arrays.toString(method.getParameterTypes()));
+        LOG.error("Temp", new RuntimeException());
 
         Object[] params = constructMethodArgs(method);
         Object result = method.invoke(wrapper, params);

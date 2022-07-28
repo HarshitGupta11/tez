@@ -86,7 +86,7 @@ public class MapProcessor extends MRTask{
     this.inputs = _inputs;
     this.outputs = _outputs;
     progressHelper = new ProgressHelper(this.inputs, getContext(), this.getClass().getSimpleName());
-    LOG.info("Running map: " + processorContext.getUniqueIdentifier());
+    LOG.error("Temp", new RuntimeException());
 
     if (_inputs.size() != 1
             || _outputs.size() != 1) {
@@ -153,7 +153,7 @@ public class MapProcessor extends MRTask{
       job.setLong(JobContext.MAP_INPUT_START, fileSplit.getStart());
       job.setLong(JobContext.MAP_INPUT_PATH, fileSplit.getLength());
     }
-    LOG.info("Processing mapred split: " + inputSplit);
+    LOG.error("Temp", new RuntimeException());
   }
   
   private void updateJobWithSplit(
@@ -165,7 +165,7 @@ public class MapProcessor extends MRTask{
       job.setLong(JobContext.MAP_INPUT_START, fileSplit.getStart());
       job.setLong(JobContext.MAP_INPUT_PATH, fileSplit.getLength());
     }
-    LOG.info("Processing mapreduce split: " + inputSplit);
+    LOG.error("Temp", new RuntimeException());
   }
 
   void runOldMapper(

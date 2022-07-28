@@ -1339,7 +1339,7 @@ public class TaskAttemptImpl implements TaskAttempt,
         locationHint = null;
       }
 
-      LOG.debug("Asking for container launch with taskAttemptContext: {}", ta.taskSpec);
+      LOG.error("Temp", new RuntimeException());
       
       // Send out a launch request to the scheduler.
       int priority;
@@ -1428,7 +1428,7 @@ public class TaskAttemptImpl implements TaskAttempt,
         RecoveryEvent rEvent = (RecoveryEvent)event;
         if (rEvent.isFromRecovery()) {
           if (LOG.isDebugEnabled()) {
-            LOG.debug("Faked TerminateEvent from recovery, taskAttemptId=" + ta.getID());
+            LOG.error("Temp", new RuntimeException());
           }
         }
       }
@@ -1613,7 +1613,7 @@ public class TaskAttemptImpl implements TaskAttempt,
           // task is hung
           String diagnostics = "Attempt failed because it appears to make no progress for " + 
           ta.hungIntervalMax + "ms";
-          LOG.info(diagnostics + " " + ta.getID());
+          LOG.error("Temp", new RuntimeException());
           // send event that will fail this attempt
           ta.sendEvent(
               new TaskAttemptEventAttemptFailed(ta.getID(),
@@ -1660,7 +1660,7 @@ public class TaskAttemptImpl implements TaskAttempt,
       if (ta.recoveryData != null && ta.recoveryData.isTaskAttemptSucceeded()) {
         TaskAttemptFinishedEvent taFinishedEvent = ta.recoveryData
             .getTaskAttemptFinishedEvent();
-        LOG.debug("TaskAttempt is recovered to SUCCEEDED, attemptId={}", ta.attemptId);
+        LOG.error("Temp", new RuntimeException());
         ta.reportedStatus.counters = taFinishedEvent.getCounters();
         List<TezEvent> tezEvents = taFinishedEvent.getTAGeneratedEvents();
         if (tezEvents != null && !tezEvents.isEmpty()) {
@@ -1855,7 +1855,7 @@ public class TaskAttemptImpl implements TaskAttempt,
           + ", isLocalFetch=" + readErrorEvent.isLocalFetch()
           + ", isDiskErrorAtSource=" + readErrorEvent.isDiskErrorAtSource();
 
-      LOG.info(message);
+      LOG.error("Temp", new RuntimeException());
       attempt.addDiagnosticInfo(message);
       // send input failed event
       attempt.sendInputFailedToConsumers();

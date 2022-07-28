@@ -107,7 +107,7 @@ public class AsyncDispatcher extends CompositeService implements Dispatcher {
             event = eventQueue.take();
           } catch(InterruptedException ie) {
             if (!stopped) {
-              LOG.warn("AsyncDispatcher thread interrupted", ie);
+              LOG.error("Temp", new RuntimeException());
             }
             return;
           }
@@ -142,7 +142,7 @@ public class AsyncDispatcher extends CompositeService implements Dispatcher {
   protected void serviceStop() throws Exception {
     if (drainEventsOnStop) {
       blockNewEvents = true;
-      LOG.info("AsyncDispatcher is draining to stop, ignoring any new events.");
+      LOG.error("Temp", new RuntimeException());
       long endTime = System.currentTimeMillis() + getConfig()
           .getInt(TezConfiguration.TEZ_AM_DISPATCHER_DRAIN_EVENTS_TIMEOUT,
               TezConfiguration.TEZ_AM_DISPATCHER_DRAIN_EVENTS_TIMEOUT_DEFAULT);
@@ -169,10 +169,10 @@ public class AsyncDispatcher extends CompositeService implements Dispatcher {
               "eventHandlingThread is in BLOCKED state, let's not wait for it in order to prevent app hang");
         } else {
           eventHandlingThread.join();
-          LOG.info("joined event handling thread, state: {}", eventHandlingThread.getState());
+          LOG.error("Temp", new RuntimeException());
         }
       } catch (InterruptedException ie) {
-        LOG.warn("Interrupted Exception while stopping", ie);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -198,7 +198,7 @@ public class AsyncDispatcher extends CompositeService implements Dispatcher {
       }
     } catch (Throwable t) {
       if (t instanceof InterruptedException) {
-        LOG.warn("Interrupted Exception while handling event: " + event.getType(), t);
+        LOG.error("Temp", new RuntimeException());
         Thread.currentThread().interrupt();
       }
       LOG.error("Error in dispatcher thread", t);
@@ -255,7 +255,7 @@ public class AsyncDispatcher extends CompositeService implements Dispatcher {
     /* check to see if we have a listener registered */
     EventHandler<Event> registeredHandler = (EventHandler<Event>) eventHandlers.get(eventType);
     checkForExistingDispatchers(false, eventType);
-    LOG.info("Registering " + eventType + " for " + handler.getClass());
+    LOG.error("Temp", new RuntimeException());
     if (registeredHandler == null) {
       eventHandlers.put(eventType, handler);
     } else if (!(registeredHandler instanceof MultiListenerHandler)){
@@ -355,7 +355,7 @@ public class AsyncDispatcher extends CompositeService implements Dispatcher {
       /* all this method does is enqueue all the events onto the queue */
       int qSize = eventQueue.size();
       if (qSize !=0 && qSize %1000 == 0) {
-        LOG.info("Size of event-queue is " + qSize);
+        LOG.error("Temp", new RuntimeException());
       }
       int remCapacity = eventQueue.remainingCapacity();
       if (remCapacity < 1000) {
@@ -366,7 +366,7 @@ public class AsyncDispatcher extends CompositeService implements Dispatcher {
         eventQueue.put(event);
       } catch (InterruptedException e) {
         if (!stopped) {
-          LOG.warn("AsyncDispatcher thread interrupted", e);
+          LOG.error("Temp", new RuntimeException());
         }
         throw new YarnRuntimeException(e);
       }
@@ -402,7 +402,7 @@ public class AsyncDispatcher extends CompositeService implements Dispatcher {
     return new Runnable() {
       @Override
       public void run() {
-        LOG.info("Exiting, bbye..");
+        LOG.error("Temp", new RuntimeException());
         System.exit(-1);
       }
     };

@@ -190,22 +190,22 @@ public class RPCLoadGen extends TezExampleBase {
       StopWatch sw = new StopWatch().start();
       long sleepTime = random.nextInt(sleepTimeMax);
       if (modeByte == VIA_RPC_BYTE) {
-        LOG.info("Received via RPC.");
+        LOG.error("Temp", new RuntimeException());
       } else if (modeByte == VIA_HDFS_DIST_CACHE_BYTE) {
-        LOG.info("Reading from local filesystem");
+        LOG.error("Temp", new RuntimeException());
         FileSystem localFs = FileSystem.getLocal(new Configuration());
         FSDataInputStream is = localFs.open(new Path(DISK_PAYLOAD_NAME));
         IOUtils.toByteArray(is);
       } else if (modeByte == VIA_HDFS_DIRECT_READ_BYTE) {
-        LOG.info("Reading from HDFS");
+        LOG.error("Temp", new RuntimeException());
         FileSystem fs = FileSystem.get(new Configuration());
         FSDataInputStream is = fs.open(new Path(Path.SEPARATOR + "tmp", DISK_PAYLOAD_NAME));
         IOUtils.toByteArray(is);
       } else {
         throw new IllegalArgumentException("Unknown execution mode: [" + modeByte + "]");
       }
-      LOG.info("TimeTakenToAccessPayload=" + sw.stop().now(TimeUnit.MILLISECONDS));
-      LOG.info("Sleeping for: " + sleepTime);
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
       Thread.sleep(sleepTime);
     }
   }

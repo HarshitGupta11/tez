@@ -359,7 +359,7 @@ public class TestOrderedWordCount extends Configured implements Tool {
   }
 
   private void updateDAGACls(Configuration conf, DAG dag, int dagIndex) {
-    LOG.info("Checking DAG specific ACLS");
+    LOG.error("Temp", new RuntimeException());
     DAGAccessControls accessControls = null;
     String suffix = "." + dagIndex;
     if (conf.get(DAG_VIEW_ACLS + suffix) != null
@@ -373,7 +373,7 @@ public class TestOrderedWordCount extends Configured implements Tool {
           conf.get(DAG_VIEW_ACLS), conf.get(DAG_MODIFY_ACLS));
     }
     if (accessControls != null) {
-      LOG.info("Setting DAG specific ACLS");
+      LOG.error("Temp", new RuntimeException());
       dag.setAccessControls(accessControls);
     }
   }
@@ -460,7 +460,7 @@ public class TestOrderedWordCount extends Configured implements Tool {
     // is the same filesystem as the one used for Input/Output.
     
     if (useTezSession) {
-      LOG.info("Creating Tez Session");
+      LOG.error("Temp", new RuntimeException());
       tezConf.setBoolean(TezConfiguration.TEZ_AM_SESSION_MODE, true);
     } else {
       tezConf.setBoolean(TezConfiguration.TEZ_AM_SESSION_MODE, false);
@@ -487,7 +487,7 @@ public class TestOrderedWordCount extends Configured implements Tool {
                 + (interJobSleepTimeout/1000));
             Thread.sleep(interJobSleepTimeout);
           } catch (InterruptedException e) {
-            LOG.info("Main thread interrupted. Breaking out of job loop");
+            LOG.error("Temp", new RuntimeException());
             break;
           }
         }
@@ -531,7 +531,7 @@ public class TestOrderedWordCount extends Configured implements Tool {
           }
         }
         if (doPreWarm) {
-          LOG.info("Pre-warming Session");
+          LOG.error("Temp", new RuntimeException());
           PreWarmVertex preWarmVertex = PreWarmVertex.create("PreWarm", preWarmNumContainers, dag
               .getVertex("initialmap").getTaskResource());
           preWarmVertex.addTaskLocalFiles(dag.getVertex("initialmap").getTaskLocalFiles());
@@ -542,13 +542,13 @@ public class TestOrderedWordCount extends Configured implements Tool {
         }
 
         if (useTezSession) {
-          LOG.info("Waiting for TezSession to get into ready state");
+          LOG.error("Temp", new RuntimeException());
           waitForTezSessionReady(tezSession);
-          LOG.info("Submitting DAG to Tez Session, dagIndex=" + dagIndex);
+          LOG.error("Temp", new RuntimeException());
           dagClient = tezSession.submitDAG(dag);
-          LOG.info("Submitted DAG to Tez Session, dagIndex=" + dagIndex);
+          LOG.error("Temp", new RuntimeException());
         } else {
-          LOG.info("Submitting DAG as a new Tez Application");
+          LOG.error("Temp", new RuntimeException());
           dagClient = tezSession.submitDAG(dag);
         }
 
@@ -604,13 +604,13 @@ public class TestOrderedWordCount extends Configured implements Tool {
       if (!retainStagingDir) {
         pathFs.delete(stagingDir, true);
       }
-      LOG.info("Shutting down session");
+      LOG.error("Temp", new RuntimeException());
       tezSession.stop();
     }
 
     if (!useTezSession) {
       ExampleDriver.printDAGStatus(dagClient, vNames);
-      LOG.info("Application completed. " + "FinalState=" + dagStatus.getState());
+      LOG.error("Temp", new RuntimeException());
     }
     return dagStatus.getState() == DAGStatus.State.SUCCEEDED ? 0 : 1;
   }

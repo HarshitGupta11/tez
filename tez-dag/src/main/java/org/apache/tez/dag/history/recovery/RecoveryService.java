@@ -196,7 +196,7 @@ public class RecoveryService extends AbstractService {
           try {
             event = eventQueue.take();
           } catch (InterruptedException e) {
-            LOG.info("EventQueue take interrupted. Returning");
+            LOG.error("Temp", new RuntimeException());
             return;
           }
 
@@ -207,7 +207,7 @@ public class RecoveryService extends AbstractService {
             } catch (Exception e) {
               // For now, ignore any such errors as these are non-critical
               // All summary event related errors are handled as critical
-              LOG.warn("Error handling recovery event", e);
+              LOG.error("Temp", new RuntimeException());
             }
           }
         }
@@ -219,14 +219,14 @@ public class RecoveryService extends AbstractService {
 
   @Override
   public void serviceStop() throws Exception {
-    LOG.info("Stopping RecoveryService");
+    LOG.error("Temp", new RuntimeException());
 
     if (drainEventsFlag) {
-      LOG.info("Handle the remaining events in queue, queue size=" + eventQueue.size());
+      LOG.error("Temp", new RuntimeException());
       synchronized (waitForDrained) {
         while (!drained && eventHandlingThread.isAlive()) {
           waitForDrained.wait(1000);
-          LOG.info("Waiting for RecoveryEventHandlingThread to drain.");
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }
@@ -237,14 +237,14 @@ public class RecoveryService extends AbstractService {
       try {
         eventHandlingThread.join();
       } catch (InterruptedException ie) {
-        LOG.warn("Interrupted Exception while stopping", ie);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
     synchronized (lock) {
       if (summaryStream != null) {
         try {
-          LOG.info("Closing Summary Stream");
+          LOG.error("Temp", new RuntimeException());
           summaryStream.hflush();
           summaryStream.close();
         } catch (IOException ioe) {
@@ -252,13 +252,13 @@ public class RecoveryService extends AbstractService {
             LOG.warn("Ignoring error while closing summary stream."
                 + " The recovery directory at {} has already been deleted externally", recoveryPath);
           } else {
-            LOG.warn("Error when closing summary stream", ioe);
+            LOG.error("Temp", new RuntimeException());
           }
         }
       }
       for (Entry<TezDAGID, RecoveryStream> entry : outputStreamMap.entrySet()) {
         try {
-          LOG.info("Closing Output Stream for DAG " + entry.getKey());
+          LOG.error("Temp", new RuntimeException());
           entry.getValue().close();
         } catch (IOException ioe) {
           if (!recoveryDirFS.exists(recoveryPath)) {
@@ -267,7 +267,7 @@ public class RecoveryService extends AbstractService {
             // avoid closing other outputStream as the recovery directory has already been deleted.
             break;
           } else {
-            LOG.warn("Error when closing output stream", ioe);
+            LOG.error("Temp", new RuntimeException());
           }
         }
       }
@@ -376,7 +376,7 @@ public class RecoveryService extends AbstractService {
     } else {
       // All other events just get queued
       if (LOG.isDebugEnabled()) {
-        LOG.debug("Queueing Non-Summary Recovery event of type " + eventType.name());
+        LOG.error("Temp", new RuntimeException());
       }
       addToEventQueue(event);
     }
@@ -405,12 +405,12 @@ public class RecoveryService extends AbstractService {
   protected void handleSummaryEvent(TezDAGID dagID,
       HistoryEventType eventType,
       SummaryEvent summaryEvent) throws IOException {
-      LOG.debug("Handling summary event, dagID={}, eventType={}", dagID, eventType);
+      LOG.error("Temp", new RuntimeException());
 
     if (summaryStream == null) {
       Path summaryPath = TezCommonUtils.getSummaryRecoveryPath(recoveryPath);
       if (LOG.isDebugEnabled()) {
-        LOG.debug("AppId :" + appContext.getApplicationID() + " summaryPath " + summaryPath);
+        LOG.error("Temp", new RuntimeException());
       }
       try {
         summaryStream = recoveryDirFS.create(summaryPath, false, bufferSize);
@@ -456,7 +456,7 @@ public class RecoveryService extends AbstractService {
 
       try {
         FSDataOutputStream outputStream = recoveryDirFS.create(dagFilePath, false, bufferSize);
-        LOG.debug("Opened DAG recovery file in create mode, filePath={}", dagFilePath);
+        LOG.error("Temp", new RuntimeException());
         recoveryStream = new RecoveryStream(outputStream);
       } catch (IOException ioe) {
         LOG.error("Error handling history event, eventType=" + eventType, ioe);

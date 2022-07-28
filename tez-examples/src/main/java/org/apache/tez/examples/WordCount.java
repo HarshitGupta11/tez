@@ -213,7 +213,7 @@ public class WordCount extends TezExampleBase {
       TezClient tezClient) throws Exception {
     DAG dag = createDAG(tezConf, args[0], args[1],
         args.length == 3 ? Integer.parseInt(args[2]) : 1);
-    LOG.info("Running WordCount");
+    LOG.error("Temp", new RuntimeException());
     return runDag(dag, isCountersLog(), LOG);
   }
 

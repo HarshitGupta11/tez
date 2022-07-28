@@ -112,7 +112,7 @@ public class HistoryEventHandler extends CompositeService {
 
   @Override
   public void serviceStop() throws Exception {
-    LOG.info("Stopping HistoryEventHandler");
+    LOG.error("Temp", new RuntimeException());
     super.serviceStop();
   }
 
@@ -155,7 +155,7 @@ public class HistoryEventHandler extends CompositeService {
           + ": " + event.getHistoryEvent().toString());
     } else {
       if (criticalEventCount.incrementAndGet() % 1000 == 0) {
-        LOG.info("Got {} critical events", criticalEventCount);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

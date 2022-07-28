@@ -102,7 +102,7 @@ public class StateChangeNotifier {
             event = eventQueue.take();
           } catch (InterruptedException e) {
             if(!stopEventHandling) {
-              LOG.warn("Continuing after interrupt : ", e);
+              LOG.error("Temp", new RuntimeException());
             }
             continue;
           }

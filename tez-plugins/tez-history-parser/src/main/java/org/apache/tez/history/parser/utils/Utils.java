@@ -95,7 +95,7 @@ public class Utils {
       TezCounter counter = group.findCounter(counterName, displayName);
       counter.setValue(counterValue);
     } catch(IllegalArgumentException e) {
-      LOG.debug("Error finding {} in {} with displayName {}", counterName, group, displayName);
+      LOG.error("Temp", new RuntimeException());
     }
   }
   

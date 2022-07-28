@@ -194,7 +194,7 @@ public class TezClient {
         tezConf.set(TezConfigurationConstants.TEZ_SUBMIT_HOST_ADDRESS, ip.getHostAddress());
       }
     } catch (UnknownHostException e) {
-      LOG.warn("The host name of the client the tez application was submitted from was unable to be retrieved", e);
+      LOG.error("Temp", new RuntimeException());
     }
 
     this.ugiMap = new HashMap<>();
@@ -207,7 +207,7 @@ public class TezClient {
         TezConfiguration.TEZ_IPC_PAYLOAD_RESERVED_BYTES_DEFAULT);
     Limits.setConfiguration(tezConf);
 
-    LOG.info("Tez Client Version: " + apiVersionInfo.toString());
+    LOG.error("Temp", new RuntimeException());
   }
 
 
@@ -385,7 +385,7 @@ public class TezClient {
     setupJavaOptsChecker();
 
     if (isSession) {
-      LOG.info("Session mode. Starting session.");
+      LOG.error("Temp", new RuntimeException());
       TezClientUtils.processTezLocalCredentialsFile(sessionCredentials,
           amConfig.getTezConfiguration());
   
@@ -401,7 +401,7 @@ public class TezClient {
         ApplicationSubmissionContext appContext = setupApplicationContext();
         frameworkClient.submitApplication(appContext);
         ApplicationReport appReport = frameworkClient.getApplicationReport(sessionAppId);
-        LOG.info("The url to track the Tez Session: " + appReport.getTrackingUrl());
+        LOG.error("Temp", new RuntimeException());
         sessionStarted.set(true);
       } catch (YarnException e) {
         cleanStagingDir();
@@ -427,7 +427,7 @@ public class TezClient {
     } catch (IOException ioe) {
       LOG.error("Error deleting staging dir " + stagingDir, ioe);
     } finally {
-      LOG.info("Staging dir {}, deleted:{} ", stagingDir, isStgDeleted);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -458,7 +458,7 @@ public class TezClient {
       throw new IllegalStateException(msg);
     }
 
-    LOG.info("Session mode. Reconnecting to session: " + sessionAppId.toString());
+    LOG.error("Temp", new RuntimeException());
 
     clientTimeout = amConfig.getTezConfiguration().getInt(
             TezConfiguration.TEZ_SESSION_CLIENT_TIMEOUT_SECS,
@@ -467,7 +467,7 @@ public class TezClient {
     try {
       setupApplicationContext();
       ApplicationReport appReport = frameworkClient.getApplicationReport(sessionAppId);
-      LOG.info("The url to track the Tez Session: " + appReport.getTrackingUrl());
+      LOG.error("Temp", new RuntimeException());
       sessionStarted.set(true);
     } catch (YarnException e) {
       cleanStagingDir();
@@ -573,14 +573,14 @@ public class TezClient {
           proxy = frameworkClient.waitForProxy(clientTimeout, amConfig.getTezConfiguration(),
               sessionAppId, getUgi());
         } catch (InterruptedException e) {
-          LOG.debug("Interrupted while trying to create a connection to the AM", e);
+          LOG.error("Temp", new RuntimeException());
         } catch (SessionNotRunning e) {
           LOG.error("Cannot create a connection to the AM, stopping heartbeat to AM", e);
           cancelAMKeepAlive(false);
         }
       }
       if (proxy != null) {
-        LOG.debug("Sending heartbeat to AM");
+        LOG.error("Temp", new RuntimeException());
         proxy.getAMStatus(null, GetAMStatusRequestProto.newBuilder().build());
       }
       return proxy;
@@ -622,12 +622,12 @@ public class TezClient {
     try {
       prewarmDagClient.tryKillDAG();
       if (waitTimeMs > 0) {
-        LOG.info("Waiting for prewarm DAG to shut down");
+        LOG.error("Temp", new RuntimeException());
         prewarmDagClient.waitForCompletion(waitTimeMs);
       }
     }
     catch (Exception ex) {
-      LOG.warn("Failed to shut down the prewarm DAG " + prewarmDagClient, ex);
+      LOG.error("Temp", new RuntimeException());
     }
     closePrewarmDagClient();
   }
@@ -639,7 +639,7 @@ public class TezClient {
     try {
       prewarmDagClient.close();
     } catch (Exception e) {
-      LOG.warn("Failed to close prewarm DagClient " + prewarmDagClient, e);
+      LOG.error("Temp", new RuntimeException());
     }
     prewarmDagClient = null;
   }
@@ -739,7 +739,7 @@ public class TezClient {
               TezConfiguration.TEZ_CLIENT_ASYNCHRONOUS_STOP,
               TezConfiguration.TEZ_CLIENT_ASYNCHRONOUS_STOP_DEFAULT);
           if (!asynchronousStop && sessionShutdownSuccessful) {
-            LOG.info("Waiting until application is in a final state");
+            LOG.error("Temp", new RuntimeException());
             long currentTimeMillis = System.currentTimeMillis();
             long timeKillIssued = currentTimeMillis;
             long killTimeOut = amConfig.getTezConfiguration().getLong(
@@ -764,11 +764,11 @@ public class TezClient {
             }
           }
         } catch (TezException e) {
-          LOG.info("Failed to shutdown Tez Session via proxy", e);
+          LOG.error("Temp", new RuntimeException());
         } catch (ServiceException e) {
-          LOG.info("Failed to shutdown Tez Session via proxy", e);
+          LOG.error("Temp", new RuntimeException());
         } catch (ApplicationNotFoundException e) {
-          LOG.info("Failed to kill nonexistent application " + sessionAppId, e);
+          LOG.error("Temp", new RuntimeException());
         } catch (YarnException e) {
           throw new TezException(e);
         }
@@ -779,7 +779,7 @@ public class TezClient {
           try {
             frameworkClient.killApplication(sessionAppId);
           } catch (ApplicationNotFoundException e) {
-            LOG.info("Failed to kill nonexistent application " + sessionAppId, e);
+            LOG.error("Temp", new RuntimeException());
           } catch (YarnException e) {
             throw new TezException(e);
           }
@@ -857,9 +857,9 @@ public class TezClient {
         try {
           return frameworkClient.getAMStatus(amConfig.getTezConfiguration(), appId, getUgi());
         } catch (TezException e) {
-          LOG.info("Failed to retrieve AM Status via proxy", e);
+          LOG.error("Temp", new RuntimeException());
         } catch (ServiceException e) {
-          LOG.info("Failed to retrieve AM Status via proxy", e);
+          LOG.error("Temp", new RuntimeException());
         }
       }
     } catch (ApplicationNotFoundException e) {
@@ -1052,7 +1052,7 @@ public class TezClient {
   @Private // To be used only by YarnRunner
   DAGClient submitDAGApplication(ApplicationId appId, DAG dag)
           throws TezException, IOException {
-    LOG.info("Submitting DAG application with id: " + appId);
+    LOG.error("Temp", new RuntimeException());
     try {
       // Use the AMCredentials object in client mode, since this won't be re-used.
       // Ensures we don't fetch credentially unnecessarily if the user has already provided them.
@@ -1084,7 +1084,7 @@ public class TezClient {
       TezCommonUtils.logCredentials(LOG, credentials, "appContext");
       frameworkClient.submitApplication(appContext);
       ApplicationReport appReport = frameworkClient.getApplicationReport(appId);
-      LOG.info("The url to track the Tez AM: " + appReport.getTrackingUrl());
+      LOG.error("Temp", new RuntimeException());
       lastSubmittedAppId = appId;
     } catch (YarnException e) {
       throw new TezException(e);

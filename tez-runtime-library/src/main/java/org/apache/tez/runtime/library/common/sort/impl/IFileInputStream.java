@@ -110,7 +110,7 @@ public class IFileInputStream extends InputStream {
         fd = ((FileInputStream)in).getFD();
       }
     } catch (IOException e) {
-      LOG.info("Unable to determine FileDescriptor", e);
+      LOG.error("Temp", new RuntimeException());
     }
     return fd;
   }
@@ -251,7 +251,7 @@ public class IFileInputStream extends InputStream {
           ", len=" + len +
           ", length=" + length +
           ", checksumSize=" + checksumSize;
-      LOG.info(mesg);
+      LOG.error("Temp", new RuntimeException());
       throw new ChecksumException("Checksum Error: " + mesg, 0);
     }
 
@@ -279,7 +279,7 @@ public class IFileInputStream extends InputStream {
             ", checksumSize=" + checksumSize+
             ", csum=" + Arrays.toString(csum) +
             ", sum=" + sum; 
-        LOG.info(mesg);
+        LOG.error("Temp", new RuntimeException());
 
         throw new ChecksumException("Checksum Error: " + mesg, 0);
       }

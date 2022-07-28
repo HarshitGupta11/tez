@@ -72,13 +72,13 @@ public class TaskRunner2Callable extends CallableWithNdc<TaskRunner2Callable.Tas
           if (stopRequested.get() || Thread.currentThread().isInterrupted()) {
             return new TaskRunner2CallableResult(null);
           }
-          LOG.info("Initializing task" + ", taskAttemptId={}", task.getTaskAttemptID());
+          LOG.error("Temp", new RuntimeException());
           TezUtilsInternal.setHadoopCallerContext(task.getHadoopShim(), task.getTaskAttemptID());
           TezCommonUtils.logCredentials(LOG, ugi.getCredentials(), "taskInit");
           task.initialize();
 
           if (!stopRequested.get() && !Thread.currentThread().isInterrupted()) {
-            LOG.info("Running task, taskAttemptId={}", task.getTaskAttemptID());
+            LOG.error("Temp", new RuntimeException());
             task.run();
           } else {
             LOG.info("Stopped before running the processor taskAttemptId={}",
@@ -88,15 +88,15 @@ public class TaskRunner2Callable extends CallableWithNdc<TaskRunner2Callable.Tas
           }
 
           if (!stopRequested.get() && !Thread.currentThread().isInterrupted()) {
-            LOG.info("Closing task, taskAttemptId={}", task.getTaskAttemptID());
+            LOG.error("Temp", new RuntimeException());
             task.close();
             task.setFrameworkCounters();
           } else {
-            LOG.info("Stopped before closing the processor, taskAttemptId={}", task.getTaskAttemptID());
+            LOG.error("Temp", new RuntimeException());
             task.setFrameworkCounters();
             return new TaskRunner2CallableResult(null);
           }
-          LOG.info("Task completed, taskAttemptId={}, askedToStop={}", task.getTaskAttemptID(), stopRequested.get());
+          LOG.error("Temp", new RuntimeException());
 
 
           return new TaskRunner2CallableResult(null);
@@ -115,7 +115,7 @@ public class TaskRunner2Callable extends CallableWithNdc<TaskRunner2Callable.Tas
       // be sent out after cleanup is complete.
       // For a successful task, however, this should be almost no delay since close has already happened.
       maybeFixInterruptStatus();
-      LOG.info("Cleaning up task {}, stopRequested={}", task.getTaskAttemptID(), stopRequested.get());
+      LOG.error("Temp", new RuntimeException());
       task.getOutputContexts().forEach(outputContext
           -> outputContext.trapEvents(new TezTrapEventHandler(outputContext,
           this.tezUmbilical)));

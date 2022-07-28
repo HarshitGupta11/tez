@@ -101,7 +101,7 @@ public class HashJoinExample extends TezExampleBase {
 
     boolean doBroadcast =
         args.length == 5 && args[4].equals(broadcastOption) ? true : false;
-    LOG.info("Running HashJoinExample" + (doBroadcast ? "-WithBroadcast" : ""));
+    LOG.error("Temp", new RuntimeException());
 
     String streamInputDir = args[0];
     String hashInputDir = args[1];

@@ -67,7 +67,7 @@ public class AMContainerMap extends AbstractService implements EventHandler<AMCo
     if (container != null) {
       container.handle(event);
     } else {
-      LOG.info("Event for unknown container: " + event.getContainerId());
+      LOG.error("Temp", new RuntimeException());
     }
   }
 

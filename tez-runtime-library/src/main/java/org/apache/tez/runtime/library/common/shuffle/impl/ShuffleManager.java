@@ -441,7 +441,7 @@ public class ShuffleManager implements FetcherCallback {
           break;
         }
 
-        LOG.debug("{}: NumCompletedInputs: {}", srcNameTrimmed, numCompletedInputs);
+        LOG.error("Temp", new RuntimeException());
         if (numCompletedInputs.get() < numInputs && !isShutdown.get()) {
           lock.lock();
           try {
@@ -453,7 +453,7 @@ public class ShuffleManager implements FetcherCallback {
                 inputHost = pendingHosts.take();
               } catch (InterruptedException e) {
                 if (isShutdown.get()) {
-                  LOG.info(srcNameTrimmed + ": " + "Interrupted and hasBeenShutdown, Breaking out of ShuffleScheduler Loop");
+                  LOG.error("Temp", new RuntimeException());
                   Thread.currentThread().interrupt();
                   break;
                 } else {
@@ -492,7 +492,7 @@ public class ShuffleManager implements FetcherCallback {
         }
       }
       shufflePhaseTime.setValue(System.currentTimeMillis() - startTime);
-      LOG.info(srcNameTrimmed + ": " + "Shutting down FetchScheduler, Was Interrupted: " + Thread.currentThread().isInterrupted());
+      LOG.error("Temp", new RuntimeException());
       if (!fetcherExecutor.isShutdown()) {
         fetcherExecutor.shutdownNow();
       }
@@ -659,7 +659,7 @@ public class ShuffleManager implements FetcherCallback {
   public void addCompletedInputWithNoData(
       InputAttemptIdentifier srcAttemptIdentifier) {
     int inputIdentifier = srcAttemptIdentifier.getInputIdentifier();
-    LOG.debug("No input data exists for SrcTask: {}. Marking as complete.", inputIdentifier);
+    LOG.error("Temp", new RuntimeException());
     lock.lock();
     try {
       if (!completedInputSet.get(inputIdentifier)) {
@@ -872,7 +872,7 @@ public class ShuffleManager implements FetcherCallback {
         if (fetchedInput instanceof NullFetchedInput) {
           completedInputs.add(fetchedInput);
         }
-        LOG.info("All inputs fetched for input vertex : " + inputContext.getSourceVertexName());
+        LOG.error("Temp", new RuntimeException());
       }
     } finally {
       lock.unlock();
@@ -982,7 +982,7 @@ public class ShuffleManager implements FetcherCallback {
     if (Thread.currentThread().isInterrupted()) {
       //TODO: need to cleanup all FetchedInput (DiskFetchedInput, LocalDisFetchedInput), lockFile
       //As of now relying on job cleanup (when all directories would be cleared)
-      LOG.info(srcNameTrimmed + ": " + "Thread interrupted. Need to cleanup the local dirs");
+      LOG.error("Temp", new RuntimeException());
     }
     if (!isShutdown.getAndSet(true)) {
       // Shut down any pending fetchers
@@ -1134,13 +1134,13 @@ public class ShuffleManager implements FetcherCallback {
 
     @Override
     public void onSuccess(Void result) {
-      LOG.info(srcNameTrimmed + ": " + "Scheduler thread completed");
+      LOG.error("Temp", new RuntimeException());
     }
 
     @Override
     public void onFailure(Throwable t) {
       if (isShutdown.get()) {
-        LOG.debug("{}: Already shutdown. Ignoring error.", srcNameTrimmed, t);
+        LOG.error("Temp", new RuntimeException());
       } else {
         LOG.error(srcNameTrimmed + ": " + "Scheduler failed with error: ", t);
         inputContext.reportFailure(TaskFailureType.NON_FATAL, t, "Shuffle Scheduler Failed");
@@ -1171,7 +1171,7 @@ public class ShuffleManager implements FetcherCallback {
     public void onSuccess(FetchResult result) {
       fetcher.shutdown();
       if (isShutdown.get()) {
-        LOG.debug("{}: Already shutdown. Ignoring event from fetcher", srcNameTrimmed);
+        LOG.error("Temp", new RuntimeException());
       } else {
         Iterable<InputAttemptIdentifier> pendingInputs = result.getPendingInputs();
         if (pendingInputs != null && pendingInputs.iterator().hasNext()) {
@@ -1194,7 +1194,7 @@ public class ShuffleManager implements FetcherCallback {
       // Unsuccessful - the fetcher may not have shutdown correctly. Try shutting it down.
       fetcher.shutdown();
       if (isShutdown.get()) {
-        LOG.debug("{}: Already shutdown. Ignoring error from fetcher.", srcNameTrimmed, t);
+        LOG.error("Temp", new RuntimeException());
       } else {
         LOG.error(srcNameTrimmed + ": " + "Fetcher failed with error: ", t);
         shuffleError = t;

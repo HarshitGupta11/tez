@@ -94,12 +94,12 @@ public class ATSFileParser extends BaseParser implements ATSData {
     //Process vertex information
     Preconditions.checkState(verticesJson != null, "Vertex json can not be null");
     if (verticesJson != null) {
-      LOG.debug("Started parsing vertex");
+      LOG.error("Temp", new RuntimeException());
       for (int i = 0; i < verticesJson.length(); i++) {
         VertexInfo vertexInfo = VertexInfo.create(verticesJson.getJSONObject(i));
         vertexList.add(vertexInfo);
       }
-      LOG.debug("Finished parsing vertex");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -113,12 +113,12 @@ public class ATSFileParser extends BaseParser implements ATSData {
     //Process Task information
     Preconditions.checkState(tasksJson != null, "Task json can not be null");
     if (tasksJson != null) {
-      LOG.debug("Started parsing task");
+      LOG.error("Temp", new RuntimeException());
       for (int i = 0; i < tasksJson.length(); i++) {
         TaskInfo taskInfo = TaskInfo.create(tasksJson.getJSONObject(i));
         taskList.add(taskInfo);
       }
-      LOG.debug("Finished parsing task");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -132,12 +132,12 @@ public class ATSFileParser extends BaseParser implements ATSData {
     //Process TaskAttempt information
     Preconditions.checkState(taskAttemptsJson != null, "Attempts json can not be null");
     if (taskAttemptsJson != null) {
-      LOG.debug("Started parsing task attempts");
+      LOG.error("Temp", new RuntimeException());
       for (int i = 0; i < taskAttemptsJson.length(); i++) {
         TaskAttemptInfo attemptInfo = TaskAttemptInfo.create(taskAttemptsJson.getJSONObject(i));
         attemptList.add(attemptInfo);
       }
-      LOG.debug("Finished parsing task attempts");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -149,7 +149,7 @@ public class ATSFileParser extends BaseParser implements ATSData {
    */
   private void processApplication(JSONObject tezApplicationJson) throws JSONException {
     if (tezApplicationJson != null) {
-      LOG.debug("Started parsing tez application");
+      LOG.error("Temp", new RuntimeException());
       JSONObject otherInfoNode = tezApplicationJson.optJSONObject(Constants.OTHER_INFO);
       if (otherInfoNode != null) {
         JSONObject tezVersion = otherInfoNode.optJSONObject(Constants.TEZ_VERSION);
@@ -169,7 +169,7 @@ public class ATSFileParser extends BaseParser implements ATSData {
           config.put(key, value);
         }
       }
-      LOG.debug("Finished parsing tez application");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -194,7 +194,7 @@ public class ATSFileParser extends BaseParser implements ATSData {
       Enumeration<? extends ZipEntry> zipEntries = atsZipFile.entries();
       while (zipEntries.hasMoreElements()) {
         ZipEntry zipEntry = zipEntries.nextElement();
-        LOG.debug("Processing " + zipEntry.getName());
+        LOG.error("Temp", new RuntimeException());
         InputStream inputStream = atsZipFile.getInputStream(zipEntry);
         JSONObject jsonObject = readJson(inputStream);
 

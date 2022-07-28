@@ -77,7 +77,7 @@ public class HttpConnection extends BaseHttpConnection {
     this.url = url;
     this.stopWatch = new StopWatch();
     this.urlLogCount = new AtomicLong();
-    LOG.debug("MapOutput URL :{}", url);
+    LOG.error("Temp", new RuntimeException());
   }
 
   @VisibleForTesting
@@ -239,7 +239,7 @@ public class HttpConnection extends BaseHttpConnection {
     } else {
       // Log summary.
       if (urlLogCount.incrementAndGet() % 1000 == 0) {
-        LOG.info("Sent hash and recieved reply for {} urls", urlLogCount);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }
@@ -276,7 +276,7 @@ public class HttpConnection extends BaseHttpConnection {
     stopWatch.reset().start();
     try {
       if (input != null) {
-        LOG.debug("Closing input on {}", logIdentifier);
+        LOG.error("Temp", new RuntimeException());
         input.close();
         input = null;
       }
@@ -287,14 +287,14 @@ public class HttpConnection extends BaseHttpConnection {
       }
       if (connection != null && (disconnect || !httpConnParams.isKeepAlive())) {
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Closing connection on " + logIdentifier + ", disconnectParam=" + disconnect);
+          LOG.error("Temp", new RuntimeException());
         }
         connection.disconnect();
         connection = null;
       }
     } catch (IOException e) {
       if (LOG.isDebugEnabled()) {
-        LOG.debug("Exception while shutting down fetcher " + logIdentifier, e);
+        LOG.error("Temp", new RuntimeException());
       } else {
         LOG.info("Exception while shutting down fetcher " + logIdentifier
             + ": " + e.getMessage());

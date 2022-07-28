@@ -72,7 +72,7 @@ public class PerSourceNodeTracker {
     if (nodeMap.putIfAbsent(nodeId, new AMNodeImpl(nodeId, sourceId, maxTaskFailuresPerNode,
         eventHandler, nodeBlacklistingEnabled, nodeUpdatesRescheduleEnabled,
         appContext)) == null) {
-      LOG.info("Adding new node {} to nodeTracker {}", nodeId, sourceId);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -91,7 +91,7 @@ public class PerSourceNodeTracker {
       case N_NODE_COUNT_UPDATED:
         AMNodeEventNodeCountUpdated event = (AMNodeEventNodeCountUpdated) rEvent;
         numClusterNodes = event.getNodeCount();
-        LOG.info("Num cluster nodes = " + numClusterNodes);
+        LOG.error("Temp", new RuntimeException());
         recomputeCurrentIgnoreBlacklistingThreshold();
         computeIgnoreBlacklisting();
         break;
@@ -99,7 +99,7 @@ public class PerSourceNodeTracker {
       case N_TURNED_HEALTHY:
         AMNode amNode = nodeMap.get(nodeId);
         if (amNode == null) {
-          LOG.info("Ignoring RM Health Update for unknown node: " + nodeId);
+          LOG.error("Temp", new RuntimeException());
           // This implies that the node exists on the cluster, but is not running a container for
           // this application.
         } else {

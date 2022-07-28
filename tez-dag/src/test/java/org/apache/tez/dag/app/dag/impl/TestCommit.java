@@ -233,7 +233,7 @@ public class TestCommit {
       while (blockCommit) {
         try {
           Thread.sleep(100);
-          LOG.info("committing output:" + getContext().getOutputName());
+          LOG.error("Temp", new RuntimeException());
         } catch (InterruptedException e) {
           throw new IOException(e);
         }
@@ -353,7 +353,7 @@ public class TestCommit {
 
   private void waitUntil(DAGImpl dag, DAGState state) {
     while (dag.getState() != state) {
-      LOG.info("Wait for dag go to state:" + state);
+      LOG.error("Temp", new RuntimeException());
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {
@@ -381,7 +381,7 @@ public class TestCommit {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      LOG.info("Wait for vertex commit " + outputName + " to complete");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -392,7 +392,7 @@ public class TestCommit {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      LOG.info("Wait for dag commit " + outputKey + " to complete");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -401,7 +401,7 @@ public class TestCommit {
   // vertex_group (v1, v2)
   private DAGPlan createDAGPlan(boolean vertexGroupCommitSucceeded,
       boolean v3CommitSucceeded) throws Exception {
-    LOG.info("Setting up group dag plan");
+    LOG.error("Temp", new RuntimeException());
     int dummyTaskCount = 1;
     Resource dummyTaskResource = Resource.newInstance(1, 1);
     org.apache.tez.dag.api.Vertex v1 = org.apache.tez.dag.api.Vertex.create(
@@ -452,7 +452,7 @@ public class TestCommit {
   // vertex_group (v1, v2) has 2 shared outputs
   private DAGPlan createDAGPlanWith2VertexGroupOutputs(boolean vertexGroupCommitSucceeded1,
     boolean vertexGroupCommitSucceeded2, boolean v3CommitSucceeded) throws Exception {
-    LOG.info("Setting up group dag plan");
+    LOG.error("Temp", new RuntimeException());
     int dummyTaskCount = 1;
     Resource dummyTaskResource = Resource.newInstance(1, 1);
     org.apache.tez.dag.api.Vertex v1 = org.apache.tez.dag.api.Vertex.create(
@@ -512,7 +512,7 @@ public class TestCommit {
   // used for route event error in VM
   private DAGPlan createDAGPlan_SingleVertexWith2Committer
     (boolean commit1Succeed, boolean commit2Succeed, boolean customVM) throws IOException {
-    LOG.info("Setting up group dag plan");
+    LOG.error("Temp", new RuntimeException());
     int dummyTaskCount = 1;
     Resource dummyTaskResource = Resource.newInstance(1, 1);
     org.apache.tez.dag.api.Vertex v1 = org.apache.tez.dag.api.Vertex.create(

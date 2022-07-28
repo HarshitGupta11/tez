@@ -368,7 +368,7 @@ public class TestMRRJobsDAGApi {
     // Start the second job with some additional resources.
 
     // Create a test jar directly to HDFS
-    LOG.info("Creating jar for relocalization test");
+    LOG.error("Temp", new RuntimeException());
     Path relocFilePath = new Path("/tmp/test.jar");
     relocFilePath = remoteFs.makeQualified(relocFilePath);
     OutputStream os = remoteFs.create(relocFilePath, true);
@@ -441,7 +441,7 @@ public class TestMRRJobsDAGApi {
     Assert.assertFalse(remoteFs.exists(relocPath));
 
     // Create a bogus TezAppJar directly to HDFS
-    LOG.info("Creating jar for relocalization test");
+    LOG.error("Temp", new RuntimeException());
     Path tezAppJar = new Path(MiniTezCluster.APPJAR);
     Path tezAppJarRemote = remoteFs.makeQualified(new Path("/tmp/" + tezAppJar.getName()));
     OutputStream os = remoteFs.create(tezAppJarRemote, true);
@@ -555,7 +555,7 @@ public class TestMRRJobsDAGApi {
       Map<String, LocalResource> additionalLocalResources) throws IOException,
       InterruptedException, TezException, ClassNotFoundException,
       YarnException {
-    LOG.info("\n\n\nStarting testMRRSleepJobDagSubmit().");
+    LOG.error("Temp", new RuntimeException());
 
     JobConf stage1Conf = new JobConf(mrrTezCluster.getConfig());
     JobConf stage2Conf = new JobConf(mrrTezCluster.getConfig());
@@ -616,7 +616,7 @@ public class TestMRRJobsDAGApi {
         genSplitsInAM ?
             (initializerClass == null ? MRInputAMSplitGenerator.class : initializerClass)
             : null;
-    LOG.info("Using initializer class: " + initializerClass);
+    LOG.error("Temp", new RuntimeException());
 
 
     DataSourceDescriptor dsd;
@@ -755,7 +755,7 @@ public class TestMRRJobsDAGApi {
       Thread.sleep(500l);
       if(killDagWhileRunning
           && dagStatus.getState() == DAGStatus.State.RUNNING) {
-        LOG.info("Killing running dag/session");
+        LOG.error("Temp", new RuntimeException());
         if (dagViaRPC) {
           tezSession.stop();
         } else {
@@ -785,7 +785,7 @@ public class TestMRRJobsDAGApi {
   
   @Test(timeout = 60000)
   public void testVertexGroups() throws Exception {
-    LOG.info("Running Group Test");
+    LOG.error("Temp", new RuntimeException());
     Path inPath = new Path(TEST_ROOT_DIR, "in-groups");
     Path outPath = new Path(TEST_ROOT_DIR, "out-groups");
     FSDataOutputStream out = remoteFs.create(inPath);
@@ -799,7 +799,7 @@ public class TestMRRJobsDAGApi {
     
     UnionExample job = new UnionExample();
     if (job.run(inPath.toString(), outPath.toString(), mrrTezCluster.getConfig())) {
-      LOG.info("Success VertexGroups Test");
+      LOG.error("Temp", new RuntimeException());
     } else {
       throw new TezUncheckedException("VertexGroups Test Failed");
     }
@@ -807,10 +807,10 @@ public class TestMRRJobsDAGApi {
   
   @Test(timeout = 60000)
   public void testBroadcastAndOneToOne() throws Exception {
-    LOG.info("Running BroadcastAndOneToOne Test");
+    LOG.error("Temp", new RuntimeException());
     BroadcastAndOneToOneExample job = new BroadcastAndOneToOneExample();
     if (job.run(mrrTezCluster.getConfig(), true)) {
-      LOG.info("Success BroadcastAndOneToOne Test");
+      LOG.error("Temp", new RuntimeException());
     } else {
       throw new TezUncheckedException("BroadcastAndOneToOne Test Failed");
     }
@@ -836,11 +836,11 @@ public class TestMRRJobsDAGApi {
       try {
         Thread.currentThread().setContextClassLoader(TezClassLoader.getInstance());
         ReflectionUtils.getClazz(RELOCALIZATION_TEST_CLASS_NAME);
-        LOG.info("Class found");
+        LOG.error("Temp", new RuntimeException());
         FileSystem fs = FileSystem.get(conf);
         fs.mkdirs(new Path("/tmp/relocalizationfilefound"));
       } catch (TezReflectionException e) {
-        LOG.info("Class not found");
+        LOG.error("Temp", new RuntimeException());
       }
 
       return super.initialize();

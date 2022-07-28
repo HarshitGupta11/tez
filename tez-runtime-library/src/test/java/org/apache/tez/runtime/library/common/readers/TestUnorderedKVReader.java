@@ -78,7 +78,7 @@ public class TestUnorderedKVReader {
           new Path(System.getProperty("test.build.data", "/tmp")),
           TestUnorderedKVReader.class.getName())
           .makeQualified(localFs.getUri(), localFs.getWorkingDirectory());
-      LOG.info("Using workDir: " + workDir);
+      LOG.error("Temp", new RuntimeException());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

@@ -158,12 +158,12 @@ public class SimpleHistoryParser extends BaseParser {
     for (JSONObject jsonObject : vertexJsonMap.values()) {
       VertexInfo vertexInfo = VertexInfo.create(jsonObject);
       this.vertexList.add(vertexInfo);
-      LOG.debug("Parsed vertex {}", vertexInfo.getVertexName());
+      LOG.error("Temp", new RuntimeException());
     }
     for (JSONObject jsonObject : taskJsonMap.values()) {
       TaskInfo taskInfo = TaskInfo.create(jsonObject);
       this.taskList.add(taskInfo);
-      LOG.debug("Parsed task {}", taskInfo.getTaskId());
+      LOG.error("Temp", new RuntimeException());
     }
     for (JSONObject jsonObject : attemptJsonMap.values()) {
       /**
@@ -209,7 +209,7 @@ public class SimpleHistoryParser extends BaseParser {
       }
       TaskAttemptInfo attemptInfo = TaskAttemptInfo.create(jsonObject);
       this.attemptList.add(attemptInfo);
-      LOG.debug("Parsed task attempt {}", attemptInfo.getTaskAttemptId());
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -228,7 +228,7 @@ public class SimpleHistoryParser extends BaseParser {
       switch (entityType) {
       case Constants.TEZ_DAG_ID:
         if (!dagId.equals(entity)) {
-          LOG.warn(dagId + " is not matching with " + entity);
+          LOG.error("Temp", new RuntimeException());
           continue;
         }
         // Club all DAG related information together (DAG_INIT, DAG_FINISH etc). Each of them
@@ -263,7 +263,7 @@ public class SimpleHistoryParser extends BaseParser {
         String vertexName = entity;
         TezVertexID tezVertexID = TezVertexID.fromString(vertexName);
         if (!tezDAGID.equals(tezVertexID.getDAGId())) {
-          LOG.warn("{} does not belong to {} ('{}' != '{}')}", vertexName, tezDAGID, tezDAGID, tezVertexID.getDAGId());
+          LOG.error("Temp", new RuntimeException());
           continue;
         }
         if (!vertexJsonMap.containsKey(vertexName)) {

@@ -266,7 +266,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
     }
     int completedTasks = 0;
     while (completedTasks < numTasks) {
-      LOG.info("Waiting for " + (numTasks-completedTasks) + " initializers to finish");
+      LOG.error("Temp", new RuntimeException());
       Future<Void> future = initializerCompletionService.take();
       try {
         future.get();
@@ -279,7 +279,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
         }
       }
     }
-    LOG.info("All initializers finished");
+    LOG.error("Temp", new RuntimeException());
     // group inputs depend on inputs beings initialized. So must be done after.
     initializeGroupInputs();
     // Register the groups so that appropriate calls can be made.
@@ -301,7 +301,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
 
     initialMemoryDistributor.makeInitialAllocations();
 
-    LOG.info("Starting Inputs/Outputs");
+    LOG.error("Temp", new RuntimeException());
     int numAutoStarts = 0;
     for (InputSpec inputSpec : inputSpecs) {
       if (groupInputs.contains(inputSpec.getSourceVertexName())) {
@@ -335,9 +335,9 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
     this.initializerExecutor.shutdown();
 
     completedTasks = 0;
-    LOG.info("Num IOs determined for AutoStart: " + numAutoStarts);
+    LOG.error("Temp", new RuntimeException());
     while (completedTasks < numAutoStarts) {
-      LOG.info("Waiting for " + (numAutoStarts - completedTasks) + " IOs to start");
+      LOG.error("Temp", new RuntimeException());
       Future<Void> future = initializerCompletionService.take();
       try {
         future.get();
@@ -350,7 +350,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
         }
       }
     }
-    LOG.info("AutoStartComplete");
+    LOG.error("Temp", new RuntimeException());
 
 
 
@@ -430,11 +430,11 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
       Thread.interrupted();
       if (eventRouterThread != null) {
         eventRouterThread.interrupt();
-        LOG.info("Joining on EventRouter");
+        LOG.error("Temp", new RuntimeException());
         try {
           eventRouterThread.join();
         } catch (InterruptedException e) {
-          LOG.info("Ignoring interrupt while waiting for the router thread to die");
+          LOG.error("Temp", new RuntimeException());
           Thread.currentThread().interrupt();
         }
         eventRouterThread = null;
@@ -467,7 +467,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
     }
 
     protected Void _callInternal() throws Exception {
-      LOG.debug("Initializing Input using InputSpec: {}", inputSpec);
+      LOG.error("Temp", new RuntimeException());
       String edgeName = inputSpec.getSourceVertexName();
       InputContext inputContext = createInputContext(inputsMap, inputSpec, inputIndex);
       LogicalInput input = createInput(inputSpec, inputContext);
@@ -481,7 +481,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
           inputContext.getTaskVertexName(), inputContext.getSourceVertexName(),
           taskSpec.getTaskAttemptID());
       initializedInputs.put(edgeName, input);
-      LOG.debug("Initialized Input with src edge: {}", edgeName);
+      LOG.error("Temp", new RuntimeException());
       initializedInputs.put(edgeName, input);
       return null;
     }
@@ -508,10 +508,10 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
     }
 
     protected Void _callInternal() throws Exception {
-      LOG.debug("Starting Input with src edge: {}", srcVertexName);
+      LOG.error("Temp", new RuntimeException());
 
       input.start();
-      LOG.info("Started Input with src edge: " + srcVertexName);
+      LOG.error("Temp", new RuntimeException());
       return null;
     }
   }
@@ -538,7 +538,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
     }
 
     protected Void _callInternal() throws Exception {
-      LOG.debug("Initializing Output using OutputSpec: {}", outputSpec);
+      LOG.error("Temp", new RuntimeException());
       String edgeName = outputSpec.getDestinationVertexName();
       OutputContext outputContext = createOutputContext(outputSpec, outputIndex);
       LogicalOutput output = createOutput(outputSpec, outputContext);
@@ -551,7 +551,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
           outputContext.getTaskVertexName(),
           outputContext.getDestinationVertexName(), taskSpec.getTaskAttemptID());
       initializedOutputs.put(edgeName, output);
-      LOG.debug("Initialized Output with dest edge: {}", edgeName);
+      LOG.error("Temp", new RuntimeException());
       initializedOutputs.put(edgeName, output);
       return null;
     }
@@ -569,7 +569,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
     if (groupInputSpecs != null && !groupInputSpecs.isEmpty()) {
      groupInputsMap = new ConcurrentHashMap<String, MergedLogicalInput>(groupInputSpecs.size());
      for (GroupInputSpec groupInputSpec : groupInputSpecs) {
-       LOG.debug("Initializing GroupInput using GroupInputSpec: {}", groupInputSpec);
+       LOG.error("Temp", new RuntimeException());
        MergedInputContext mergedInputContext =
            new TezMergedInputContextImpl(groupInputSpec.getMergedInputDescriptor().getUserPayload(),
                groupInputSpec.getGroupName(), groupInputsMap, inputReadyTracker, localDirs, this);
@@ -593,7 +593,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
           + processorDescriptor.getClassName());
     }
     processor.initialize();
-    LOG.info("Initialized processor");
+    LOG.error("Temp", new RuntimeException());
   }
 
   private InputContext createInputContext(Map<String, LogicalInput> inputMap,
@@ -744,11 +744,11 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
         processor.handleEvents(Collections.singletonList(e.getEvent()));
         break;
       case SYSTEM:
-        LOG.warn("Trying to send a System event in a Task: " + e);
+        LOG.error("Temp", new RuntimeException());
         break;
       }
     } catch (Throwable t) {
-      LOG.warn("Failed to handle event", t);
+      LOG.error("Temp", new RuntimeException());
       registerError();
       EventMetaData sourceInfo = new EventMetaData(
           e.getDestinationInfo().getEventGenerator(),
@@ -808,7 +808,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
             }
           } catch (InterruptedException e) {
             if (!isTaskDone()) {
-              LOG.warn("Event Router thread interrupted. Returning.");
+              LOG.error("Temp", new RuntimeException());
             }
             Thread.currentThread().interrupt();
             return;
@@ -852,15 +852,15 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
   }
 
   public void cleanup() throws InterruptedException {
-    LOG.info("Final Counters for " + taskSpec.getTaskAttemptID() + ": " + getCounters().toShortString());
+    LOG.error("Temp", new RuntimeException());
     setTaskDone();
     if (eventRouterThread != null) {
       eventRouterThread.interrupt();
-      LOG.info("Joining on EventRouter");
+      LOG.error("Temp", new RuntimeException());
       try {
         eventRouterThread.join();
       } catch (InterruptedException e) {
-        LOG.info("Ignoring interrupt while waiting for the router thread to die");
+        LOG.error("Temp", new RuntimeException());
         Thread.currentThread().interrupt();
       }
       eventRouterThread = null;
@@ -880,9 +880,9 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
      *
      */
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Processor closed={}", processorClosed);
-      LOG.debug("Num of inputs to be closed={}", initializedInputs.size());
-      LOG.debug("Num of outputs to be closed={}", initializedOutputs.size());
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
     }
 
     // Close the remaining inited Inputs.
@@ -950,7 +950,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
         maybeResetInterruptStatus();
       } catch (InterruptedException ie) {
         //reset the status
-        LOG.info("Resetting interrupt for processor");
+        LOG.error("Temp", new RuntimeException());
         Thread.currentThread().interrupt();
       } catch (Throwable e) {
         LOG.warn(
@@ -964,7 +964,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
       // Cleanup references which may be held by misbehaved tasks.
       cleanupStructures();
     } catch (IOException e) {
-      LOG.info("Error while cleaning up contexts ", e);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -1020,7 +1020,7 @@ public class LogicalIOProcessorRuntimeTask extends RuntimeTask {
       // The thread could have been shutdown before we read info about it.
       if (threadInfo != null) {
         if (LOG.isDebugEnabled()) {
-          LOG.debug("ThreadId : " + id + ", name=" + threadInfo.getThreadName());
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }

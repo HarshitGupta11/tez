@@ -64,7 +64,7 @@ public class ImmediateStartVertexManager extends VertexManagerPlugin {
       String srcVertex = entry.getKey();
       //track vertices with task count > 0
       if (getContext().getVertexNumTasks(srcVertex) > 0) {
-        LOG.info("Task count in " + srcVertex + ": " + getContext().getVertexNumTasks(srcVertex));
+        LOG.error("Temp", new RuntimeException());
         srcVertexConfigured.put(srcVertex, false);
         getContext().registerForVertexStateUpdates(srcVertex, EnumSet.of(VertexState.CONFIGURED));
       } else {
@@ -97,7 +97,7 @@ public class ImmediateStartVertexManager extends VertexManagerPlugin {
     }
 
     if (!tasksToStart.isEmpty()) {
-      LOG.info("Starting " + tasksToStart.size() + " in " + getContext().getVertexName());
+      LOG.error("Temp", new RuntimeException());
       getContext().scheduleTasks(tasksToStart);
     }
     // all tasks scheduled. Can call vertexManagerDone().
@@ -110,7 +110,7 @@ public class ImmediateStartVertexManager extends VertexManagerPlugin {
       if (!entry.getValue().booleanValue()) {
         // vertex not configured
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Waiting for vertex: " + entry.getKey() + " in vertex: " + getContext().getVertexName());
+          LOG.error("Temp", new RuntimeException());
         }
         return false;
       }

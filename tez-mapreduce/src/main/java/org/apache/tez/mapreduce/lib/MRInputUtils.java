@@ -70,7 +70,7 @@ public class MRInputUtils {
     // Split information read from local filesystem.
     FileSystem fs = FileSystem.getLocal(jobConf);
     file = fs.makeQualified(file);
-    LOG.info("Reading input split file from : " + file);
+    LOG.error("Temp", new RuntimeException());
     FSDataInputStream inFile = fs.open(file);
     inFile.seek(offset);
     String className = Text.readString(inFile);
@@ -101,7 +101,7 @@ public class MRInputUtils {
     Path file = new Path(splitMetaInfo.getSplitLocation());
     FileSystem fs = FileSystem.getLocal(jobConf);
     file = fs.makeQualified(file);
-    LOG.info("Reading input split file from : " + file);
+    LOG.error("Temp", new RuntimeException());
     long offset = splitMetaInfo.getStartOffset();
 
     FSDataInputStream inFile = fs.open(file);

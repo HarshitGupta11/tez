@@ -38,7 +38,7 @@ public final class StreamHelper {
         syncable.hflush();
       } else {
         // it would be no-op, if hflush is not supported by a given writer.
-        LOG.debug("skipping hflush, since the writer doesn't support it");
+        LOG.error("Temp", new RuntimeException());
       }
     } else {
       // this is done for backward compatibility in order to make it work with

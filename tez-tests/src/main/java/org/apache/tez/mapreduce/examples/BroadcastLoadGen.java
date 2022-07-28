@@ -97,7 +97,7 @@ public class BroadcastLoadGen extends TezExampleBase {
 
   private DAG createDAG(int numGenTasks, int totalSourceDataSize, int numFetcherTasks) {
     int bytesPerSource = totalSourceDataSize / numGenTasks;
-    LOG.info("DataPerSourceTask(bytes)=" + bytesPerSource);
+    LOG.error("Temp", new RuntimeException());
     ByteBuffer payload = ByteBuffer.allocate(4);
     payload.putInt(0, bytesPerSource);
 
@@ -118,7 +118,7 @@ public class BroadcastLoadGen extends TezExampleBase {
   @Override
   protected final int runJob(String[] args, TezConfiguration tezConf, TezClient tezClient) throws
       TezException, InterruptedException, IOException {
-    LOG.info("Running: " + this.getClass().getSimpleName() + StringUtils.join(args, " "));
+    LOG.error("Temp", new RuntimeException());
 
     int numSourceTasks = Integer.parseInt(args[0]);
     int totalSourceData = Integer.parseInt(args[1]);

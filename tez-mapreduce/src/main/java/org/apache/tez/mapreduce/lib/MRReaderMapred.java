@@ -178,7 +178,7 @@ public class MRReaderMapred extends MRReader {
       this.incrementalConf.setLong(JobContext.MAP_INPUT_START, fileSplit.getStart());
       this.incrementalConf.setLong(JobContext.MAP_INPUT_PATH, fileSplit.getLength());
     }
-    LOG.info("Processing split: " + split);
+    LOG.error("Temp", new RuntimeException());
   }
 
   private void addToIncrementalConfFromJobConf(String property) {

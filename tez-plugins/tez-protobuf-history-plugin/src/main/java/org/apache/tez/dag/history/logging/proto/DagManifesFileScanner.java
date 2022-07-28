@@ -185,7 +185,7 @@ public class DagManifesFileScanner implements Closeable {
       FileStatus status = iter.next();
       String path = status.getPath().toString();
       if (retryCount.getOrDefault(path, 0) > MAX_RETRY) {
-        LOG.warn("Removing file {}, too many errors", path);
+        LOG.error("Temp", new RuntimeException());
         iter.remove();
       }
     }

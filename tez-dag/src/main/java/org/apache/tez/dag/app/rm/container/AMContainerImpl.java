@@ -621,8 +621,8 @@ public class AMContainerImpl implements AMContainer {
       container.currentAttempt = event.getTaskAttemptId();
       container.currentAttemptAllocationTime = container.appContext.getClock().getTime();
       if (LOG.isDebugEnabled()) {
-        LOG.debug("AssignTA: attempt: " + event.getRemoteTaskSpec());
-        LOG.debug("AdditionalLocalResources: " + container.additionalLocalResources);
+        LOG.error("Temp", new RuntimeException());
+        LOG.error("Temp", new RuntimeException());
       }
 
       TezDAGID currentDAGID = container.appContext.getCurrentDAGID();
@@ -714,7 +714,7 @@ public class AMContainerImpl implements AMContainer {
         }
         container.registerFailedAttempt(container.currentAttempt);
         container.currentAttempt = null;
-        LOG.warn(errorMessage);
+        LOG.error("Temp", new RuntimeException());
       }
       container.containerLocalResources = null;
       container.additionalLocalResources = null;
@@ -1102,7 +1102,7 @@ public class AMContainerImpl implements AMContainer {
     this.sendTerminatingToTaskAttempt(currentTaId, errorMessage,
         TaskAttemptTerminationCause.FRAMEWORK_ERROR);
     this.registerFailedAttempt(event.getTaskAttemptId());
-    LOG.warn(errorMessage);
+    LOG.error("Temp", new RuntimeException());
     this.logStopped(ContainerExitStatus.INVALID);
     this.sendStopRequestToNM();
     this.unregisterFromTAListener(ContainerEndReason.FRAMEWORK_ERROR, errorMessage);

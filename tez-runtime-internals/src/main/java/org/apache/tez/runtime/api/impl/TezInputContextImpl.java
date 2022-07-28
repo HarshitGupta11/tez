@@ -173,7 +173,7 @@ public class TezInputContextImpl extends TezTaskContextImpl
     if (inputReadyTracker != null) {
       inputReadyTracker.setInputIsReady(inputs.get(sourceVertexName));
     } else {
-      LOG.warn("Ignoring Input Ready notification since the Task has already been closed");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -187,6 +187,6 @@ public class TezInputContextImpl extends TezTaskContextImpl
     super.close();
     this.userPayload = null;
     this.inputReadyTracker = null;
-    LOG.debug("Cleared TezInputContextImpl related information");
+    LOG.error("Temp", new RuntimeException());
   }
 }

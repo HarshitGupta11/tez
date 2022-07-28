@@ -352,7 +352,7 @@ public class TestTaskImpl {
 
   @Test(timeout = 5000)
   public void testInit() {
-    LOG.info("--- START: testInit ---");
+    LOG.error("Temp", new RuntimeException());
     assertTaskNewState();
     assert (mockTask.getAttemptList().size() == 0);
   }
@@ -362,7 +362,7 @@ public class TestTaskImpl {
    * {@link TaskState#NEW}->{@link TaskState#SCHEDULED}
    */
   public void testScheduleTask() {
-    LOG.info("--- START: testScheduleTask ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
   }
@@ -372,7 +372,7 @@ public class TestTaskImpl {
    * {@link TaskState#SCHEDULED}->{@link TaskState#KILL_WAIT}
    */
   public void testKillScheduledTask() {
-    LOG.info("--- START: testKillScheduledTask ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     killTask(taskId);
@@ -383,7 +383,7 @@ public class TestTaskImpl {
    */
   @Test(timeout = 5000)
   public void testKillRunningTask() {
-    LOG.info("--- START: testKillRunningTask ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -395,7 +395,7 @@ public class TestTaskImpl {
 
   @Test(timeout = 5000)
   public void testTooManyFailedAttempts() {
-    LOG.info("--- START: testTooManyFailedAttempts ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId, TaskState.SCHEDULED);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -419,7 +419,7 @@ public class TestTaskImpl {
 
   @Test(timeout = 5000)
   public void testTooManyAttempts() {
-    LOG.info("--- START: testTooManyAttempts ---");
+    LOG.error("Temp", new RuntimeException());
 
     conf.setInt(TezConfiguration.TEZ_AM_TASK_MAX_ATTEMPTS, 3);
     Vertex vertex = mock(Vertex.class);
@@ -443,7 +443,7 @@ public class TestTaskImpl {
 
   @Test(timeout = 5000)
   public void testFailedAttemptWithFatalError() {
-    LOG.info("--- START: testFailedAttemptWithFatalError ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId, TaskState.SCHEDULED);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -457,7 +457,7 @@ public class TestTaskImpl {
 
   @Test(timeout = 5000)
   public void testKillRunningTaskPreviousKilledAttempts() {
-    LOG.info("--- START: testKillRunningTaskPreviousKilledAttempts ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -475,7 +475,7 @@ public class TestTaskImpl {
    */
   @Test(timeout = 5000)
   public void testKillRunningTaskButAttemptSucceeds() {
-    LOG.info("--- START: testKillRunningTaskButAttemptSucceeds ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -489,7 +489,7 @@ public class TestTaskImpl {
    */
   @Test(timeout = 5000)
   public void testKillRunningTaskButAttemptFails() {
-    LOG.info("--- START: testKillRunningTaskButAttemptFails ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -504,7 +504,7 @@ public class TestTaskImpl {
    * {@link TaskState#SCHEDULED}->{@link TaskState#SCHEDULED}
    */
   public void testKillScheduledTaskAttempt() {
-    LOG.info("--- START: testKillScheduledTaskAttempt ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     TezTaskAttemptID lastTAId = mockTask.getLastAttempt().getID();
@@ -519,7 +519,7 @@ public class TestTaskImpl {
    * {@link TaskState#SCHEDULED}->{@link TaskState#RUNNING}
    */
   public void testLaunchTaskAttempt() {
-    LOG.info("--- START: testLaunchTaskAttempt ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -531,7 +531,7 @@ public class TestTaskImpl {
    * {@link TaskState#RUNNING}->{@link TaskState#RUNNING}
    */
   public void testKillRunningTaskAttempt() {
-    LOG.info("--- START: testKillRunningTaskAttempt ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     TezTaskAttemptID lastTAId = mockTask.getLastAttempt().getID();
@@ -547,7 +547,7 @@ public class TestTaskImpl {
    * {@link TaskState#RUNNING}->{@link TaskState#RUNNING}
    */
   public void testKillTaskAttemptServiceBusy() {
-    LOG.info("--- START: testKillTaskAttemptServiceBusy ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -563,7 +563,7 @@ public class TestTaskImpl {
    */
   @Test(timeout = 5000)
   public void testKilledAttemptAtTaskKilled() {
-    LOG.info("--- START: testKilledAttemptAtTaskKilled ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     launchTaskAttempt(mockTask.getLastAttempt().getID());
@@ -584,7 +584,7 @@ public class TestTaskImpl {
    */
   @Test(timeout = 5000)
   public void testKilledAttemptAtTaskFailed() {
-    LOG.info("--- START: testKilledAttemptAtTaskFailed ---");
+    LOG.error("Temp", new RuntimeException());
     TezTaskID taskId = getNewTaskID();
     scheduleTaskAttempt(taskId);
     for (int i = 0; i < mockTask.maxFailedAttempts; ++i) {
@@ -624,7 +624,7 @@ public class TestTaskImpl {
 
   @Test(timeout = 5000)
   public void testTaskProgress() {
-    LOG.info("--- START: testTaskProgress ---");
+    LOG.error("Temp", new RuntimeException());
 
     // launch task
     TezTaskID taskId = getNewTaskID();

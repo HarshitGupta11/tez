@@ -89,7 +89,7 @@ public class TestMultiMRInput {
 
   @Before
   public void setup() throws IOException {
-    LOG.info("Setup. Using test dir: " + TEST_ROOT_DIR);
+    LOG.error("Temp", new RuntimeException());
     localFs.delete(TEST_ROOT_DIR, true);
     localFs.mkdirs(TEST_ROOT_DIR);
   }
@@ -363,7 +363,7 @@ public class TestMultiMRInput {
           throws IOException {
     LinkedHashMap<LongWritable, Text> data = new LinkedHashMap<LongWritable, Text>();
     Path file = new Path(workDir, filename);
-    LOG.info("Generating data at path: " + file);
+    LOG.error("Temp", new RuntimeException());
     // create a file with length entries
     @SuppressWarnings("deprecation")
     SequenceFile.Writer writer = SequenceFile.createWriter(fs, job, file, LongWritable.class,
@@ -377,7 +377,7 @@ public class TestMultiMRInput {
         value.set(Integer.toString(r.nextInt(10000)));
         data.put(new LongWritable(key.get()), new Text(value.toString()));
         writer.append(key, value);
-        LOG.info("<k, v> : <" + key.get() + ", " + value + ">");
+        LOG.error("Temp", new RuntimeException());
       }
       fileLength.addAndGet(writer.getLength());
     } finally {

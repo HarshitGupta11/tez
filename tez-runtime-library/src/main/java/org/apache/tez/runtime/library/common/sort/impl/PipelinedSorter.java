@@ -187,7 +187,7 @@ public class PipelinedSorter extends ExternalSorter {
       initialSetupLogLine.append(false);
     }
 
-    LOG.info(initialSetupLogLine.toString());
+    LOG.error("Temp", new RuntimeException());
 
     long totalCapacityWithoutMeta = 0;
     long availableMem = maxMemLimit;
@@ -207,7 +207,7 @@ public class PipelinedSorter extends ExternalSorter {
     bufferUsage = Lists.newArrayListWithCapacity(maxNumberOfBlocks);
     allocateSpace(); //Allocate the first block
     if (!lazyAllocateMem) {
-      LOG.info("Pre allocating rest of memory buffers upfront");
+      LOG.error("Temp", new RuntimeException());
       while(allocateSpace() != null);
     }
 
@@ -225,7 +225,7 @@ public class PipelinedSorter extends ExternalSorter {
         sortmb);
 
     Preconditions.checkState(buffers.size() > 0, "Atleast one buffer needs to be present");
-    LOG.info(initialSetupLogLine.toString());
+    LOG.error("Temp", new RuntimeException());
 
     span = new SortSpan(buffers.get(bufferIndex), 1024 * 1024, 16, this.comparator);
     merger = new SpanMerger(); // SpanIterators are comparable
@@ -336,7 +336,7 @@ public class PipelinedSorter extends ExternalSorter {
       boolean ret = spill(true);
       stopWatch.stop();
       if (LOG.isDebugEnabled()) {
-        LOG.debug(outputContext.getDestinationVertexName() + ": Time taken for spill " + (stopWatch.now(TimeUnit.MILLISECONDS)) + " ms");
+        LOG.error("Temp", new RuntimeException());
       }
       if (pipelinedShuffle && ret) {
         sendPipelinedShuffleEvents();
@@ -362,7 +362,7 @@ public class PipelinedSorter extends ExternalSorter {
     } else {
       // queue up the sort
       SortTask task = new SortTask(span, sorter);
-      LOG.debug("Submitting span={} for sort", span.toString());
+      LOG.error("Temp", new RuntimeException());
       Future<SpanIterator> future = sortmaster.submit(task);
       merger.add(future);
       span = newSpan;
@@ -568,7 +568,7 @@ public class PipelinedSorter extends ExternalSorter {
         }
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
-        LOG.info(outputContext.getDestinationVertexName() + ": Interrupted while waiting for mergers to complete");
+        LOG.error("Temp", new RuntimeException());
         throw new IOInterruptedException(outputContext.getDestinationVertexName() + ": Interrupted while waiting for mergers to complete", e);
       }
 
@@ -581,7 +581,7 @@ public class PipelinedSorter extends ExternalSorter {
       spillFilePaths.put(numSpills, filename);
       out = rfs.create(filename, true, 4096);
       ensureSpillFilePermissions(filename, rfs);
-      LOG.info(outputContext.getDestinationVertexName() + ": Spilling to " + filename.toString());
+      LOG.error("Temp", new RuntimeException());
       for (int i = 0; i < partitions; ++i) {
         if (isThreadInterrupted()) {
           return false;
@@ -674,7 +674,7 @@ public class PipelinedSorter extends ExternalSorter {
     }
 
     try {
-      LOG.info(outputContext.getDestinationVertexName() + ": Starting flush of map output");
+      LOG.error("Temp", new RuntimeException());
       span.end();
       merger.add(span.sort(sorter));
       // force a spill in flush()
@@ -717,7 +717,7 @@ public class PipelinedSorter extends ExternalSorter {
               outputContext, i, indexCacheList.get(i), partitions,
               sendEmptyPartitionDetails, pathComponent, partitionStats,
               reportDetailedPartitionStats(), auxiliaryService, deflater);
-          LOG.info(outputContext.getDestinationVertexName() + ": Adding spill event for spill (final update=" + isLastEvent + "), spillId=" + i);
+          LOG.error("Temp", new RuntimeException());
         }
         return;
       }
@@ -1064,7 +1064,7 @@ public class PipelinedSorter extends ExternalSorter {
         return null;
       }
       int perItem = kvbuffer.position()/items;
-      LOG.info(outputContext.getDestinationVertexName() + ": " + String.format("Span%d.length = %d, perItem = %d", index, length(), perItem));
+      LOG.error("Temp", new RuntimeException());
       if(remaining.remaining() < METASIZE+perItem) {
         //Check if we can get the next Buffer from the main buffer list
         ByteBuffer space = allocateSpace();
@@ -1403,7 +1403,7 @@ public class PipelinedSorter extends ExternalSorter {
             total += sp.span.length();
             eq += sp.span.getEq();
         }
-        LOG.info(outputContext.getDestinationVertexName() + ": " + "Heap = " + sb.toString());
+        LOG.error("Temp", new RuntimeException());
         return true;
       } catch(ExecutionException e) {
         LOG.error("Heap size={}, total={}, eq={}, partition={}, gallop={}, totalItr={},"

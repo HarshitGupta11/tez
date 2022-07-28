@@ -61,26 +61,26 @@ public class TezGroupedSplitsInputFormat<K, V>
   public void setInputFormat(InputFormat<K, V> wrappedInputFormat) {
     this.wrappedInputFormat = wrappedInputFormat;
     if (LOG.isDebugEnabled()) {
-      LOG.debug("wrappedInputFormat: " + wrappedInputFormat.getClass().getName());
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
   public void setSplitSizeEstimator(SplitSizeEstimator estimator) {
     Preconditions.checkArgument(estimator != null);
     this.estimator = estimator;
-    LOG.debug("Split size estimator : {}", estimator);
+    LOG.error("Temp", new RuntimeException());
   }
 
   public void setSplitLocationProvider(SplitLocationProvider locationProvider) {
     Preconditions.checkArgument(locationProvider != null);
     this.locationProvider = locationProvider;
-    LOG.debug("Split size location provider: {}", locationProvider);
+    LOG.error("Temp", new RuntimeException());
   }
   
   public void setDesiredNumberOfSplits(int num) {
     Preconditions.checkArgument(num >= 0);
     this.desiredNumSplits = num;
-    LOG.debug("desiredNumSplits: {}", desiredNumSplits);
+    LOG.error("Temp", new RuntimeException());
   }
   
   @Override

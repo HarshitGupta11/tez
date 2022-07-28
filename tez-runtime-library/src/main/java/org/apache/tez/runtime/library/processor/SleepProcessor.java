@@ -69,7 +69,7 @@ public class SleepProcessor extends AbstractLogicalIOProcessor {
       cfg.fromUserPayload(getContext().getUserPayload());
       timeToSleepMS = cfg.getTimeToSleepMS();
     }
-    LOG.info("Initialized SleepProcessor, timeToSleepMS=" + timeToSleepMS);
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override

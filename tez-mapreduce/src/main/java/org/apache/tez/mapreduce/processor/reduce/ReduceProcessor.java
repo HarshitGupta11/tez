@@ -91,7 +91,7 @@ public class ReduceProcessor extends MRTask {
     this.inputs = _inputs;
     this.outputs = _outputs;
     progressHelper = new ProgressHelper(this.inputs, processorContext, this.getClass().getSimpleName());
-    LOG.info("Running reduce: " + processorContext.getUniqueIdentifier());
+    LOG.error("Temp", new RuntimeException());
 
     if (_outputs.size() <= 0 || _outputs.size() > 1) {
       throw new IOException("Invalid number of _outputs"
@@ -109,7 +109,7 @@ public class ReduceProcessor extends MRTask {
     List<Input> pendingInputs = new LinkedList<Input>();
     pendingInputs.add(in);
     processorContext.waitForAllInputsReady(pendingInputs);
-    LOG.info("Input is ready for consumption. Starting Output");
+    LOG.error("Temp", new RuntimeException());
 
     LogicalOutput out = _outputs.values().iterator().next();
     out.start();
@@ -120,11 +120,11 @@ public class ReduceProcessor extends MRTask {
 
     Class keyClass = ConfigUtils.getIntermediateInputKeyClass(jobConf);
     Class valueClass = ConfigUtils.getIntermediateInputValueClass(jobConf);
-    LOG.info("Using keyClass: " + keyClass);
-    LOG.info("Using valueClass: " + valueClass);
+    LOG.error("Temp", new RuntimeException());
+    LOG.error("Temp", new RuntimeException());
     RawComparator comparator =
         ConfigUtils.getInputKeySecondaryGroupingComparator(jobConf);
-    LOG.info("Using comparator: " + comparator);
+    LOG.error("Temp", new RuntimeException());
 
     reduceInputKeyCounter =
         mrReporter.getCounter(TaskCounter.REDUCE_INPUT_GROUPS);

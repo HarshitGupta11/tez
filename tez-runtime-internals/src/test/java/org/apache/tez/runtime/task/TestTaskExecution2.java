@@ -702,7 +702,7 @@ public class TestTaskExecution2 {
     } else {
       assertNotNull(taskRunner2Result.getError());
       Throwable cause = taskRunner2Result.getError();
-      LOG.info(cause.getClass().getName());
+      LOG.error("Temp", new RuntimeException());
       assertTrue(cause.getClass().isAssignableFrom(expectedThrowable.getClass()));
 
       if (expectedExceptionMessage != null) {

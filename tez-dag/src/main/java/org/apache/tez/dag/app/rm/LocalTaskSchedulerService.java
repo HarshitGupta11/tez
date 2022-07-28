@@ -491,7 +491,7 @@ public class LocalTaskSchedulerService extends TaskScheduler {
           TaskRequest taskRequest = iter.next();
           if (taskRequest.task.equals(request.task)) {
             iter.remove();
-            LOG.info("Deallocation request before allocation for task:" + request.task);
+            LOG.error("Temp", new RuntimeException());
             break;
           }
         }
@@ -499,7 +499,7 @@ public class LocalTaskSchedulerService extends TaskScheduler {
     }
 
     void preemptTask(DeallocateContainerRequest request) {
-      LOG.info("Trying to preempt: " + request.containerId);
+      LOG.error("Temp", new RuntimeException());
       Iterator<Map.Entry<Object, AllocatedTask>> entries = taskAllocations.entrySet().iterator();
       while (entries.hasNext()) {
         Map.Entry<Object, AllocatedTask> entry = entries.next();
@@ -507,7 +507,7 @@ public class LocalTaskSchedulerService extends TaskScheduler {
         if (container.getId().equals(request.containerId)) {
           entries.remove();
           Object task = entry.getKey();
-          LOG.info("Preempting task/container:" + task + "/" + container);
+          LOG.error("Temp", new RuntimeException());
           taskSchedulerContext.containerBeingReleased(container.getId());
         }
       }

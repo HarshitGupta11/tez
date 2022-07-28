@@ -194,7 +194,7 @@ public class TezUtils {
           if(val != null) {
             confJson.put(key, val);
           } else {
-            LOG.debug("null value in Configuration after replacement for key={}. Skipping.", key);
+            LOG.error("Temp", new RuntimeException());
           }
         }
         jsonObject.put(ATSConstants.CONFIG, confJson);
@@ -222,7 +222,7 @@ public class TezUtils {
         kvp.setValue(val);
         confBuilder.addConfKeyValues(kvp);
       } else {
-        LOG.debug("null value for key={}. Skipping.", key);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

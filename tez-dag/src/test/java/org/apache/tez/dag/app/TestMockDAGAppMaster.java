@@ -1034,7 +1034,7 @@ public class TestMockDAGAppMaster {
     dagClient = tezClient.submitDAG(dag2);
     dagClient.waitForCompletion();
     Assert.assertEquals(DAGStatus.State.FAILED, dagClient.getDAGStatus(null).getState());
-    LOG.info(dagClient.getDAGStatus(null).getDiagnostics());
+    LOG.error("Temp", new RuntimeException());
     Assert.assertTrue(StringUtils.join(dagClient.getDAGStatus(null).getDiagnostics(),",")
         .contains("fail output committer:uv12Out"));
     Assert.assertEquals(VertexStatus.State.SUCCEEDED, dagClient.getVertexStatus("v1", null).getState());
@@ -1045,7 +1045,7 @@ public class TestMockDAGAppMaster {
     DAG dag3 = createDAG("testDAGVertexCommitFail", false, true);
     dagClient = tezClient.submitDAG(dag3);
     dagClient.waitForCompletion();
-    LOG.info(dagClient.getDAGStatus(null).getDiagnostics());
+    LOG.error("Temp", new RuntimeException());
     Assert.assertEquals(DAGStatus.State.FAILED, dagClient.getDAGStatus(null).getState());
     Assert.assertTrue(StringUtils.join(dagClient.getDAGStatus(null).getDiagnostics(),",")
         .contains("fail output committer:v3Out"));
@@ -1057,7 +1057,7 @@ public class TestMockDAGAppMaster {
     DAG dag4 = createDAG("testDAGBothCommitsFail", true, true);
     dagClient = tezClient.submitDAG(dag4);
     dagClient.waitForCompletion();
-    LOG.info(dagClient.getDAGStatus(null).getDiagnostics());
+    LOG.error("Temp", new RuntimeException());
     Assert.assertEquals(DAGStatus.State.FAILED, dagClient.getDAGStatus(null).getState());
     String diag = StringUtils.join(dagClient.getDAGStatus(null).getDiagnostics(),",");
     Assert.assertTrue(diag.contains("fail output committer:uv12Out") ||
@@ -1087,7 +1087,7 @@ public class TestMockDAGAppMaster {
     dagClient = tezClient.submitDAG(dag2);
     dagClient.waitForCompletion();
     Assert.assertEquals(DAGStatus.State.FAILED, dagClient.getDAGStatus(null).getState());
-    LOG.info(dagClient.getDAGStatus(null).getDiagnostics());
+    LOG.error("Temp", new RuntimeException());
     Assert.assertTrue(StringUtils.join(dagClient.getDAGStatus(null).getDiagnostics(),",")
         .contains("fail output committer:uv12Out"));
     Assert.assertEquals(VertexStatus.State.SUCCEEDED, dagClient.getVertexStatus("v1", null).getState());
@@ -1096,7 +1096,7 @@ public class TestMockDAGAppMaster {
     // v3 either succeeded (commit completed before uv12 commit fails)
     // or killed ( uv12 commit fail when v3 is in running/committing)
     if (v3State.equals(VertexStatus.State.SUCCEEDED)) {
-      LOG.info("v3 is succeeded");
+      LOG.error("Temp", new RuntimeException());
     } else {
       Assert.assertEquals(VertexStatus.State.KILLED, v3State);
     }
@@ -1105,7 +1105,7 @@ public class TestMockDAGAppMaster {
     DAG dag3 = createDAG("testDAGVertexCommitFail", false, true);
     dagClient = tezClient.submitDAG(dag3);
     dagClient.waitForCompletion();
-    LOG.info(dagClient.getDAGStatus(null).getDiagnostics());
+    LOG.error("Temp", new RuntimeException());
     Assert.assertEquals(DAGStatus.State.FAILED, dagClient.getDAGStatus(null).getState());
     Assert.assertTrue(StringUtils.join(dagClient.getDAGStatus(null).getDiagnostics(),",")
         .contains("Commit failed"));
@@ -1120,7 +1120,7 @@ public class TestMockDAGAppMaster {
     dagClient = tezClient.submitDAG(dag4);
     dagClient.waitForCompletion();
     Assert.assertEquals(DAGStatus.State.FAILED, dagClient.getDAGStatus(null).getState());
-    LOG.info(dagClient.getDAGStatus(null).getDiagnostics());
+    LOG.error("Temp", new RuntimeException());
     Assert.assertEquals(DAGStatus.State.FAILED, dagClient.getDAGStatus(null).getState());
     String diag = StringUtils.join(dagClient.getDAGStatus(null).getDiagnostics(),",");
     Assert.assertTrue(diag.contains("fail output committer:uv12Out") ||
@@ -1131,7 +1131,7 @@ public class TestMockDAGAppMaster {
     // v3 either failed (commit of v3 fail before uv12 commit)
     // or killed ( uv12 commit fail before commit of v3)
     if (v3State.equals(VertexStatus.State.FAILED)) {
-      LOG.info("v3 is failed");
+      LOG.error("Temp", new RuntimeException());
       Assert.assertTrue(StringUtils.join(dagClient.getVertexStatus("v3", null).getDiagnostics(),",")
           .contains("fail output committer:v3Out"));
     } else {

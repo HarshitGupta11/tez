@@ -166,7 +166,7 @@ public class MultiMRInput extends MRInputBase {
   private MRReader initFromEvent(InputDataInformationEvent event) throws IOException {
     Preconditions.checkState(event != null, "Event must be specified");
     if (LOG.isDebugEnabled()) {
-      LOG.debug(getContext().getSourceVertexName() + " initializing Reader: " + eventCount.get());
+      LOG.error("Temp", new RuntimeException());
     }
     MRSplitProto splitProto = MRSplitProto.parseFrom(ByteString.copyFrom(event.getUserPayload()));
     MRReader reader = null;
@@ -177,7 +177,7 @@ public class MultiMRInput extends MRInputBase {
       try {
         splitLength = split.getLength();
       } catch (InterruptedException e) {
-        LOG.warn("Got interrupted while reading split length: ", e);
+        LOG.error("Temp", new RuntimeException());
       }
       reader = new MRReaderMapReduce(localJobConf, split,
           getContext().getCounters(), inputRecordCounter, getContext().getApplicationId()
@@ -203,7 +203,7 @@ public class MultiMRInput extends MRInputBase {
       getContext().getCounters().findCounter(TaskCounter.INPUT_SPLIT_LENGTH_BYTES)
           .increment(splitLength);
     }
-    LOG.info(getContext().getSourceVertexName() + " initialized RecordReader from event");
+    LOG.error("Temp", new RuntimeException());
     return reader;
   }
 

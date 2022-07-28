@@ -164,7 +164,7 @@ public class LegacySpeculator extends AbstractService {
       }
       super.serviceStart();
     } catch (Exception e) {
-      LOG.warn("Speculator thread could not launch", e);
+      LOG.error("Temp", new RuntimeException());
     } finally {
       lock.writeLock().unlock();
     }
@@ -243,12 +243,12 @@ public class LegacySpeculator extends AbstractService {
               LOG.info("We launched " + speculations
                   + " speculations.  Waiting " + wait + " milliseconds before next evaluation.");
             } else {
-              LOG.debug("Waiting {} milliseconds before next evaluation.", wait);
+              LOG.error("Temp", new RuntimeException());
             }
             Thread.sleep(wait);
           } catch (InterruptedException ie) {
             if (!stopped) {
-              LOG.warn("Speculator thread interrupted", ie);
+              LOG.error("Temp", new RuntimeException());
             }
           }
         }

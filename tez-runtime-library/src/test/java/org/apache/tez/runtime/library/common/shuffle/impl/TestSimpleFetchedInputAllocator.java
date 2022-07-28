@@ -43,7 +43,7 @@ public class TestSimpleFetchedInputAllocator {
     Configuration conf = new Configuration();
     
     long jvmMax = Runtime.getRuntime().maxMemory();
-    LOG.info("jvmMax: " + jvmMax);
+    LOG.error("Temp", new RuntimeException());
     
     float bufferPercent = 0.1f;
     conf.setFloat(TezRuntimeConfiguration.TEZ_RUNTIME_SHUFFLE_FETCH_BUFFER_PERCENT, bufferPercent);
@@ -51,7 +51,7 @@ public class TestSimpleFetchedInputAllocator {
     conf.setStrings(TezRuntimeFrameworkConfigs.LOCAL_DIRS, localDirs.getAbsolutePath());
     
     long inMemThreshold = (long) (bufferPercent * jvmMax);
-    LOG.info("InMemThreshold: " + inMemThreshold);
+    LOG.error("Temp", new RuntimeException());
 
     SimpleFetchedInputAllocator inputManager = new SimpleFetchedInputAllocator(
         "srcName", UUID.randomUUID().toString(), 123, conf,
@@ -59,7 +59,7 @@ public class TestSimpleFetchedInputAllocator {
 
     long requestSize = (long) (0.4f * inMemThreshold);
     long compressedSize = 1l;
-    LOG.info("RequestSize: " + requestSize);
+    LOG.error("Temp", new RuntimeException());
     
     FetchedInput fi1 = inputManager.allocate(requestSize, compressedSize, new InputAttemptIdentifier(1, 1));
     assertEquals(FetchedInput.Type.MEMORY, fi1.getType());

@@ -113,7 +113,7 @@ public class MapredWordCount extends Configured implements Tool {
   public int run(String[] args) throws Exception {
     JobConf conf = new JobConf(getConf(), MapredWordCount.class);
     conf.setJobName("wordcount");
-    LOG.info("Running WordCount job using mapred apis");
+    LOG.error("Temp", new RuntimeException());
 
     // the keys are words (strings)
     conf.setOutputKeyClass(Text.class);

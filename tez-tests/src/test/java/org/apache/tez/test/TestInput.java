@@ -159,7 +159,7 @@ public class TestInput extends AbstractLogicalInput {
           }
         }
         lastInputReadyValue = inputReady.get();
-        LOG.info("Done for inputReady: " + lastInputReadyValue);
+        LOG.error("Temp", new RuntimeException());
       }
       if (!doRandomFail) {
         // not random fail
@@ -176,7 +176,7 @@ public class TestInput extends AbstractLogicalInput {
                 String msg = ("FailingInput: " + getContext().getUniqueIdentifier() + 
                     " index: " + i + " version: " + lastInputReadyValue);
                 events.add(InputReadErrorEvent.create(msg, i, lastInputReadyValue));
-                LOG.info("Failing input: " + msg);
+                LOG.error("Temp", new RuntimeException());
               }
             } else {
               for (Integer index : failingInputIndices) {
@@ -190,13 +190,13 @@ public class TestInput extends AbstractLogicalInput {
                 String msg = ("FailingInput: " + getContext().getUniqueIdentifier() + 
                     " index: " + index.intValue() + " version: " + lastInputReadyValue);
                 events.add(InputReadErrorEvent.create(msg, index.intValue(), lastInputReadyValue));
-                LOG.info("Failing input: " + msg);
+                LOG.error("Temp", new RuntimeException());
               }
             }
             getContext().sendEvents(events);
             if (doFailAndExit) {
               String msg = "FailingInput exiting: " + getContext().getUniqueIdentifier();
-              LOG.info(msg);
+              LOG.error("Temp", new RuntimeException());
               throwException(msg);
             } else {
               try {
@@ -214,7 +214,7 @@ public class TestInput extends AbstractLogicalInput {
                   getContext().sendEvents(events);
                 }
               } catch (InterruptedException e) {
-                LOG.info("Interrupted while sending events", e);
+                LOG.error("Temp", new RuntimeException());
               }
               done = false;
             }
@@ -235,7 +235,7 @@ public class TestInput extends AbstractLogicalInput {
                 (lastInputReadyValue <= failingInputUpto)) {
               // if any previous attempt has failed then dont be done when we see
               // a previously failed input
-              LOG.info("Previous task attempt failed and input version less than failing upto version");
+              LOG.error("Temp", new RuntimeException());
               done = false;
             }
           }
@@ -256,13 +256,13 @@ public class TestInput extends AbstractLogicalInput {
                 " index: " + index + " version: " + sourceInputVersion +
                 " rollNumber: " + rollNumber + 
                 " randomFailProbability " + randomFailProbability;
-            LOG.info(msg);
+            LOG.error("Temp", new RuntimeException());
             if (rollNumber < randomFailProbability) {
               // fail the source input
               msg = "FailingInput: rollNumber < randomFailProbability. Do fail." + 
                             getContext().getUniqueIdentifier() + 
                             " index: " + index + " version: " + sourceInputVersion;
-              LOG.info(msg);
+              LOG.error("Temp", new RuntimeException());
               events.add(InputReadErrorEvent.create(msg, index, sourceInputVersion));
             }
           }
@@ -303,35 +303,35 @@ public class TestInput extends AbstractLogicalInput {
       doFail = conf.getBoolean(getVertexConfName(TEZ_FAILING_INPUT_DO_FAIL, vName), false);
       doFailAndExit = conf.getBoolean(
           getVertexConfName(TEZ_FAILING_INPUT_DO_FAIL_AND_EXIT, vName), false);
-      LOG.info("doFail: " + doFail + " doFailAndExit: " + doFailAndExit);
+      LOG.error("Temp", new RuntimeException());
       if (doFail) {
         for (String failingIndex : 
           conf.getTrimmedStringCollection(
               getVertexConfName(TEZ_FAILING_INPUT_FAILING_TASK_INDEX, vName))) {
-          LOG.info("Adding failing task index: " + failingIndex);
+          LOG.error("Temp", new RuntimeException());
           failingTaskIndices.add(Integer.valueOf(failingIndex));
         }
         for (String failingIndex : 
           conf.getTrimmedStringCollection(
               getVertexConfName(TEZ_FAILING_INPUT_FAILING_TASK_ATTEMPT, vName))) {
-          LOG.info("Adding failing task attempt: " + failingIndex);
+          LOG.error("Temp", new RuntimeException());
           failingTaskAttempts.add(Integer.valueOf(failingIndex));
         }
         failingInputUpto = conf.getInt(
             getVertexConfName(TEZ_FAILING_INPUT_FAILING_UPTO_INPUT_ATTEMPT, vName), 0);
-        LOG.info("Adding failing input upto: " + failingInputUpto);
+        LOG.error("Temp", new RuntimeException());
         for (String failingIndex : 
           conf.getTrimmedStringCollection(
               getVertexConfName(TEZ_FAILING_INPUT_FAILING_INPUT_INDEX, vName))) {
-          LOG.info("Adding failing input index: " + failingIndex);
+          LOG.error("Temp", new RuntimeException());
           failingInputIndices.add(Integer.valueOf(failingIndex));
         }
       }
       doRandomFail = conf
           .getBoolean(TEZ_FAILING_INPUT_DO_RANDOM_FAIL, false);
       randomFailProbability = conf.getFloat(TEZ_FAILING_INPUT_RANDOM_FAIL_PROBABILITY, 0.0f);
-      LOG.info("doRandomFail: " + doRandomFail);
-      LOG.info("randomFailProbability: " + randomFailProbability);
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
     }
     return Collections.emptyList();
   }
@@ -374,16 +374,16 @@ public class TestInput extends AbstractLogicalInput {
       int maxInputVersionSeen = -1;  
       for (int i=0; i<getNumPhysicalInputs(); ++i) {
         if (completedInputVersion[i] < 0) {
-          LOG.info("Not received completion for input " + i);
+          LOG.error("Temp", new RuntimeException());
           return;
         } else if (maxInputVersionSeen < completedInputVersion[i]) {
           maxInputVersionSeen = completedInputVersion[i];
         }
       }
-      LOG.info("Received all inputs");
+      LOG.error("Temp", new RuntimeException());
       synchronized (inputReady) {
         inputReady.set(maxInputVersionSeen);
-        LOG.info("Notifying done with " + maxInputVersionSeen);
+        LOG.error("Temp", new RuntimeException());
         inputReady.notifyAll();
       }
     }

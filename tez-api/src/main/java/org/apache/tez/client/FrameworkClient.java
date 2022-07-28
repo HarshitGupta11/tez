@@ -119,10 +119,10 @@ public abstract class FrameworkClient {
     }
     if (proxy == null) {
       try {
-        LOG.warn("DAG submission to session timed out, stopping session");
+        LOG.error("Temp", new RuntimeException());
         stop();
       } catch (Throwable t) {
-        LOG.info("Got an exception when trying to stop session", t);
+        LOG.error("Temp", new RuntimeException());
       }
       throw new DAGSubmissionTimedOut("Could not submit DAG to Tez Session"
           + ", timed out after " + clientTimeout + " seconds");

@@ -87,7 +87,7 @@ public class TezCommonUtils {
       FileSystem fs = p.getFileSystem(conf);
       if (!fs.exists(p)) {
         mkDirForAM(fs, p);
-        LOG.info("Stage directory " + p + " doesn't exist and is created");
+        LOG.error("Temp", new RuntimeException());
       }
       baseStagingDir = fs.resolvePath(p);
     } catch (IOException e) {
@@ -120,7 +120,7 @@ public class TezCommonUtils {
       tezStagingDir = new Path(tezStagingDir, strAppId);
       if (!fs.exists(tezStagingDir)) {
         mkDirForAM(fs, tezStagingDir);
-        LOG.info("Tez system stage directory " + tezStagingDir + " doesn't exist and is created");
+        LOG.error("Temp", new RuntimeException());
       }
     } catch (IOException e) {
       throw new TezUncheckedException(e);

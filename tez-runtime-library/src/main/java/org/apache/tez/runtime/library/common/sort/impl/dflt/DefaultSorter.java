@@ -371,7 +371,7 @@ public final class DefaultSorter extends ExternalSorter implements IndexedSortab
       kvindex = (int)(((long)kvindex - NMETA + kvmeta.capacity()) % kvmeta.capacity());
       totalKeys++;
     } catch (MapBufferTooSmallException e) {
-      LOG.info(outputContext.getDestinationVertexName() + ": Record too large for in-memory buffer: " + e.getMessage());
+      LOG.error("Temp", new RuntimeException());
       spillSingleRecord(key, value, partition);
       mapOutputRecordCounter.increment(1);
       return;
@@ -664,7 +664,7 @@ public final class DefaultSorter extends ExternalSorter implements IndexedSortab
       spillThread.interrupt();
       spillThread.join();
     } catch (InterruptedException e) {
-      LOG.info(outputContext.getDestinationVertexName() + ": " + "Spill thread interrupted");
+      LOG.error("Temp", new RuntimeException());
       //Reset status
       Thread.currentThread().interrupt();
       throw new IOInterruptedException("Spill failed", e);
@@ -673,7 +673,7 @@ public final class DefaultSorter extends ExternalSorter implements IndexedSortab
 
   @Override
   public void flush() throws IOException {
-    LOG.info(outputContext.getDestinationVertexName() + ": " + "Starting flush of map output");
+    LOG.error("Temp", new RuntimeException());
     outputContext.notifyProgress();
     if (Thread.currentThread().isInterrupted()) {
       /**
@@ -781,7 +781,7 @@ public final class DefaultSorter extends ExternalSorter implements IndexedSortab
             spillLock.unlock();
             sortAndSpill(sameKeyCount, totalKeysCount);
           } catch (Throwable t) {
-            LOG.warn(outputContext.getDestinationVertexName() + ": " + "Got an exception in sortAndSpill", t);
+            LOG.error("Temp", new RuntimeException());
             sortSpillException = t;
           } finally {
             spillLock.lock();
@@ -794,7 +794,7 @@ public final class DefaultSorter extends ExternalSorter implements IndexedSortab
           }
         }
       } catch (InterruptedException e) {
-        LOG.info(outputContext.getDestinationVertexName() + ": " + "Spill thread interrupted");
+        LOG.error("Temp", new RuntimeException());
         Thread.currentThread().interrupt();
       } finally {
         spillLock.unlock();
@@ -936,7 +936,7 @@ public final class DefaultSorter extends ExternalSorter implements IndexedSortab
               TezRawKeyValueIterator kvIter =
                 new MRResultIterator(spstart, spindex);
               if (LOG.isDebugEnabled()) {
-                LOG.debug(outputContext.getDestinationVertexName() + ": " + "Running combine processor");
+                LOG.error("Temp", new RuntimeException());
               }
               runCombineProcessor(kvIter, writer);
             }

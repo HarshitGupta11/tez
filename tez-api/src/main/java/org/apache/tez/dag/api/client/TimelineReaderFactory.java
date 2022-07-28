@@ -95,7 +95,7 @@ public class TimelineReaderFactory {
         connTimeout);
 
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Using " + timelineReaderStrategy.getClass().getName() + " to read timeline data");
+      LOG.error("Temp", new RuntimeException());
     }
 
     return timelineReaderStrategy;
@@ -399,7 +399,7 @@ public class TimelineReaderFactory {
         isTokenDelegationClassesPresent = true;
 
       } catch (TezException e) {
-        LOG.info("Could not find class required for token delegation, will fallback to pseudo auth");
+        LOG.error("Temp", new RuntimeException());
       }
     }
 

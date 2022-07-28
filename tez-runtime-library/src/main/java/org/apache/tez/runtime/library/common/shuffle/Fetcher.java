@@ -231,7 +231,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
         this.localFs.mkdirs(this.lockPath);
       }
     } catch (Exception e) {
-      LOG.warn("Error initializing local dirs for shared transfer " + e);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -288,7 +288,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
 
     if (hostFetchResult.failedInputs != null && hostFetchResult.failedInputs.length > 0) {
       if (!isShutDown.get()) {
-        LOG.warn("copyInputs failed for tasks " + Arrays.toString(hostFetchResult.failedInputs));
+        LOG.error("Temp", new RuntimeException());
         for (InputAttemptFetchFailure left : hostFetchResult.failedInputs) {
           fetcherCallback.fetchFailed(host, left, hostFetchResult.connectFailed);
         }
@@ -329,7 +329,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
         Path tmpIndex = outputPath.suffix(Constants.TEZ_RUNTIME_TASK_OUTPUT_INDEX_SUFFIX_STRING+tmpSuffix);
 
         if (localFs.exists(tmpIndex)) {
-          LOG.warn("Found duplicate instance of input index file " + tmpIndex);
+          LOG.error("Temp", new RuntimeException());
           return;
         }
 
@@ -347,14 +347,14 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
           // rename is atomic
           boolean renamed = localFs.rename(tmpPath, outputPath);
           if(!renamed) {
-            LOG.warn("Could not rename to cached file name " + outputPath);
+            LOG.error("Temp", new RuntimeException());
             localFs.delete(tmpPath, false);
             return;
           }
         }
         break;
         default:
-          LOG.warn("Incorrect use of CachingCallback for " + srcAttemptId);
+          LOG.error("Temp", new RuntimeException());
           return;
         }
 
@@ -374,7 +374,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
         }
       } catch (IOException ioe) {
         // do mostly nothing
-        LOG.warn("Cache threw an error " + ioe);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }
@@ -432,7 +432,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
 
     if (inputs == srcAttemptsRemaining.size()) {
       if (isDebugEnabled) {
-        LOG.debug("Using the copies found locally");
+        LOG.error("Temp", new RuntimeException());
       }
       return doLocalDiskFetch(true);
     }
@@ -464,11 +464,11 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
       }
     } catch (OverlappingFileLockException jvmCrossLock) {
       // fall back to HTTP fetch below
-      LOG.warn("Double locking detected for " + host);
+      LOG.error("Temp", new RuntimeException());
     } catch (InterruptedException sleepInterrupted) {
       Thread.currentThread().interrupt();
       // fall back to HTTP fetch below
-      LOG.warn("Lock was interrupted for " + host);
+      LOG.error("Temp", new RuntimeException());
     } finally {
       releaseLock(lock);
     }
@@ -521,7 +521,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
       // shutdown would have no effect if in the process of establishing the connection.
       shutdownInternal();
       if (isDebugEnabled) {
-        LOG.debug("Detected fetcher has been shutdown after connection establishment. Returning");
+        LOG.error("Temp", new RuntimeException());
       }
       return new HostFetchResult(new FetchResult(host, port, partition, partitionCount, srcAttemptsRemaining.values()), null, false);
     }
@@ -572,7 +572,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
       // shutdown would have no effect if in the process of establishing the connection.
       shutdownInternal();
       if (isDebugEnabled) {
-        LOG.debug("Detected fetcher has been shutdown after opening stream. Returning");
+        LOG.error("Temp", new RuntimeException());
       }
       return new HostFetchResult(new FetchResult(host, port, partition, partitionCount, srcAttemptsRemaining.values()), null, false);
     }
@@ -784,7 +784,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
   public void shutdown() {
     if (!isShutDown.getAndSet(true)) {
       if (LOG.isDebugEnabled()) {
-        LOG.debug("Shutting down fetcher for host: " + host);
+        LOG.error("Temp", new RuntimeException());
       }
       shutdownInternal();
     }
@@ -807,7 +807,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
         LOG.info("Exception while shutting down fetcher on " + logIdentifier + " : "
             + e.getMessage());
         if (isDebugEnabled) {
-          LOG.debug(StringUtils.EMPTY, e);
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }
@@ -894,12 +894,12 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
         } catch (IllegalArgumentException e) {
           // badIdErrs.increment(1);
           if (!isShutDown.get()) {
-            LOG.warn("Invalid src id ", e);
+            LOG.error("Temp", new RuntimeException());
             // Don't know which one was bad, so consider all of them as bad
             return InputAttemptFetchFailure.fromAttempts(srcAttemptsRemaining.values());
           } else {
             if (isDebugEnabled) {
-              LOG.debug("Already shutdown. Ignoring badId error with message: " + e.getMessage());
+              LOG.error("Temp", new RuntimeException());
             }
             return null;
           }
@@ -911,7 +911,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
           if (!isShutDown.get()) {
             srcAttemptId = mapOutputStat.srcAttemptId;
             if (srcAttemptId == null) {
-              LOG.warn("Was expecting " + getNextRemainingAttempt() + " but got null");
+              LOG.error("Temp", new RuntimeException());
               srcAttemptId = getNextRemainingAttempt();
             }
             assert (srcAttemptId != null);
@@ -919,7 +919,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
                 InputAttemptFetchFailure.fromAttempt(srcAttemptId) };
           } else {
             if (isDebugEnabled) {
-              LOG.debug("Already shutdown. Ignoring verification failure.");
+              LOG.error("Temp", new RuntimeException());
             }
             return null;
           }
@@ -1041,7 +1041,7 @@ public class Fetcher extends CallableWithNdc<FetchResult> {
       try {
         fetchedInput.abort();
       } catch (IOException e) {
-        LOG.info("Failure to cleanup fetchedInput: " + fetchedInput);
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }

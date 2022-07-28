@@ -64,7 +64,7 @@ public class DeletionTrackerImpl extends DeletionTracker {
         try {
           dagCleanupService.submit(dagDeleteRunnable);
         } catch (RejectedExecutionException rejectedException) {
-          LOG.info("Ignoring deletion request for " + dagDeleteRunnable);
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }

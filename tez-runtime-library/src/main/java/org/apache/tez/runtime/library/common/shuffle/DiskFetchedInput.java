@@ -118,7 +118,7 @@ public class DiskFetchedInput extends FetchedInput {
       } catch (IOException e) {
         // Ignoring the exception, will eventually be cleaned by container
         // cleanup.
-        LOG.warn("Failed to remvoe file : " + outputPath.toString());
+        LOG.error("Temp", new RuntimeException());
       }
       notifyFreedResource();
     }

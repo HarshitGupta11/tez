@@ -144,7 +144,7 @@ public class AMWebController extends Controller {
         URL url = new URL(historyUrlBase);
         origin = url.getProtocol() + "://" + url.getAuthority();
       } catch (MalformedURLException e) {
-        LOG.debug("Invalid url set for tez history url base: {}", historyUrlBase, e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -159,7 +159,7 @@ public class AMWebController extends Controller {
   }
 
   void sendErrorResponse(int sc, String msg, Exception e) {
-    LOG.debug(msg, e);
+    LOG.error("Temp", new RuntimeException());
 
     try {
       response().sendError(sc, msg);
@@ -549,8 +549,8 @@ public class AMWebController extends Controller {
       return null;
     }
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Requested counter names=" + counterNames.entrySet());
-      LOG.debug("actual counters=" + counters);
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
     }
 
     Map<String, Map<String, Long>> counterInfo = new TreeMap<String, Map<String, Long>>();

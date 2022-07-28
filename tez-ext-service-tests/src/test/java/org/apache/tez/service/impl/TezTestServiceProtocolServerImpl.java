@@ -60,7 +60,7 @@ public class TezTestServiceProtocolServerImpl extends AbstractService
   public RunContainerResponseProto runContainer(RpcController controller,
                                                 RunContainerRequestProto request) throws
       ServiceException {
-    LOG.info("Received request: " + request);
+    LOG.error("Temp", new RuntimeException());
     try {
       containerRunner.queueContainer(request);
     } catch (TezException e) {
@@ -72,7 +72,7 @@ public class TezTestServiceProtocolServerImpl extends AbstractService
   @Override
   public SubmitWorkResponseProto submitWork(RpcController controller, SubmitWorkRequestProto request) throws
       ServiceException {
-    LOG.info("Received submitWork request: " + request);
+    LOG.error("Temp", new RuntimeException());
     try {
       containerRunner.submitWork(request);
     } catch (TezException e) {
@@ -102,7 +102,7 @@ public class TezTestServiceProtocolServerImpl extends AbstractService
     this.bindAddress.set(NetUtils.createSocketAddrForHost(
         serverBindAddress.getAddress().getCanonicalHostName(),
         serverBindAddress.getPort()));
-    LOG.info("Instantiated TestTestServiceListener at " + bindAddress);
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override

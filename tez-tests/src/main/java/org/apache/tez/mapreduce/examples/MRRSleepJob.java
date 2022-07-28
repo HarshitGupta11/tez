@@ -486,7 +486,7 @@ public class MRRSleepJob extends Configured implements Tool {
     DataSourceDescriptor dataSource = null;
     if (!generateSplitsInAM && writeSplitsToDFS) {
 
-      LOG.info("Writing splits to DFS");
+      LOG.error("Temp", new RuntimeException());
       dataSource = MRInputHelpers
           .configureMRInputWithLegacySplitGeneration(mapStageConf, stagingDir, true);
     } else {
@@ -615,7 +615,7 @@ public class MRRSleepJob extends Configured implements Tool {
     conf.setInt(
         org.apache.tez.mapreduce.hadoop.MRJobConfig.MRR_INTERMEDIATE_STAGES,
         iReduceStagesCount);
-    LOG.info("Running MRR with " + iReduceStagesCount + " IR stages");
+    LOG.error("Temp", new RuntimeException());
 
     for (int i = 1; i <= iReduceStagesCount; ++i) {
       // Set reducer class for intermediate reduce

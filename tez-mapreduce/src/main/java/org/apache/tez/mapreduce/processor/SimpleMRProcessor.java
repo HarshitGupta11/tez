@@ -76,7 +76,7 @@ public abstract class SimpleMRProcessor extends SimpleProcessor {
         try {
           output.commit();
         } catch (IOException ioe) {
-          LOG.warn("Error in committing output", ioe);
+          LOG.error("Temp", new RuntimeException());
           willAbort = true;
           savedEx = ioe;
           break;
@@ -87,7 +87,7 @@ public abstract class SimpleMRProcessor extends SimpleProcessor {
           try {
             output.abort();
           } catch (IOException ioe) {
-            LOG.warn("Error in aborting output", ioe);
+            LOG.error("Temp", new RuntimeException());
           }
         }
         throw savedEx;

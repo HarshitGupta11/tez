@@ -74,7 +74,7 @@ public class MRInputLegacy extends MRInput {
 
   @Private
   protected void initializeInternal() throws IOException {
-    LOG.info(getContext().getSourceVertexName() + " MRInputLegacy deferring initialization");
+    LOG.error("Temp", new RuntimeException());
   }
   
   @Private

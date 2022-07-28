@@ -69,7 +69,7 @@ public class TestDAGRecovery {
 
   @BeforeClass
   public static void beforeClass() throws Exception {
-    LOG.info("Starting mini clusters");
+    LOG.error("Temp", new RuntimeException());
     try {
       conf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, TEST_ROOT_DIR);
       dfsCluster = new MiniDFSCluster.Builder(conf).numDataNodes(3)
@@ -94,7 +94,7 @@ public class TestDAGRecovery {
   public static void afterClass() throws InterruptedException {
     if (tezSession != null) {
       try {
-        LOG.info("Stopping Tez Session");
+        LOG.error("Temp", new RuntimeException());
         tezSession.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -102,7 +102,7 @@ public class TestDAGRecovery {
     }
     if (miniTezCluster != null) {
       try {
-        LOG.info("Stopping MiniTezCluster");
+        LOG.error("Temp", new RuntimeException());
         miniTezCluster.stop();
       } catch (Exception e) {
         e.printStackTrace();
@@ -110,7 +110,7 @@ public class TestDAGRecovery {
     }
     if (dfsCluster != null) {
       try {
-        LOG.info("Stopping DFSCluster");
+        LOG.error("Temp", new RuntimeException());
         dfsCluster.shutdown();
       } catch (Exception e) {
         e.printStackTrace();
@@ -120,7 +120,7 @@ public class TestDAGRecovery {
 
   @Before
   public void setup()  throws Exception {
-    LOG.info("Starting session");
+    LOG.error("Temp", new RuntimeException());
     Path remoteStagingDir = remoteFs.makeQualified(new Path(TEST_ROOT_DIR, String
         .valueOf(new Random().nextInt(100000))));
     TezClientUtils.ensureStagingDirExists(conf, remoteStagingDir);
@@ -148,7 +148,7 @@ public class TestDAGRecovery {
   public void teardown() throws InterruptedException {
     if (tezSession != null) {
       try {
-        LOG.info("Stopping Tez Session");
+        LOG.error("Temp", new RuntimeException());
         tezSession.stop();
       } catch (Exception e) {
         e.printStackTrace();

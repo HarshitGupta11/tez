@@ -74,7 +74,7 @@ public class ProtoHistoryLoggingService extends HistoryLoggingService {
 
   @Override
   protected void serviceInit(Configuration conf) throws Exception {
-    LOG.info("Initing ProtoHistoryLoggingService");
+    LOG.error("Temp", new RuntimeException());
     setConfig(conf);
     loggingDisabled = !conf.getBoolean(TezConfiguration.TEZ_AM_HISTORY_LOGGING_ENABLED,
         TezConfiguration.TEZ_AM_HISTORY_LOGGING_ENABLED_DEFAULT);
@@ -89,7 +89,7 @@ public class ProtoHistoryLoggingService extends HistoryLoggingService {
 
   @Override
   protected void serviceStart() throws Exception {
-    LOG.info("Starting ProtoHistoryLoggingService");
+    LOG.error("Temp", new RuntimeException());
     if (!loggingDisabled) {
       loggers = new TezProtoLoggers();
       if (!loggers.setup(getConfig(), appContext.getClock())) {
@@ -103,18 +103,18 @@ public class ProtoHistoryLoggingService extends HistoryLoggingService {
       eventHandlingThread = new Thread(this::loop, "HistoryEventHandlingThread");
       eventHandlingThread.start();
     }
-    LOG.info("Started ProtoHistoryLoggingService");
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override
   protected void serviceStop() throws Exception {
-    LOG.info("Stopping ProtoHistoryLoggingService, eventQueueBacklog=" + eventQueue.size());
+    LOG.error("Temp", new RuntimeException());
     stopped.set(true);
     eventHandlingThread.join();
     IOUtils.closeQuietly(appEventsWriter);
     IOUtils.closeQuietly(dagEventsWriter);
     IOUtils.closeQuietly(manifestEventsWriter);
-    LOG.info("Stopped ProtoHistoryLoggingService");
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override
@@ -128,7 +128,7 @@ public class ProtoHistoryLoggingService extends HistoryLoggingService {
       LOG.error("Queue capacity filled up, ignoring event: " +
           event.getHistoryEvent().getEventType());
       if (LOG.isDebugEnabled()) {
-        LOG.debug("Queue capacity filled up, ignoring event: {}", event.getHistoryEvent());
+        LOG.error("Temp", new RuntimeException());
       }
     }
   }
@@ -144,7 +144,7 @@ public class ProtoHistoryLoggingService extends HistoryLoggingService {
           handleEvent(evt);
         }
       } catch (InterruptedException e) {
-        LOG.info("EventQueue poll interrupted, ignoring it.", e);
+        LOG.error("Temp", new RuntimeException());
       } catch (IOException e) {
         TezDAGID dagid = evt.getDagID();
         HistoryEventType type = evt.getHistoryEvent().getEventType();

@@ -93,7 +93,7 @@ public class SimpleHistoryLoggingService extends HistoryLoggingService {
 
   @Override
   protected void serviceStart() throws Exception {
-    LOG.info("Starting SimpleHistoryLoggingService");
+    LOG.error("Temp", new RuntimeException());
     outputStream = logFileFS.create(logFileLocation, true);
     eventHandlingThread = new Thread(new Runnable() {
       @Override
@@ -103,7 +103,7 @@ public class SimpleHistoryLoggingService extends HistoryLoggingService {
           try {
             event = eventQueue.take();
           } catch (InterruptedException e) {
-            LOG.info("EventQueue take interrupted. Returning");
+            LOG.error("Temp", new RuntimeException());
             return;
           }
           handleEvent(event);
@@ -135,7 +135,7 @@ public class SimpleHistoryLoggingService extends HistoryLoggingService {
         outputStream.close();
       }
     } catch (IOException ioe) {
-      LOG.warn("Failed to close output stream", ioe);
+      LOG.error("Temp", new RuntimeException());
     }
     super.serviceStop();
   }
@@ -158,7 +158,7 @@ public class SimpleHistoryLoggingService extends HistoryLoggingService {
         outputStream.writeBytes(eventJson.toString());
         outputStream.writeBytes(RECORD_SEPARATOR);
       } catch (JSONException e) {
-        LOG.warn("Failed to convert event to json", e);
+        LOG.error("Temp", new RuntimeException());
       }
       consecutiveErrors = 0;
     } catch (IOException ioe) {

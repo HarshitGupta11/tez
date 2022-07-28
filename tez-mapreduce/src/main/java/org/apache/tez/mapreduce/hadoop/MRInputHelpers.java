@@ -322,14 +322,14 @@ public class MRInputHelpers {
     InputSplitInfoMem splitInfoMem = null;
     JobConf jobConf = new JobConf(conf);
     if (jobConf.getUseNewMapper()) {
-      LOG.debug("Generating mapreduce api input splits");
+      LOG.error("Temp", new RuntimeException());
       Job job = Job.getInstance(conf);
       org.apache.hadoop.mapreduce.InputSplit[] splits =
           generateNewSplits(job, groupSplits, sortSplits, targetTasks);
       splitInfoMem = new InputSplitInfoMem(splits, createTaskLocationHintsFromSplits(splits),
           splits.length, job.getCredentials(), job.getConfiguration());
     } else {
-      LOG.debug("Generating mapred api input splits");
+      LOG.error("Temp", new RuntimeException());
       org.apache.hadoop.mapred.InputSplit[] splits =
           generateOldSplits(jobConf, groupSplits, sortSplits, targetTasks);
       splitInfoMem = new InputSplitInfoMem(splits, createTaskLocationHintsFromSplits(splits),

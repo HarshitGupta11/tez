@@ -1044,7 +1044,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
     for (Vertex v : vertices.values()) {
       if (v.getInputVerticesCount() == 0) {
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Initing root vertex " + v.getLogIdentifier());
+          LOG.error("Temp", new RuntimeException());
         }
         eventHandler.handle(new VertexEvent(v.getVertexId(),
             VertexEventType.V_INIT));
@@ -1053,7 +1053,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
     for (Vertex v : vertices.values()) {
       if (v.getInputVerticesCount() == 0) {
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Starting root vertex " + v.getLogIdentifier());
+          LOG.error("Temp", new RuntimeException());
         }
         eventHandler.handle(new VertexEvent(v.getVertexId(),
             VertexEventType.V_START));
@@ -1093,7 +1093,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
               @Override
               public Void call() throws Exception {
                 OutputCommitter committer = v.getOutputCommitters().get(outputName);
-                LOG.info("Committing output: " + outputKey);
+                LOG.error("Temp", new RuntimeException());
                 commitOutput(committer);
                 return null;
               }
@@ -1108,7 +1108,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
 
     for (final Vertex vertex : vertices.values()) {
       if (vertex.getOutputCommitters() == null) {
-        LOG.info("No output committers for vertex: " + vertex.getLogIdentifier());
+        LOG.error("Temp", new RuntimeException());
         continue;
       }
       Map<String, OutputCommitter> outputCommitters =
@@ -1125,7 +1125,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
         }
       }
       if (outputCommitters.isEmpty()) {
-        LOG.info("No exclusive output committers for vertex: " + vertex.getLogIdentifier());
+        LOG.error("Temp", new RuntimeException());
         continue;
       }
       try {
@@ -1155,7 +1155,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
     
     if (!commitEvents.isEmpty()) {
       try {
-        LOG.info("Start writing dag commit event, " + getID());
+        LOG.error("Temp", new RuntimeException());
         appContext.getHistoryHandler().handleCriticalEvent(new DAGHistoryEvent(getID(),
             new DAGCommitStartedEvent(getID(), clock.getTime())));
       } catch (IOException e) {
@@ -1180,7 +1180,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
 
   private void abortOutputs() {
     if (this.aborted.getAndSet(true)) {
-      LOG.info("Ignoring multiple output abort");
+      LOG.error("Temp", new RuntimeException());
       return ;
     }
     // come here because dag failed or
@@ -1418,7 +1418,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
     String diagnosticMsg =  "DAG did not succeed due to " + dag.terminationCause
         + ". failedVertices:" + dag.numFailedVertices
         + " killedVertices:" + dag.numKilledVertices;
-    LOG.info(diagnosticMsg);
+    LOG.error("Temp", new RuntimeException());
     dag.addDiagnostic(diagnosticMsg);
     return dag.finished(dag.getTerminationCause().getFinishedState());
   }
@@ -1468,7 +1468,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
       }
     } catch (Exception e) {
       dagError = true;
-      LOG.warn("Encountered exception while DAG finish", e);
+      LOG.error("Temp", new RuntimeException());
     }
     if (dagError) {
       eventHandler.handle(new DAGAppMasterEventDAGFinished(getID(), DAGState.ERROR));
@@ -1476,7 +1476,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
       eventHandler.handle(new DAGAppMasterEventDAGFinished(getID(), finalState));
     }
 
-    LOG.info("DAG: " + getID() + " finished with state: " + finalState);
+    LOG.error("Temp", new RuntimeException());
 
     return finalState;
   }
@@ -1654,7 +1654,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
       if (!groupInfo.outputs.isEmpty()) {
         // shared outputs
         for (String vertexName : groupInfo.groupMembers) {
-          LOG.debug("Setting shared outputs for group: {} on vertex: {}", groupName, vertexName);
+          LOG.error("Temp", new RuntimeException());
           Vertex v = getVertex(vertexName);
           v.addSharedOutputs(groupInfo.outputs);
         }
@@ -1709,7 +1709,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
   private static void assignDAGScheduler(DAGImpl dag) throws TezException {
     String dagSchedulerClassName = dag.dagConf.get(TezConfiguration.TEZ_AM_DAG_SCHEDULER_CLASS,
         TezConfiguration.TEZ_AM_DAG_SCHEDULER_CLASS_DEFAULT);
-    LOG.info("Using DAG Scheduler: " + dagSchedulerClassName);
+    LOG.error("Temp", new RuntimeException());
     dag.dagScheduler = ReflectionUtils.createClazzInstance(dagSchedulerClassName, new Class<?>[] {
         DAG.class, EventHandler.class}, new Object[] {dag, dag.eventHandler});
     for (Vertex v : dag.vertices.values()) {
@@ -1807,7 +1807,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
           String msg = "Invalid desired state of DAG"
               + ", dagName=" + dag.getName()
               + ", state=" + recoverEvent.getDesiredState();
-          LOG.warn(msg);
+          LOG.error("Temp", new RuntimeException());
           dag.addDiagnostic(msg);
           return dag.finished(DAGState.ERROR);
         }
@@ -1885,7 +1885,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
       DAGEventStartDag startEvent = (DAGEventStartDag) event;
       List<URL> additionalUrlsForClasspath = startEvent.getAdditionalUrlsForClasspath();
       if (additionalUrlsForClasspath != null) {
-        LOG.info("Added additional resources : [" + additionalUrlsForClasspath  + "] to classpath");
+        LOG.error("Temp", new RuntimeException());
         RelocalizationUtils.addUrlsToClassPath(additionalUrlsForClasspath);
       }
       // TODO Metrics
@@ -1992,7 +1992,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
       DAGEventTerminateDag event = (DAGEventTerminateDag) dagEvent;
       String msg = "Dag received [" + event.getType() + ", " + event.getTerminationCause() +
           "] in RUNNING state.";
-      LOG.info(msg);
+      LOG.error("Temp", new RuntimeException());
       job.addDiagnostic(msg);
       job.addDiagnostics(event);
       job.enactKill(event.getTerminationCause(), VertexTerminationCause.DAG_TERMINATED);
@@ -2013,7 +2013,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
       DAGEventTerminateDag event = (DAGEventTerminateDag) dagEvent;
       String diag = "Dag received [" + event.getType() + ", " + event.getTerminationCause() +
           "] in COMMITTING state.";
-      LOG.info(diag);
+      LOG.error("Temp", new RuntimeException());
       dag.addDiagnostic(diag);
       dag.addDiagnostics(event);
       dag.cancelCommits();
@@ -2025,7 +2025,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
     if (!this.commitCanceled.getAndSet(true)) {
       for (Map.Entry<OutputKey, ListenableFuture<Void>> entry : commitFutures.entrySet()) {
         OutputKey outputKey = entry.getKey();
-        LOG.info("Canceling commit of output=" + outputKey);
+        LOG.error("Temp", new RuntimeException());
         entry.getValue().cancel(true);
       }
     }
@@ -2173,7 +2173,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
               CallableEvent groupCommitCallableEvent = new CallableEvent(groupCommitCallback) {
                 public Void call() throws Exception {
                   OutputCommitter committer = v.getOutputCommitters().get(outputName);
-                  LOG.info("Committing output: " + outputName);
+                  LOG.error("Temp", new RuntimeException());
                   commitOutput(committer);
                   return null;
                 };
@@ -2188,7 +2188,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
       }
     }
     if (recoveryFailed) {
-      LOG.info("Recovery failure occurred during commit");
+      LOG.error("Temp", new RuntimeException());
       enactKill(DAGTerminationCause.RECOVERY_FAILURE,
           VertexTerminationCause.COMMIT_FAILURE);
     }
@@ -2210,7 +2210,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
           if (groupInfo.isInCommitting()) {
             String msg = "Aborting job as committing vertex: "
                 + vertex.getLogIdentifier() + " is re-running";
-            LOG.info(msg);
+            LOG.error("Temp", new RuntimeException());
             addDiagnostic(msg);
             enactKill(DAGTerminationCause.VERTEX_RERUN_IN_COMMITTING,
                 VertexTerminationCause.VERTEX_RERUN_IN_COMMITTING);
@@ -2218,7 +2218,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
           } else if (groupInfo.isCommitted()) {
             String msg = "Aborting job as committed vertex: "
                 + vertex.getLogIdentifier() + " is re-running";
-            LOG.info(msg);
+            LOG.error("Temp", new RuntimeException());
             addDiagnostic(msg);
             enactKill(DAGTerminationCause.VERTEX_RERUN_AFTER_COMMIT,
                 VertexTerminationCause.VERTEX_RERUN_AFTER_COMMIT);
@@ -2330,7 +2330,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
     boolean commitFailed = false;
     boolean recoveryFailed = false;
     if (commitCompletedEvent.isSucceeded()) {
-      LOG.info("Commit succeeded for output:" + commitCompletedEvent.getOutputKey());
+      LOG.error("Temp", new RuntimeException());
       OutputKey outputKey = commitCompletedEvent.getOutputKey();
       if (outputKey.isVertexGroupOutput){
         VertexGroupInfo vertexGroup = vertexGroups.get(outputKey.getEntityName());
@@ -2376,7 +2376,7 @@ public class DAGImpl implements org.apache.tez.dag.app.dag.DAG,
 
     @Override
     public void transition(DAGImpl dag, DAGEvent event) {
-      LOG.info("Vertex rerun while dag it is COMMITTING");
+      LOG.error("Temp", new RuntimeException());
       DAGEventVertexReRunning rerunEvent = (DAGEventVertexReRunning)event;
       Vertex vertex = dag.getVertex(rerunEvent.getVertexId());
       dag.reRunningVertices.add(vertex.getVertexId());

@@ -78,7 +78,7 @@ public class DatePartitionedLogger<T extends MessageLite> {
       }
     } catch (IOException e) {
       // Ignore this exception, if there is a problem it'll fail when trying to read or write.
-      LOG.warn("Error while trying to set permission: ", e);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 

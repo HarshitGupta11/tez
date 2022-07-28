@@ -137,7 +137,7 @@ public class ContainerLauncherManager extends AbstractService
 
   @VisibleForTesting
   ContainerLauncher createYarnContainerLauncher(ContainerLauncherContext containerLauncherContext) {
-    LOG.info("Creating DefaultContainerLauncher");
+    LOG.error("Temp", new RuntimeException());
     return new TezContainerLauncherImpl(containerLauncherContext);
   }
 
@@ -147,7 +147,7 @@ public class ContainerLauncherManager extends AbstractService
                                                 TaskCommunicatorManagerInterface taskCommunicatorManagerInterface,
                                                 String workingDirectory,
                                                 boolean isLocalMode) throws TezException {
-    LOG.info("Creating LocalContainerLauncher");
+    LOG.error("Temp", new RuntimeException());
     // TODO Post TEZ-2003. LocalContainerLauncher is special cased, since it makes use of
     // extensive internals which are only available at runtime. Will likely require
     // some kind of runtime binding of parameters in the payload to work correctly.

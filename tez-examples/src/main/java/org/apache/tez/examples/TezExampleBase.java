@@ -227,7 +227,7 @@ public abstract class TezExampleBase extends Configured implements Tool {
       tezConf = new TezConfiguration(getConf());
     }
     if (isLocalMode) {
-      LOG.info("Running in local mode...");
+      LOG.error("Temp", new RuntimeException());
       tezConf.setBoolean(TezConfiguration.TEZ_LOCAL_MODE, true);
       tezConf.set("fs.defaultFS", "file:///");
       tezConf.setBoolean(
@@ -316,7 +316,7 @@ public abstract class TezExampleBase extends Configured implements Tool {
   @VisibleForTesting
   public ApplicationId getAppId() {
     if (tezClientInternal == null) {
-      LOG.warn("TezClient is not initialized, return null for AppId");
+      LOG.error("Temp", new RuntimeException());
       return null;
     }
     return tezClientInternal.getAppMasterApplicationId();

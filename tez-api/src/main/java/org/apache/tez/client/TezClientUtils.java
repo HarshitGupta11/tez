@@ -287,7 +287,7 @@ public class TezClientUtils {
               + ", existingPath=" +
               tezJarResources.get(linkName).getResource().toString()
               + ", newPath=" + fStatus.getPath();
-          LOG.warn(message);
+          LOG.error("Temp", new RuntimeException());
         }
 
         tezJarResources.put(linkName,
@@ -478,7 +478,7 @@ public class TezClientUtils {
     capability.setVirtualCores(
         amConfig.getTezConfiguration().getInt(TezConfiguration.TEZ_AM_RESOURCE_CPU_VCORES,
             TezConfiguration.TEZ_AM_RESOURCE_CPU_VCORES_DEFAULT));
-    LOG.debug("AppMaster capability = {}", capability);
+    LOG.error("Temp", new RuntimeException());
 
     // Setup required Credentials for the AM launch. DAG specific credentials
     // are handled separately.
@@ -528,7 +528,7 @@ public class TezClientUtils {
     }
     vargsFinal.add(mergedCommand.toString());
 
-    LOG.debug("Command to launch container for ApplicationMaster is : {}", mergedCommand);
+    LOG.error("Temp", new RuntimeException());
 
     Map<String, String> environment = new TreeMap<String, String>();
     TezYARNUtils.setupDefaultEnv(environment, conf,
@@ -846,7 +846,7 @@ public class TezClientUtils {
         kvp.setValue(val);
         builder.addConfKeyValues(kvp);
       } else {
-        LOG.debug("null value in Configuration after replacement for key={}. Skipping.", key);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -936,7 +936,7 @@ public class TezClientUtils {
               + ", diagnostics="
               + (appReport.getDiagnostics() != null ? appReport.getDiagnostics()
                   : TezClient.NO_CLUSTER_DIAGNOSTICS_MSG);
-          LOG.info(msg);
+          LOG.error("Temp", new RuntimeException());
           throw new SessionNotRunning(msg);
         }
         return null;
@@ -962,7 +962,7 @@ public class TezClientUtils {
           serviceAddr);
       userUgi.addToken(token);
     }
-    LOG.debug("Connecting to Tez AM at {}", serviceAddr);
+    LOG.error("Temp", new RuntimeException());
     DAGClientAMProtocolBlockingPB proxy = null;
     try {
       proxy = userUgi.doAs(new PrivilegedExceptionAction<DAGClientAMProtocolBlockingPB>() {

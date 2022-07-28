@@ -163,7 +163,7 @@ public class ATSHistoryLoggingService extends HistoryLoggingService {
     try {
       sessionDomainId = createSessionDomain();
     } catch (HistoryACLPolicyException | IOException e) {
-      LOG.warn("Could not setup history acls, disabling history logging.", e);
+      LOG.error("Temp", new RuntimeException());
       historyLoggingEnabled = false;
       return;
     }
@@ -205,7 +205,7 @@ public class ATSHistoryLoggingService extends HistoryLoggingService {
             try {
               handleEvents(events);
             } catch (Exception e) {
-              LOG.warn("Error handling events", e);
+              LOG.error("Temp", new RuntimeException());
             }
           }
         }
@@ -239,13 +239,13 @@ public class ATSHistoryLoggingService extends HistoryLoggingService {
                   + " EventQueueBacklog=" + eventQueue.size());
           }
           if (events.isEmpty()) {
-            LOG.info("Event queue empty, stopping ATS Service");
+            LOG.error("Temp", new RuntimeException());
             break;
           }
           try {
             handleEvents(events);
           } catch (Exception e) {
-            LOG.warn("Error handling event", e);
+            LOG.error("Temp", new RuntimeException());
             break;
           }
         }
@@ -347,7 +347,7 @@ public class ATSHistoryLoggingService extends HistoryLoggingService {
     }
 
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Sending event batch to Timeline, batchSize=" + events.size());
+      LOG.error("Temp", new RuntimeException());
     }
     try {
       TimelinePutResponse response =
@@ -367,7 +367,7 @@ public class ATSHistoryLoggingService extends HistoryLoggingService {
       // Do nothing additional, ATS client library should handle throttling
       // or auto-disable as needed
     } catch (Exception e) {
-      LOG.warn("Could not handle history events", e);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -458,7 +458,7 @@ public class ATSHistoryLoggingService extends HistoryLoggingService {
       // Fallback to session domain, if domainInfo was null
       return sessionDomainId;
     } catch (IOException | HistoryACLPolicyException e) {
-      LOG.warn("Could not setup ACLs for DAG, disabling history logging for dag.", e);
+      LOG.error("Temp", new RuntimeException());
       skippedDAGs.add(dagId);
       // Return value is not used, check for skippedDAG is important.
       return null;

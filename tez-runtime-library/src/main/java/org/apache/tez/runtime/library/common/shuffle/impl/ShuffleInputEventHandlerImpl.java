@@ -207,7 +207,7 @@ public class ShuffleInputEventHandlerImpl implements ShuffleEventHandler {
       moveDataToFetchedInput(dataProto, fetchedInput, hostIdentifier);
       shuffleManager.addCompletedInputWithData(srcAttemptIdentifier, fetchedInput);
 
-      LOG.debug("Payload via DME : " + srcAttemptIdentifier);
+      LOG.error("Temp", new RuntimeException());
     } else {
       shuffleManager.addKnownInput(shufflePayload.getHost(), shufflePayload.getPort(),
               srcAttemptIdentifier, srcIndex);

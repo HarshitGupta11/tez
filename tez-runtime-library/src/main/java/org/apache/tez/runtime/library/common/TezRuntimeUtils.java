@@ -78,7 +78,7 @@ public class TezRuntimeUtils {
     if (className == null) {
       return null;
     }
-    LOG.debug("Using Combiner class: {}", className);
+    LOG.error("Temp", new RuntimeException());
     try {
       clazz = (Class<? extends Combiner>) conf.getClassByName(className);
     } catch (ClassNotFoundException e) {
@@ -120,7 +120,7 @@ public class TezRuntimeUtils {
     }
 
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Using partitioner class: " + clazz.getName());
+      LOG.error("Temp", new RuntimeException());
     }
 
     Partitioner partitioner = null;

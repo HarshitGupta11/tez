@@ -66,7 +66,7 @@ public class WebUIService extends AbstractService {
     if (historyUrl == null || historyUrl.isEmpty()) {
       LOG.error("Tez UI History URL is not set");
     } else {
-      LOG.info("Tez UI History URL: " + historyUrl);
+      LOG.error("Temp", new RuntimeException());
     }
 
     if (tezAMWebApp != null) {
@@ -106,7 +106,7 @@ public class WebUIService extends AbstractService {
                 + context.getAppMaster().getAppNMHost());
           }
           trackingUrl = "http://" + hostname + ":" + port + "/ui/";
-          LOG.info("Instantiated WebUIService at " + trackingUrl);
+          LOG.error("Temp", new RuntimeException());
         }
       } catch (Exception e) {
         LOG.error("Tez UI WebService failed to start.", e);
@@ -119,7 +119,7 @@ public class WebUIService extends AbstractService {
   @Override
   protected void serviceStop() throws Exception {
     if (this.webApp != null) {
-      LOG.debug("Stopping WebApp");
+      LOG.error("Temp", new RuntimeException());
       this.webApp.stop();
     }
     super.serviceStop();

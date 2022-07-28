@@ -109,7 +109,7 @@ public class TestMRRJobs {
   @Test (timeout = 60000)
   public void testMRRSleepJob() throws IOException, InterruptedException,
       ClassNotFoundException {
-    LOG.info("\n\n\nStarting testMRRSleepJob().");
+    LOG.error("Temp", new RuntimeException());
 
     if (!(new File(MiniTezCluster.APPJAR)).exists()) {
       LOG.info("MRAppJar " + MiniTezCluster.APPJAR
@@ -150,7 +150,7 @@ public class TestMRRJobs {
   public void testRandomWriter() throws IOException, InterruptedException,
       ClassNotFoundException {
 
-    LOG.info("\n\n\nStarting testRandomWriter().");
+    LOG.error("Temp", new RuntimeException());
     if (!(new File(MiniTezCluster.APPJAR)).exists()) {
       LOG.info("MRAppJar " + MiniTezCluster.APPJAR
                + " not found. Not running test.");
@@ -198,7 +198,7 @@ public class TestMRRJobs {
   public void testFailingJob() throws IOException, InterruptedException,
       ClassNotFoundException {
 
-    LOG.info("\n\n\nStarting testFailingJob().");
+    LOG.error("Temp", new RuntimeException());
 
     if (!(new File(MiniTezCluster.APPJAR)).exists()) {
       LOG.info("MRAppJar " + MiniTezCluster.APPJAR
@@ -232,7 +232,7 @@ public class TestMRRJobs {
   public void testFailingAttempt() throws IOException, InterruptedException,
       ClassNotFoundException {
 
-    LOG.info("\n\n\nStarting testFailingAttempt().");
+    LOG.error("Temp", new RuntimeException());
 
     if (!(new File(MiniTezCluster.APPJAR)).exists()) {
       LOG.info("MRAppJar " + MiniTezCluster.APPJAR
@@ -265,7 +265,7 @@ public class TestMRRJobs {
   @Test (timeout = 60000)
   public void testMRRSleepJobWithCompression() throws IOException,
       InterruptedException, ClassNotFoundException {
-    LOG.info("\n\n\nStarting testMRRSleepJobWithCompression().");
+    LOG.error("Temp", new RuntimeException());
 
     if (!(new File(MiniTezCluster.APPJAR)).exists()) {
       LOG.info("MRAppJar " + MiniTezCluster.APPJAR
@@ -311,7 +311,7 @@ public class TestMRRJobs {
   public void testMRRSleepJobWithSecurityOn() throws IOException,
       InterruptedException, ClassNotFoundException {
 
-    LOG.info("\n\n\nStarting testMRRSleepJobWithSecurityOn().");
+    LOG.error("Temp", new RuntimeException());
 
     if (!(new File(MiniMRRTezCluster.APPJAR)).exists()) {
       return;
@@ -333,9 +333,9 @@ public class TestMRRJobs {
     // the same JVM.
     UserGroupInformation user = UserGroupInformation.getCurrentUser();
 
-    LOG.info("User name is " + user.getUserName());
+    LOG.error("Temp", new RuntimeException());
     for (Token<? extends TokenIdentifier> str : user.getTokens()) {
-      LOG.info("Token is " + str.encodeToUrlString());
+      LOG.error("Temp", new RuntimeException());
     }
     user.doAs(new PrivilegedExceptionAction<Void>() {
       @Override

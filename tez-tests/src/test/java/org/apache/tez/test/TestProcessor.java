@@ -142,11 +142,11 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
           getVertexConfName(TEZ_FAILING_PROCESSOR_VERIFY_VALUE, vName,
               getContext().getTaskIndex()), -1);
       if (verifyValue != -1) {
-        LOG.info("Verify value: " + verifyValue);
+        LOG.error("Temp", new RuntimeException());
         for (String verifyIndex : conf
             .getTrimmedStringCollection(
                 getVertexConfName(TEZ_FAILING_PROCESSOR_VERIFY_TASK_INDEX, vName))) {
-          LOG.info("Adding verify task index: " + verifyIndex);
+          LOG.error("Temp", new RuntimeException());
           verifyTaskIndices.add(Integer.valueOf(verifyIndex));
         }
       }
@@ -154,12 +154,12 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
           getVertexConfName(TEZ_FAILING_PROCESSOR_DO_FAIL, vName), false);
       sleepMs = conf.getLong(
           getVertexConfName(TEZ_FAILING_PROCESSOR_SLEEP_MS, vName), 0);
-      LOG.info("doFail: " + doFail);
+      LOG.error("Temp", new RuntimeException());
       if (doFail) {
         for (String failingIndex : conf
             .getTrimmedStringCollection(
                 getVertexConfName(TEZ_FAILING_PROCESSOR_FAILING_TASK_INDEX, vName))) {
-          LOG.info("Adding failing task index: " + failingIndex);
+          LOG.error("Temp", new RuntimeException());
           failingTaskIndices.add(Integer.valueOf(failingIndex));
         }
         failingTaskAttemptUpto = conf.getInt(
@@ -171,8 +171,8 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
       doRandomFail = conf
           .getBoolean(TEZ_FAILING_PROCESSOR_DO_RANDOM_FAIL, false);
       randomFailProbability = conf.getFloat(TEZ_FAILING_PROCESSOR_RANDOM_FAIL_PROBABILITY, 0.0f);
-      LOG.info("doRandomFail: " + doRandomFail);
-      LOG.info("randomFailProbability: " + randomFailProbability);
+      LOG.error("Temp", new RuntimeException());
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -187,7 +187,7 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
   @Override
   public void run(Map<String, LogicalInput> inputs,
       Map<String, LogicalOutput> outputs) throws Exception {
-    LOG.info("Sleeping ms: " + sleepMs);
+    LOG.error("Temp", new RuntimeException());
 
     for (LogicalInput input : inputs.values()) {
       input.start();
@@ -210,7 +210,7 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
               " dag: " + getContext().getDAGName() +
               " taskIndex: " + getContext().getTaskIndex() +
               " taskAttempt: " + getContext().getTaskAttemptNumber();
-          LOG.info(msg);
+          LOG.error("Temp", new RuntimeException());
           throwException(msg);
         }
       }
@@ -230,11 +230,11 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
             " maxFailedAttempt: " + maxFailedAttempt +
             " rollNumber: " + rollNumber + 
             " randomFailProbability " + randomFailProbability;
-        LOG.info(msg);
+        LOG.error("Temp", new RuntimeException());
         if (rollNumber < randomFailProbability) {
           // fail the attempt
           msg = "FailingProcessor: rollNumber < randomFailProbability. Do fail.";
-          LOG.info(msg);
+          LOG.error("Temp", new RuntimeException());
           throwException(msg);
         }
       }
@@ -246,7 +246,7 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
             " vertex: " + getContext().getTaskVertexName() +
             " taskIndex: " + getContext().getTaskIndex() +
             " taskAttempt: " + getContext().getTaskAttemptNumber();
-        LOG.info(msg);
+        LOG.error("Temp", new RuntimeException());
     }
     //initialize sum to attempt number + 1
     int sum = getContext().getTaskAttemptNumber() + 1;
@@ -263,7 +263,7 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
       }
       TestInput input = (TestInput) entry.getValue();
       int inputValue = input.doRead();
-      LOG.info("Reading input: " + entry.getKey() + " inputValue= " + inputValue);
+      LOG.error("Temp", new RuntimeException());
       sum += inputValue;
     }
     
@@ -273,7 +273,7 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
             " vertex: " + getContext().getTaskVertexName() +
             " taskIndex: " + getContext().getTaskIndex() +
             " taskAttempt: " + getContext().getTaskAttemptNumber();
-        LOG.info(msg);
+        LOG.error("Temp", new RuntimeException());
     }
     for (Map.Entry<String, LogicalOutput> entry : outputs.entrySet()) {
       if (!(entry.getValue() instanceof TestOutput)) {
@@ -281,7 +281,7 @@ public class TestProcessor extends AbstractLogicalIOProcessor {
             + " outputClass= " + entry.getValue().getClass().getSimpleName());
         continue;
       }
-      LOG.info("Writing output: " + entry.getKey() + " sum= " + sum);
+      LOG.error("Temp", new RuntimeException());
       TestOutput output = (TestOutput) entry.getValue();
       output.write(sum);
     }

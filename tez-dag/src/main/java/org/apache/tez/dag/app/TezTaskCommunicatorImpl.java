@@ -171,7 +171,7 @@ public class TezTaskCommunicatorImpl extends TaskCommunicator {
       this.address = NetUtils.createSocketAddrForHost(
           serverBindAddress.getAddress().getCanonicalHostName(),
           serverBindAddress.getPort());
-      LOG.info("Instantiated TezTaskCommunicator RPC at " + this.address);
+      LOG.error("Temp", new RuntimeException());
     } catch (IOException e) {
       throw new TezUncheckedException(e);
     }
@@ -252,7 +252,7 @@ public class TezTaskCommunicatorImpl extends TaskCommunicator {
   public void unregisterRunningTaskAttempt(TezTaskAttemptID taskAttemptID, TaskAttemptEndReason endReason, String diagnostics) {
     ContainerId containerId = attemptToContainerMap.remove(taskAttemptID);
     if(containerId == null) {
-      LOG.warn("Unregister task attempt: " + taskAttemptID + " from unknown container");
+      LOG.error("Temp", new RuntimeException());
       return;
     }
     ContainerInfo containerInfo = registeredContainers.get(containerId);
@@ -305,19 +305,19 @@ public class TezTaskCommunicatorImpl extends TaskCommunicator {
     public ContainerTask getTask(ContainerContext containerContext) throws IOException {
       ContainerTask task = null;
       if (containerContext == null || containerContext.getContainerIdentifier() == null) {
-        LOG.info("Invalid task request with an empty containerContext or containerId");
+        LOG.error("Temp", new RuntimeException());
         task = TASK_FOR_INVALID_JVM;
       } else {
         ContainerId containerId = ConverterUtils.toContainerId(containerContext
             .getContainerIdentifier());
-        LOG.debug("Container with id: {} asked for a task", containerId);
+        LOG.error("Temp", new RuntimeException());
         task = getContainerTask(containerId);
         if (task != null && !task.shouldDie()) {
           getContext().taskSubmitted(task.getTaskSpec().getTaskAttemptID(), containerId);
           getContext().taskStartedRemotely(task.getTaskSpec().getTaskAttemptID());
         }
       }
-      LOG.debug("getTask returning task: {}", task);
+      LOG.error("Temp", new RuntimeException());
       return task;
     }
 
@@ -331,7 +331,7 @@ public class TezTaskCommunicatorImpl extends TaskCommunicator {
         TezException {
       ContainerId containerId = ConverterUtils.toContainerId(request.getContainerIdentifier());
       long requestId = request.getRequestId();
-      LOG.debug("Received heartbeat from container, request={}", request);
+      LOG.error("Temp", new RuntimeException());
 
       ContainerInfo containerInfo = registeredContainers.get(containerId);
       if (containerInfo == null) {
@@ -429,7 +429,7 @@ public class TezTaskCommunicatorImpl extends TaskCommunicator {
           }
         } else {
           task = null;
-          LOG.debug("No task assigned yet for running container: {}", containerId);
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }

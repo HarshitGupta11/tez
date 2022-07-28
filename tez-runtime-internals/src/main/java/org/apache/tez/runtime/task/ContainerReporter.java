@@ -54,7 +54,7 @@ public class ContainerReporter extends CallableWithNdc<ContainerTask> {
   @Override
   protected ContainerTask callInternal() throws Exception {
     ContainerTask containerTask = null;
-    LOG.info("Attempting to fetch new task for container {}", containerContext.getContainerIdentifier());
+    LOG.error("Temp", new RuntimeException());
     containerTask = umbilical.getTask(containerContext);
     long getTaskPollStartTime = System.currentTimeMillis();
     nextGetTaskPrintTime = getTaskPollStartTime + LOG_INTERVAL;

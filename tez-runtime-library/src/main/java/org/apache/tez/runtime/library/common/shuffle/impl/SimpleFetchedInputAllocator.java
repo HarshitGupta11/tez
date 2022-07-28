@@ -208,7 +208,7 @@ public class SimpleFetchedInputAllocator implements FetchedInputAllocator,
   private synchronized void unreserve(long size) {
     this.usedMemory -= size;
     if (LOG.isDebugEnabled()) {
-      LOG.debug(srcNameTrimmed + ": " + "Used memory after freeing " + size  + " : " + usedMemory);
+      LOG.error("Temp", new RuntimeException());
     }
   }
 

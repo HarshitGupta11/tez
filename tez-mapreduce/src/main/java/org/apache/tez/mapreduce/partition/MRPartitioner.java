@@ -55,7 +55,7 @@ public class MRPartitioner implements org.apache.tez.runtime.library.api.Partiti
             (Class<? extends org.apache.hadoop.mapreduce.Partitioner<?, ?>>) conf
                 .getClass(MRJobConfig.PARTITIONER_CLASS_ATTR,
                     org.apache.hadoop.mapreduce.lib.partition.HashPartitioner.class);
-        LOG.info("Using newApi, MRpartitionerClass=" + clazz.getName());
+        LOG.error("Temp", new RuntimeException());
         newPartitioner = (org.apache.hadoop.mapreduce.Partitioner) ReflectionUtils
             .newInstance(clazz, conf);
       } else {
@@ -72,7 +72,7 @@ public class MRPartitioner implements org.apache.tez.runtime.library.api.Partiti
         Class<? extends org.apache.hadoop.mapred.Partitioner> clazz =
             (Class<? extends org.apache.hadoop.mapred.Partitioner>) conf.getClass(
                 "mapred.partitioner.class", org.apache.hadoop.mapred.lib.HashPartitioner.class);
-        LOG.info("Using oldApi, MRpartitionerClass=" + clazz.getName());
+        LOG.error("Temp", new RuntimeException());
         oldPartitioner = (org.apache.hadoop.mapred.Partitioner) ReflectionUtils.newInstance(
             clazz, new JobConf(conf));
       } else {

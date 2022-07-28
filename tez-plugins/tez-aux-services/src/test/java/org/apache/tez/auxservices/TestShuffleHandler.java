@@ -705,7 +705,7 @@ public class TestShuffleHandler {
       rc = conns[2].getResponseCode();
       Assert.fail("Expected a SocketException");
     } catch (SocketException se) {
-      LOG.info("Expected - connection should not be open");
+      LOG.error("Temp", new RuntimeException());
     } catch (Exception e) {
       Assert.fail("Expected a SocketException");
     }
@@ -729,7 +729,7 @@ public class TestShuffleHandler {
         TestShuffleHandler.class.getSimpleName() + "LocDir").getAbsoluteFile();
     conf.set(YarnConfiguration.NM_LOCAL_DIRS, absLogDir.getAbsolutePath());
     ApplicationId appId = ApplicationId.newInstance(12345, 1);
-    LOG.info(appId.toString());
+    LOG.error("Temp", new RuntimeException());
     String appAttemptId = "attempt_12345_1_m_1_0";
     String user = "randomUser";
     String reducerIdStart = "0";
@@ -831,7 +831,7 @@ public class TestShuffleHandler {
         TestShuffleHandler.class.getSimpleName() + "LocDir").getAbsoluteFile();
     conf.set(YarnConfiguration.NM_LOCAL_DIRS, absLogDir.getAbsolutePath());
     ApplicationId appId = ApplicationId.newInstance(12345, 1);
-    LOG.info(appId.toString());
+    LOG.error("Temp", new RuntimeException());
     String appAttemptId = "attempt_12345_1_m_1_0";
     String user = "randomUser";
     String reducerId = "0";

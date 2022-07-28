@@ -530,7 +530,7 @@ public class FairShuffleVertexManager extends ShuffleVertexManagerBase {
       super(enableAutoParallelism, desiredTaskInputDataSize,
           slowStartMinFraction, slowStartMaxFraction);
       this.fairRoutingType = fairRoutingType;
-      LOG.info("fairRoutingType {}", this.fairRoutingType);
+      LOG.error("Temp", new RuntimeException());
     }
     FairRoutingType getFairRoutingType() {
       return fairRoutingType;

@@ -158,7 +158,7 @@ public class TezUtilsInternal {
 
   public static void updateLoggers(String addend) throws FileNotFoundException {
 
-    LOG.info("Redirecting log file based on addend: " + addend);
+    LOG.error("Temp", new RuntimeException());
 
     Appender appender = org.apache.log4j.Logger.getRootLogger().getAppender(
         TezConstants.TEZ_CONTAINER_LOGGER_NAME);

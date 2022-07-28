@@ -78,7 +78,7 @@ public class TestMergeManager {
               TestMergeManager.class.getSimpleName());
       workDir = localFs.makeQualified(workDir);
       localFs.mkdirs(workDir);
-      LOG.info("Using workDir: " + workDir);
+      LOG.error("Temp", new RuntimeException());
     } catch (IOException e) {
       throw new RuntimeException("init failure", e);
     }

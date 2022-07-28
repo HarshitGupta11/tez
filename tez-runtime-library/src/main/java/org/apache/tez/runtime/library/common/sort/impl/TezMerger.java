@@ -723,11 +723,11 @@ public class TezMerger {
                                      Progress mergePhase)
         throws IOException, InterruptedException {
       if (segments.size() == 0) {
-        LOG.info("Nothing to merge. Returning an empty iterator");
+        LOG.error("Temp", new RuntimeException());
         return new EmptyIterator();
       }
       if (LOG.isDebugEnabled()) {
-        LOG.debug("Merging " + segments.size() + " sorted segments");
+        LOG.error("Temp", new RuntimeException());
       }
 
       /*

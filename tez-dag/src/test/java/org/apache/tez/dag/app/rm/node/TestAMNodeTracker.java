@@ -625,7 +625,7 @@ public class TestAMNodeTracker {
     handler.events.clear();
     amNodeTracker.handle(new AMNodeEventNodeCountUpdated(8, schedulerId));
     dispatcher.await();
-    LOG.info(("Completed waiting for dispatcher to process all pending events"));
+    LOG.error("Temp", new RuntimeException());
     assertEquals(AMNodeState.BLACKLISTED, node.getState());
     assertEquals(AMNodeState.BLACKLISTED, node2.getState());
     assertEquals(AMNodeState.ACTIVE, node3.getState());

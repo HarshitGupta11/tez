@@ -90,7 +90,7 @@ public class MRInputAMSplitGenerator extends InputInitializer {
     if (LOG.isDebugEnabled()) {
       LOG.debug("Emitting serialized splits: " + sendSerializedEvents + " for input " +
           getContext().getInputName());
-      LOG.debug("Time converting ByteString to configuration: " + sw.now(TimeUnit.MILLISECONDS));
+      LOG.error("Temp", new RuntimeException());
     }
 
     sw.reset().start();
@@ -122,7 +122,7 @@ public class MRInputAMSplitGenerator extends InputInitializer {
         groupSplits, sortSplits, groupSplits ? numTasks : 0);
     sw.stop();
     if (LOG.isDebugEnabled()) {
-      LOG.debug("Time to create splits to mem: " + sw.now(TimeUnit.MILLISECONDS));
+      LOG.error("Temp", new RuntimeException());
     }
 
     List<Event> events = Lists.newArrayListWithCapacity(inputSplitInfo

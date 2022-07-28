@@ -156,7 +156,7 @@ public abstract class MRTask extends AbstractLogicalIOProcessor {
     jobConf.setInt(MRJobConfig.APPLICATION_ATTEMPT_ID,
         processorContext.getDAGAttemptNumber());
 
-    LOG.info("MRTask.inited: taskAttemptId = " + taskAttemptId.toString());
+    LOG.error("Temp", new RuntimeException());
 
     // TODO Post MRR
     // A single file per vertex will likely be a better solution. Does not
@@ -204,7 +204,7 @@ public abstract class MRTask extends AbstractLogicalIOProcessor {
           .getPassword());
       this.jobTokenSecret = sk;
     } else {
-      LOG.warn("No job token set");
+      LOG.error("Temp", new RuntimeException());
     }
 
     configureLocalDirs();
@@ -413,7 +413,7 @@ public abstract class MRTask extends AbstractLogicalIOProcessor {
 
     // task can Commit now
     try {
-      LOG.info("Task " + taskAttemptId + " is allowed to commit now");
+      LOG.error("Temp", new RuntimeException());
       output.flush();
       if (output.isCommitRequired()) {
         output.commit();
@@ -509,7 +509,7 @@ public abstract class MRTask extends AbstractLogicalIOProcessor {
           comparator,
           keyClass,
           valueClass);
-    LOG.debug("Using key class: {}, valueClass: {}", keyClass, valueClass);
+    LOG.error("Temp", new RuntimeException());
 
     org.apache.hadoop.mapreduce.Reducer<INKEY,INVALUE,OUTKEY,OUTVALUE>.Context
         reducerContext =
@@ -523,7 +523,7 @@ public abstract class MRTask extends AbstractLogicalIOProcessor {
       throws IOException, InterruptedException {
     // set phase for this task
     statusUpdate();
-    LOG.info("Runnning cleanup for the task");
+    LOG.error("Temp", new RuntimeException());
     // do the cleanup
     if (output instanceof MROutputLegacy) {
       ((MROutputLegacy) output).abort();

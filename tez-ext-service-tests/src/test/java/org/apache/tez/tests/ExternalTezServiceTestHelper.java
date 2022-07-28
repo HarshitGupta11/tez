@@ -62,7 +62,7 @@ public class ExternalTezServiceTestHelper {
       dfsCluster =
           new MiniDFSCluster.Builder(clusterConf).numDataNodes(1).format(true).racks(null).build();
       remoteFs = dfsCluster.getFileSystem();
-      LOG.info("MiniDFSCluster started");
+      LOG.error("Temp", new RuntimeException());
     } catch (IOException io) {
       throw new RuntimeException("problem starting mini dfs cluster", io);
     }
@@ -72,7 +72,7 @@ public class ExternalTezServiceTestHelper {
     conf.set("fs.defaultFS", remoteFs.getUri().toString()); // use HDFS
     tezCluster.init(conf);
     tezCluster.start();
-    LOG.info("MiniTezCluster started");
+    LOG.error("Temp", new RuntimeException());
 
     clusterConf.set("fs.defaultFS", remoteFs.getUri().toString()); // use HDFS
     for (Map.Entry<String, String> entry : tezCluster.getConfig()) {
@@ -84,7 +84,7 @@ public class ExternalTezServiceTestHelper {
         .create(TestExternalTezServices.class.getSimpleName(), 3, ((long) (jvmMax * 0.5d)), 1);
     tezTestServiceCluster.init(clusterConf);
     tezTestServiceCluster.start();
-    LOG.info("MiniTezTestServer started");
+    LOG.error("Temp", new RuntimeException());
 
     confForJobs = new Configuration(clusterConf);
     for (Map.Entry<String, String> entry : tezTestServiceCluster
@@ -109,9 +109,9 @@ public class ExternalTezServiceTestHelper {
         .setIsSession(true).setServicePluginDescriptor(servicePluginsDescriptor).build();
 
     sharedTezClient.start();
-    LOG.info("Shared TezSession started");
+    LOG.error("Temp", new RuntimeException());
     sharedTezClient.waitTillReady();
-    LOG.info("Shared TezSession ready for submission");
+    LOG.error("Temp", new RuntimeException());
   }
 
   public void tearDownAll() throws IOException, TezException {
@@ -159,7 +159,7 @@ public class ExternalTezServiceTestHelper {
     String[] args = new String[]{
         dataPath1.toString(), dataPath2.toString(), "2", outputPath.toString()};
     assertEquals(0, joinExample.run(tezConf, args, sharedTezClient));
-    LOG.info("Completed generating Data - Expected Hash Result and Actual Join Result");
+    LOG.error("Temp", new RuntimeException());
   }
 
 

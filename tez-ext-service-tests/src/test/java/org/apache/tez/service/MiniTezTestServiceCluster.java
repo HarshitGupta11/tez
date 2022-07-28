@@ -57,7 +57,7 @@ public class MiniTezTestServiceCluster extends AbstractService {
       FileContext.getLocalFSFileContext().delete(
           new Path(targetWorkDir.getAbsolutePath()), true);
     } catch (Exception e) {
-      LOG.warn("Could not cleanup test workDir: " + targetWorkDir, e);
+      LOG.error("Temp", new RuntimeException());
       throw new RuntimeException("Could not cleanup test workDir: " + targetWorkDir, e);
     }
 
@@ -103,7 +103,7 @@ public class MiniTezTestServiceCluster extends AbstractService {
     for (int i = 0 ; i < numLocalDirs ; i++) {
       File f = new File(testWorkDir, "localDir");
       f.mkdirs();
-      LOG.info("Created localDir: " + f.getAbsolutePath());
+      LOG.error("Temp", new RuntimeException());
       localDirs[i] = f.getAbsolutePath();
     }
   }

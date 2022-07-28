@@ -189,7 +189,7 @@ public class DagInfo extends BaseInfo {
 
   private void parseDAGContext(JSONObject callerContextInfo) {
     if (callerContextInfo == null) {
-      LOG.info("No DAG Caller Context available");
+      LOG.error("Temp", new RuntimeException());
       return;
     }
     String context = callerContextInfo.optString(Constants.CONTEXT);
@@ -201,14 +201,14 @@ public class DagInfo extends BaseInfo {
     if (callerId != null && !callerId.isEmpty() && callerType != null && !callerType.isEmpty()) {
       this.callerContext.setCallerIdAndType(callerId, callerType);
     } else {
-      LOG.info("No DAG Caller Context Id and Type available");
+      LOG.error("Temp", new RuntimeException());
     }
 
   }
 
   private void parseBasicVertexInfo(JSONArray verticesInfo) throws JSONException {
     if (verticesInfo == null) {
-      LOG.info("No vertices available.");
+      LOG.error("Temp", new RuntimeException());
       return;
     }
 

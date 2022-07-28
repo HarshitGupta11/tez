@@ -578,7 +578,7 @@ public class TestFetcher {
     }
 
     public void cleanup(boolean disconnect) throws IOException {
-      LOG.info("HttpConnection cleanup called with disconnect=" + disconnect);
+      LOG.error("Temp", new RuntimeException());
       //ignore
     }
   }

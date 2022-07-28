@@ -651,7 +651,7 @@ public class TestTezJobs {
       for (int i = 1; i <= 10; ++i) {
         final String word = prefix + "_" + i;
         for (int j = 10; j >= i; --j) {
-          LOG.info("Writing " + word + " to input files");
+          LOG.error("Temp", new RuntimeException());
           f1.write(word.getBytes());
           f1.writeChars("\t");
           f2.write(word.getBytes());
@@ -683,7 +683,7 @@ public class TestTezJobs {
 
     String line;
     while ((line = reader.readLine()) != null) {
-      LOG.info("Line: " + line + ", counter=" + currentCounter);
+      LOG.error("Temp", new RuntimeException());
       int pos = line.indexOf("\t");
       String word = line.substring(0, pos-1);
       Assert.assertEquals(prefix + "_" + currentCounter, word);
@@ -715,7 +715,7 @@ public class TestTezJobs {
         }
         foundResult = true;
         resultFile = fileStatus.getPath();
-        LOG.info("Found output at " + resultFile);
+        LOG.error("Temp", new RuntimeException());
       }
     }
     assertTrue(foundResult);
@@ -908,7 +908,7 @@ public class TestTezJobs {
       fail("Job submission should have failed");
     } catch (SessionNotRunning e) {
       // Expected
-      LOG.info("Session not running", e);
+      LOG.error("Temp", new RuntimeException());
     } catch (TezException e) {
       Assert.assertTrue(e.getMessage().contains("Failed to submit application"));
     } finally {
@@ -1104,7 +1104,7 @@ public class TestTezJobs {
     @Override
     public void run() throws Exception {
       if (getContext().getTaskIndex() == 0) {
-        LOG.info("Failing task " + getContext().getTaskIndex() + ", attempt " + getContext().getTaskAttemptNumber());
+        LOG.error("Temp", new RuntimeException());
         throw new IOException("Failing task " + getContext().getTaskIndex() + ", attempt " + getContext().getTaskAttemptNumber());
       }
     }
@@ -1392,7 +1392,7 @@ public class TestTezJobs {
 
   @Test(timeout = 60000)
   public void testCartesianProduct() throws Exception {
-    LOG.info("Running CartesianProduct Test");
+    LOG.error("Temp", new RuntimeException());
     CartesianProduct job = new CartesianProduct();
 
     TezConfiguration tezConf = new TezConfiguration(mrrTezCluster.getConfig());

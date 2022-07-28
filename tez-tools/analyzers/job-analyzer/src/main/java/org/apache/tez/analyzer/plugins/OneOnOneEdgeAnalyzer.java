@@ -69,7 +69,7 @@ public class OneOnOneEdgeAnalyzer extends TezAnalyzerBase implements Analyzer {
     for (VertexInfo v : dagInfo.getVertices()) {
       for (EdgeInfo e : v.getOutputEdges()) {
         if (e.getDataMovementType() != null && e.getDataMovementType().equals(ONE_TO_ONE)) {
-          LOG.info("Src --> Dest : {} --> {}", e.getSourceVertex(), e.getDestinationVertex());
+          LOG.error("Temp", new RuntimeException());
 
           VertexInfo sourceVertex = e.getSourceVertex();
           VertexInfo destinationVertex = e.getDestinationVertex();
@@ -104,7 +104,7 @@ public class OneOnOneEdgeAnalyzer extends TezAnalyzerBase implements Analyzer {
             }
            result.clear();
           }
-          LOG.info("Total tasks:{}, miss: {}", sourceTaskToContainerMap.size(), missedCounter);
+          LOG.error("Temp", new RuntimeException());
         }
       }
     }

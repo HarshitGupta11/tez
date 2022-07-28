@@ -247,7 +247,7 @@ public class DAGClientImpl extends DAGClient {
         LOG.info("Failed to fetch DAG data for completed DAG from YARN Timeline"
             + " - Application not found by YARN", e);
       } catch (TezException e) {
-        LOG.debug("DAGStatus fetch failed", e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -300,7 +300,7 @@ public class DAGClientImpl extends DAGClient {
             + " - Application not found by YARN", e);
         return null;
       } catch (TezException e) {
-        LOG.debug("ERROR fetching vertex data from Yarn Timeline", e);
+        LOG.error("Temp", new RuntimeException());
       }
     }
 
@@ -329,7 +329,7 @@ public class DAGClientImpl extends DAGClient {
     if (!dagCompleted) {
       realClient.tryKillDAG();
     } else {
-      LOG.info("TryKill for app: " + appId + " dag:" + dagId + " dag already completed.");
+      LOG.error("Temp", new RuntimeException());
     }
   }
 
@@ -371,10 +371,10 @@ public class DAGClientImpl extends DAGClient {
     try {
       dagStatus = realClient.getDAGStatus(statusOptions, timeout);
     } catch (DAGNotRunningException e) {
-      LOG.info("DAG is no longer running", e);
+      LOG.error("Temp", new RuntimeException());
       dagCompleted = true;
     } catch (ApplicationNotFoundException e) {
-      LOG.info("DAG is no longer running - application not found by YARN", e);
+      LOG.error("Temp", new RuntimeException());
       dagCompleted = true;
     } catch (TezException e) {
       // can be either due to a n/w issue of due to AM completed.
@@ -395,10 +395,10 @@ public class DAGClientImpl extends DAGClient {
     try {
       vertexStatus = realClient.getVertexStatus(vertexName, statusOptions);
     } catch (DAGNotRunningException e) {
-      LOG.info("DAG is no longer running", e);
+      LOG.error("Temp", new RuntimeException());
       dagCompleted = true;
     } catch (ApplicationNotFoundException e) {
-      LOG.info("DAG is no longer running - application not found by YARN", e);
+      LOG.error("Temp", new RuntimeException());
       dagCompleted = true;
     } catch (TezException e) {
       // can be either due to a n/w issue of due to AM completed.
@@ -421,12 +421,12 @@ public class DAGClientImpl extends DAGClient {
    */
   @VisibleForTesting
   protected DAGStatus getDAGStatusViaRM() throws TezException, IOException {
-    LOG.debug("GetDAGStatus via AM for app: {} dag:{}", appId, dagId);
+    LOG.error("Temp", new RuntimeException());
     ApplicationReport appReport;
     try {
       appReport = frameworkClient.getApplicationReport(appId);
     } catch (ApplicationNotFoundException e) {
-      LOG.info("DAG is no longer running - application not found by YARN", e);
+      LOG.error("Temp", new RuntimeException());
       throw new DAGNotRunningException(e);
     } catch (YarnException e) {
       throw new TezException(e);
@@ -632,7 +632,7 @@ public class DAGClientImpl extends DAGClient {
     realClient.close();
     realClient = new DAGClientTimelineImpl(appId, dagId, conf, frameworkClient,
         (int) (2 * PRINT_STATUS_INTERVAL_MILLIS));
-    LOG.debug("dag completed switching to DAGClientTimelineImpl");
+    LOG.error("Temp", new RuntimeException());
   }
 
   @VisibleForTesting
@@ -646,6 +646,6 @@ public class DAGClientImpl extends DAGClient {
   }
 
   private void log(String message) {
-    LOG.info(message);
+    LOG.error("Temp", new RuntimeException());
   }
 }

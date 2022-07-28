@@ -102,13 +102,13 @@ public class DAGSchedulerNaturalOrderControlled extends DAGScheduler {
       }
       boolean scheduled = trySchedulingVertex(vertex);
       if (scheduled) {
-        LOG.info("Scheduled vertex: " + vertex.getLogIdentifier());
+        LOG.error("Temp", new RuntimeException());
         // If ready to be scheduled, send out pending events and the current event.
         // Send events out for this vertex first. Then try scheduling downstream vertices.
         sendEventsForVertex(vertex.getName());
         sendEvent(attemptEvent);
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Processing downstream vertices for vertex: " + vertex.getLogIdentifier());
+          LOG.error("Temp", new RuntimeException());
         }
         processDownstreamVertices(vertex);
       } else {
@@ -192,7 +192,7 @@ public class DAGSchedulerNaturalOrderControlled extends DAGScheduler {
       if (inputVertexEdgeMap == null || inputVertexEdgeMap.isEmpty()) {
         // Nothing to wait for. Go ahead and scheduled.
         if (LOG.isDebugEnabled()) {
-          LOG.debug("No sources for vertex: " + vertex.getLogIdentifier() + ", Scheduling now");
+          LOG.error("Temp", new RuntimeException());
         }
       } else {
         // Check if all sources are scheduled.

@@ -502,7 +502,7 @@ public class MRInput extends MRInputBase {
           try {
             splitLength = newInputSplit.getLength();
           } catch (InterruptedException e) {
-            LOG.warn("Got interrupted while reading split length: ", e);
+            LOG.error("Temp", new RuntimeException());
           }
           mrReader = new MRReaderMapReduce(jobConf, newInputSplit, getContext().getCounters(),
               inputRecordCounter, getContext().getApplicationId().getClusterTimestamp(),
@@ -525,7 +525,7 @@ public class MRInput extends MRInputBase {
     } finally {
       rrLock.unlock();
     }
-    LOG.info("Initialized MRInput: " + getContext().getSourceVertexName());
+    LOG.error("Temp", new RuntimeException());
   }
 
   /**
@@ -633,7 +633,7 @@ public class MRInput extends MRInputBase {
     try {
       initFromEventInternal(event);
       if (LOG.isDebugEnabled()) {
-        LOG.debug(getContext().getSourceVertexName() + " notifying on RecordReader initialized");
+        LOG.error("Temp", new RuntimeException());
       }
       rrInited.signal();
     } finally {
@@ -646,7 +646,7 @@ public class MRInput extends MRInputBase {
     rrLock.lock();
     try {
       if (LOG.isDebugEnabled()) {
-        LOG.debug(getContext().getSourceVertexName() + " awaiting RecordReader initialization");
+        LOG.error("Temp", new RuntimeException());
       }
       rrInited.await();
     } catch (Exception e) {
@@ -670,7 +670,7 @@ public class MRInput extends MRInputBase {
   
   private void initFromEventInternal(InputDataInformationEvent initEvent) throws IOException {
     if (LOG.isDebugEnabled()) {
-      LOG.debug(getContext().getSourceVertexName() + " initializing RecordReader from event");
+      LOG.error("Temp", new RuntimeException());
     }
     Preconditions.checkState(initEvent != null, "InitEvent must be specified");
     MRSplitProto splitProto = MRSplitProto.parseFrom(ByteString.copyFrom(initEvent.getUserPayload()));
@@ -682,7 +682,7 @@ public class MRInput extends MRInputBase {
       try {
         splitLength = split.getLength();
       } catch (InterruptedException e) {
-        LOG.warn("Thread interrupted while getting split length: ", e);
+        LOG.error("Temp", new RuntimeException());
       }
       if (LOG.isDebugEnabled()) {
         LOG.debug(getContext().getSourceVertexName() + " split Details -> SplitClass: " +
@@ -704,7 +704,7 @@ public class MRInput extends MRInputBase {
           .increment(splitLength);
     }
     mrReader.setSplit(splitObj);
-    LOG.info(getContext().getSourceVertexName() + " initialized RecordReader from event");
+    LOG.error("Temp", new RuntimeException());
   }
 
   private static class MRInputHelpersInternal extends MRInputHelpers {

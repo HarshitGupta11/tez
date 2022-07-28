@@ -309,9 +309,9 @@ public class MockDAGAppMaster extends DAGAppMaster {
     public void run() {
       Thread.currentThread().setName("MockLauncher");
       // wait for test to sync with us and get a reference to us. Go when sync is done
-      LOG.info("Waiting to go");
+      LOG.error("Temp", new RuntimeException());
       waitToGo();
-      LOG.info("Signal to go");
+      LOG.error("Temp", new RuntimeException());
       try {
         while (true) {
           if (!startScheduling.get()) { // schedule when asked to do so by the test code
@@ -333,7 +333,7 @@ public class MockDAGAppMaster extends DAGAppMaster {
           }
         }
       } catch (InterruptedException ie) {
-        LOG.warn("Exception in mock container launcher thread", ie);
+        LOG.error("Temp", new RuntimeException());
       }
     }
     
@@ -450,7 +450,7 @@ public class MockDAGAppMaster extends DAGAppMaster {
           }
         } catch (Exception e) {
           // exception from TA listener. Behave like real. Die and continue with others 
-          LOG.warn("Exception in mock container launcher thread for cId: " + cData.cIdStr, e);
+          LOG.error("Temp", new RuntimeException());
           cData.remove();
         }
         return null;

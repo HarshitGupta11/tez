@@ -151,12 +151,12 @@ public class TezTestServiceTaskSchedulerService extends TaskScheduler {
 
   @Override
   public void blacklistNode(NodeId nodeId) {
-    LOG.info("BlacklistNode not supported");
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override
   public void unblacklistNode(NodeId nodeId) {
-    LOG.info("unBlacklistNode not supported");
+    LOG.error("Temp", new RuntimeException());
   }
 
   @Override
@@ -195,7 +195,7 @@ public class TezTestServiceTaskSchedulerService extends TaskScheduler {
 
   @Override
   public Object deallocateContainer(ContainerId containerId) {
-    LOG.info("Ignoring deallocateContainer for containerId: " + containerId);
+    LOG.error("Temp", new RuntimeException());
     return null;
   }
 
@@ -215,10 +215,10 @@ public class TezTestServiceTaskSchedulerService extends TaskScheduler {
     if (requestedHosts != null && requestedHosts.length > 0) {
       Arrays.sort(requestedHosts);
       host = requestedHosts[0];
-      LOG.info("Selected host: " + host + " from requested hosts: " + Arrays.toString(requestedHosts));
+      LOG.error("Temp", new RuntimeException());
     } else {
       host = serviceHosts.get(random.nextInt(serviceHosts.size()));
-      LOG.info("Selected random host: " + host + " since the request contained no host information");
+      LOG.error("Temp", new RuntimeException());
     }
     return host;
   }

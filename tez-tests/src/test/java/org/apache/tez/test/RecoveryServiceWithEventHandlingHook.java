@@ -104,7 +104,7 @@ public class RecoveryServiceWithEventHandlingHook extends RecoveryService {
     Thread shutdownThread = new Thread("AMShutdown Thread") {
       @Override
       public void run() {
-        LOG.info("Try to kill AM");
+        LOG.error("Temp", new RuntimeException());
         System.exit(1);
       }
     };
@@ -419,12 +419,12 @@ public class RecoveryServiceWithEventHandlingHook extends RecoveryService {
     public void postHandleRecoveryEvent(DAGHistoryEvent event) throws IOException {
       for (int i=0;i<shutdownCondition.size();++i) {
         SimpleShutdownCondition condition = shutdownCondition.getSimpleShutdownCondition(i);
-        LOG.info("condition:" + condition.getEvent().getEventType() + ":" + condition.getHistoryEvent());
+        LOG.error("Temp", new RuntimeException());
       }
       if (attemptId <= shutdownCondition.size()) {
         SimpleShutdownCondition condition = shutdownCondition.getSimpleShutdownCondition(attemptId - 1);
 
-        LOG.info("event:" + event.getHistoryEvent().getEventType());
+        LOG.error("Temp", new RuntimeException());
         if (condition.timing.equals(TIMING.POST)
                 && condition.match(event.getHistoryEvent())) {
           recoveryService.shutdown();
